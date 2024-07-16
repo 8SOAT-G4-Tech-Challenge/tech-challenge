@@ -10,7 +10,8 @@ export class ProductController {
 
     async getProducts(req: FastifyRequest, reply: FastifyReply) {
         try {
-            logger.info('Listing products')
+            logger.info('Listing products');
+            reply.code(StatusCodes.OK).send(await this.productService.getProducts());
         } catch (error) {
             const errorMessage = `Unexpected error when listing for products`;
             logger.error(`${errorMessage}: ${error}`);
