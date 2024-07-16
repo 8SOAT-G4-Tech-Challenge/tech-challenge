@@ -7,7 +7,7 @@ type FastifyErrorHandler = FastifyInstance['errorHandler'];
 
 export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
 	let responseError = {
-		path: request.routerPath,
+		path: request.url,
 		status: StatusCodes.INTERNAL_SERVER_ERROR,
 		message: error.message,
 		details: []
