@@ -6,7 +6,6 @@ import { routes } from '@routes/index';
 import { errorHandler } from '@src/core/common/errorHandler';
 import logger from '@src/core/common/logger';
 import fastify from 'fastify';
-import { jsonSchemaTransform } from 'fastify-type-provider-zod';
 import helmet from '@fastify/helmet';
 
 export const app = fastify();
@@ -24,8 +23,7 @@ app.register(fastifySwagger, {
             description: 'Especificações da API para o back-end da aplicação de restaurante FIAP Tech Challenge.',
             version: '1.0.0',
         },
-    },
-    transform: jsonSchemaTransform,
+    }
 });
 
 app.register(fastifySwaggerUI, {
