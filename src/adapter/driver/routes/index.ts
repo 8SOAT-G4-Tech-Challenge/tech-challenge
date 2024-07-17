@@ -98,6 +98,14 @@ export const routes = async (fastify: FastifyInstance) => {
 			summary: 'Get products',
 			description: 'Returns products',
 			tags: ['Product'],
+			querystring: {
+				type: "object",
+				properties: {
+				  category: {
+					type: "string",
+				  },
+				}
+			},
 			response: {
 				200: {
 					description: 'Success get products',
@@ -168,7 +176,7 @@ export const routes = async (fastify: FastifyInstance) => {
 			summary: 'Create product category',
 			description: 'Create product category',
 			tags: ['Product'],
-			params: {
+			body: {
                 type: 'object',
                 properties: {
                     name: {

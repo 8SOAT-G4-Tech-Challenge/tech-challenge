@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { ZodError } from 'zod';
 import { StatusCodes } from 'http-status-codes';
-import { BaseException } from '@driver/exceptions/baseException';
+import { BaseException } from '@src/core/application/exceptions/baseException';
 
 type FastifyErrorHandler = FastifyInstance['errorHandler'];
 

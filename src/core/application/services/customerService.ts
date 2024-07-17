@@ -1,6 +1,6 @@
 import { Customer } from '@models/customer';
 import { CustomerRepository } from '@ports/customerRepository'
-import { InvalidCustomerException } from '@driver/exceptions/invalidCustomerException';
+import { InvalidCustomerException } from '@src/core/application/exceptions/invalidCustomerException';
 
 export class CustomerService {
 	constructor(private readonly customerRepository: CustomerRepository) { }
