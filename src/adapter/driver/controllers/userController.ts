@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 import { UserService } from '@services/userService';
-import { handleError } from '@src/core/common/errorHandler';
+import { handleError } from '@driver/errorHandler';
 import logger from '@src/core/common/logger';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
