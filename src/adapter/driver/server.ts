@@ -3,7 +3,7 @@ import fastifyMultipart from '@fastify/multipart';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUI from '@fastify/swagger-ui';
 import { routes } from '@routes/index';
-import { errorHandler } from '@src/core/common/errorHandler';
+import { errorHandler } from '@driver/errorHandler';
 import logger from '@src/core/common/logger';
 import fastify from 'fastify';
 import helmet from '@fastify/helmet';

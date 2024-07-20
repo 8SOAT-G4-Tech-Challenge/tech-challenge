@@ -4,18 +4,7 @@ import { prisma } from '@driven/infra/lib/prisma';
 
 export class CustomerRepositoryImpl implements CustomerRepository {
 	async getCustomers(): Promise<Customer[]> {
-		const costumers = await prisma.customer.findMany({
-			select: {
-				id: true,
-				name: true,
-				email: true,
-				cpf: true,
-				createdAt: true,
-				updatedAt: true,
-			},
-		});
-
-		return costumers;
+		return prisma.customer.findMany();
 	}
 
 	async getCustomerById(id: string): Promise<Customer | null> {

@@ -15,7 +15,7 @@ export class ProductRepositoryImpl implements ProductRepository {
 				category: true,
 				createdAt: true,
 				updatedAt: true,
-			},
+			}
 		});
 	};
 
