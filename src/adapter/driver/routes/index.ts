@@ -19,7 +19,9 @@ import {
 	UserController,
 } from '@driver/controllers';
 
+import { SwaggerCreateCustomers, SwaggerGetCustomers, SwaggerGetCustomersProperty } from './doc/customers';
 import { SwaggerGetOrders } from './doc/orders';
+import { SwaggerGetUsers } from './doc/users';
 
 const userRepository = new UserRepositoryImpl();
 const customerRepository = new CustomerRepositoryImpl();
@@ -38,17 +40,24 @@ const orderController = new OrderController(orderService);
 
 // Usem esse site para gerar o swagger a partir do JSON -> https://roger13.github.io/SwagDefGen/
 export const routes = async (fastify: FastifyInstance) => {
-	fastify.get('/users', userController.getUsers.bind(userController));
+	fastify.get(
+		'/users',
+		SwaggerGetUsers, 
+		userController.getUsers.bind(userController)
+	);
 	fastify.get(
 		'/customers',
+		SwaggerGetCustomers,
 		customerController.getCustomers.bind(customerController)
 	);
 	fastify.get(
 		'/customers/property',
+		SwaggerGetCustomersProperty,
 		customerController.getCustomerByProperty.bind(customerController)
 	);
 	fastify.post(
 		'/customers',
+		SwaggerCreateCustomers,
 		customerController.createCustomer.bind(customerController)
 	);
 	fastify.get(

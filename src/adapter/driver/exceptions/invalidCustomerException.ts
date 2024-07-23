@@ -3,6 +3,6 @@ import { StatusCodes } from "http-status-codes";
 
 export class InvalidCustomerException extends BaseException {
     constructor(message: string) {
-        super(message, StatusCodes.BAD_REQUEST);
+        super(message, 'InvalidCustomerException', StatusCodes.BAD_REQUEST);
     };
 }

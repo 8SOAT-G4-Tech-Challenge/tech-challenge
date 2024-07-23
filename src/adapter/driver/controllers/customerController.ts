@@ -2,6 +2,7 @@ import { Customer } from '@prisma/client';
 import { CustomerService } from '@services/customerService';
 import { handleError } from '@src/core/common/errorHandler';
 import logger from '@src/core/common/logger';
+import { CustomerCreateUpdateParams } from '@src/core/domain/types/customer';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
 
@@ -49,8 +50,8 @@ export class CustomerController {
 	async createCustomer(req: FastifyRequest, reply: FastifyReply) {
 		try {
 			logger.info('Creating customer');
-			const { name, email, cpf }: Customer = req.body as Customer;
-			const createdCustomer: Customer = await this.customerService.createCustomer({ name, email, cpf });
+			const { name, email, cpf }: CustomerCreateUpdateParams = req.body as CustomerCreateUpdateParams;
+			const createdCustomer: CustomerCreateUpdateParams = await this.customerService.createCustomer({ name, email, cpf });
 			reply.code(StatusCodes.CREATED).send(createdCustomer);
 		} catch (error) {
 			const errorMessage = `Unexpected when creating for customer`;
