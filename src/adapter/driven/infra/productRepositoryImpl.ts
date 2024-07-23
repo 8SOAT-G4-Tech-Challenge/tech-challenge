@@ -6,15 +6,8 @@ import { ProductCategory } from '@src/core/domain/productCategory';
 export class ProductRepositoryImpl implements ProductRepository {
 	async getProducts(): Promise<Product[]> {
 		return prisma.product.findMany({
-			select: {
-				id: true,
-				name: true,
-				amount: true,
-				description: true,
-				categoryId: true,
-				category: true,
-				createdAt: true,
-				updatedAt: true,
+			include: {
+				category: true
 			}
 		});
 	};
@@ -22,16 +15,9 @@ export class ProductRepositoryImpl implements ProductRepository {
 	async getProductsByCategory(categoryId: string): Promise<Product[]> {
 		return prisma.product.findMany({
 			where: { categoryId },
-			select: {
-				id: true,
-				name: true,
-				amount: true,
-				description: true,
-				categoryId: true,
-				category: true,
-				createdAt: true,
-				updatedAt: true,
-			},
+			include: {
+				category: true
+			}
 		});
 	};
 
