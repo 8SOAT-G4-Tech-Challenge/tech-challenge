@@ -38,15 +38,9 @@ export class ProductRepositoryImpl implements ProductRepository {
 		});
 	};
 
-	async getProductCategoryByName(name: string): Promise<ProductCategory> {
+	async getProductCategoryByName(name: string): Promise<ProductCategory | null> {
 		return prisma.productCategory.findUnique({
-			where: { name },
-			select: {
-				id: true,
-				name: true,
-				createdAt: true,
-				updatedAt: true
-			}
+			where: { name }
 		});
 	};
 }
