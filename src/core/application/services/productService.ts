@@ -1,8 +1,7 @@
 import { ProductRepository } from '@ports/productRepository';
 import { Product, ProductCategory } from '@prisma/client';
-import { productCategoryCreateSchema, productCategoryFilters } from '@driver/schemas/productCategorySchema';
+import { productCategoryCreateSchema } from '@driver/schemas/productCategorySchema';
 import { productFilterSchema } from '@driver/schemas/productSchema';
-import { InvalidProductCategoryException } from '@src/core/application/exceptions/invalidProductCategoryException'; 
 import logger from '@src/core/common/logger';
 
 export class ProductService {
@@ -17,7 +16,7 @@ export class ProductService {
 				logger.info(`Success search product category ${JSON.stringify(productCategory)}`)
 				return this.productRepository.getProductsByCategory(productCategory.id);
 			} else {
-				throw new InvalidProductCategoryException(`Error listing products by category. Invalid category: ${filters.category}`);
+				return [];
 			}
 		} else {
 			return this.productRepository.getProducts();
