@@ -8,7 +8,7 @@
 			"@src/*": ["./src/*"],
 			"@driver/*": ["./src/adapter/driver/*"],
 			"@driven/*": ["./src/adapter/driven/*"],
-			"@models/*": ["./src/core/domain/*"],
+			"@models/*": ["./src/core/domain/models/*"],
 			"@routes/*": ["./src/adapter/driver/routes/*"],
 			"@exceptions/*": ["./src/adapter/driver/exceptions/*"],
 			"@dtos/*": ["./src/adapter/driver/dtos/*"],

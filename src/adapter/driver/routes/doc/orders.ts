@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from '@domain/types/orderStatusType';
+import { OrderStatusEnum } from '@domain/enums/orderStatusEnum';
 
 export const SwaggerGetOrders = {
 	schema: {

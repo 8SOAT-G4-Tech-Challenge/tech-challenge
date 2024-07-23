@@ -1,10 +1,3 @@
-export const OrderStatusEnum = {
-	created: 'created',
-	received: 'received',
-	preparation: 'preparation',
-	ready: 'ready',
-	finished: 'finished',
-	canceled: 'canceled',
-} as const;
+import { OrderStatusEnum } from '@domain/enums/orderStatusEnum';
 
 export type OrderStatusType = keyof typeof OrderStatusEnum;

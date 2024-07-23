@@ -1,4 +1,4 @@
-import { OrderStatusType } from './types/orderStatusType';
+import { OrderStatusType } from '@domain/types/orderStatusType';
 
 export interface Order {
 	id: string;

@@ -1,18 +1,14 @@
 import logger from '@common/logger';
-import { Order } from '@domain/order';
-import { OrderQueryParams } from '@domain/types/order';
-import { OrderStatusEnum } from '@domain/types/orderStatusType';
+import { Order } from '@models/order';
+import { OrderStatusEnum } from '@domain/enums/orderStatusEnum';
 import { InvalidOrderStatusException } from '@driver/exceptions/invalidOrderStatusException';
-import { IOrderRepository } from '@ports/orderRepository';
+import { OrderRepository } from '@ports/repository/orderRepository';
+import { GetOrderQueryParams } from '@ports/input/orders';
 
 export class OrderService {
-	orderRepository: IOrderRepository;
+	constructor(private readonly orderRepository: OrderRepository) {}
 
-	constructor(private readonly _orderRepository: IOrderRepository) {
-		this.orderRepository = _orderRepository;
-	}
-
-	async getOrders({ status }: OrderQueryParams): Promise<Order[]> {
+	async getOrders({ status }: GetOrderQueryParams): Promise<Order[]> {
 		if (status && Object.values(OrderStatusEnum).includes(status)) {
 			logger.info(`Searching orders by status: ${status}`);
 			const orders = await this.orderRepository.getOrdersByStatus(status);

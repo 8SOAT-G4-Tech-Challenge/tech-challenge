@@ -4,18 +4,14 @@ import { StatusCodes } from 'http-status-codes';
 import { OrderService } from '@application/services';
 import { handleError } from '@common/errorHandler';
 import logger from '@common/logger';
-import { Order } from '@domain/order';
-import { OrderQueryParams } from '@domain/types/order';
+import { Order } from '@models/order';
+import { GetOrderQueryParams } from '@ports/input/orders';
 
 export class OrderController {
-	orderService: OrderService;
-
-	constructor(private _orderService: OrderService) {
-		this.orderService = _orderService;
-	}
+	constructor(private readonly orderService: OrderService) {}
 
 	async getOrders(
-		req: FastifyRequest<{ Querystring: OrderQueryParams }>,
+		req: FastifyRequest<{ Querystring: GetOrderQueryParams }>,
 		reply: FastifyReply
 	) {
 		try {
