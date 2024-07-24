@@ -28,7 +28,12 @@ import {
 	SwaggerCreateCustomers,
 	SwaggerDeleteCustomers,
 } from './doc/customer';
-import { SwaggerGetOrders } from './doc/order';
+import {
+	SwaggerGetOrders,
+	SwaggerCreateOrder,
+	SwaggerGetOrdersById,
+	SwaggerUpdateOrder,
+} from './doc/order';
 import { SwaggerGetProducts } from './doc/product';
 import {
 	SwaggerCreateProductCategories,
@@ -111,5 +116,20 @@ export const routes = async (fastify: FastifyInstance) => {
 		'/orders',
 		SwaggerGetOrders,
 		orderController.getOrders.bind(orderController)
+	);
+	fastify.get(
+		'/orders/:id',
+		SwaggerGetOrdersById,
+		orderController.getOrderById.bind(orderController)
+	);
+	fastify.post(
+		'/orders',
+		SwaggerCreateOrder,
+		orderController.createOrder.bind(orderController)
+	);
+	fastify.put(
+		'/orders/:id',
+		SwaggerUpdateOrder,
+		orderController.updateOrder.bind(orderController)
 	);
 };

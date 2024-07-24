@@ -144,20 +144,6 @@ async function main() {
 
 	const itemsOrder3 = [{ product: product1, quantity: 2 }];
 
-	const order1Amount = itemsOrder1.reduce(
-		(sum, item) => sum + Number(item.product.amount) * Number(item.quantity),
-		0
-	);
-	const order2Amount = itemsOrder2.reduce(
-		(sum, item) => sum + Number(item.product.amount) * Number(item.quantity),
-		0
-	);
-
-	const order3Amount = itemsOrder3.reduce(
-		(sum, item) => sum + Number(item.product.amount) * Number(item.quantity),
-		0
-	);
-
 	const [order1, order2, order3] = await Promise.all([
 		prisma.order.create({
 			data: {
@@ -165,13 +151,11 @@ async function main() {
 					connect: { id: customer1.id },
 				},
 				status: OrderStatusEnum.received,
-				amount: order1Amount,
 			},
 		}),
 		prisma.order.create({
 			data: {
 				status: OrderStatusEnum.preparation,
-				amount: order2Amount,
 			},
 		}),
 		prisma.order.create({
@@ -180,7 +164,6 @@ async function main() {
 					connect: { id: customer2.id },
 				},
 				status: OrderStatusEnum.received,
-				amount: order3Amount,
 			},
 		}),
 	]);
@@ -230,6 +213,7 @@ async function main() {
 				},
 				status: PaymentOrderStatusEnum.approved,
 				paidAt: new Date(),
+				amount: 30,
 			},
 		}),
 		prisma.paymentOrder.create({
@@ -238,6 +222,7 @@ async function main() {
 					connect: { id: order2.id },
 				},
 				status: PaymentOrderStatusEnum.pending,
+				amount: 20,
 			},
 		}),
 		prisma.paymentOrder.create({
@@ -246,6 +231,7 @@ async function main() {
 					connect: { id: order3.id },
 				},
 				status: PaymentOrderStatusEnum.pending,
+				amount: 20,
 			},
 		}),
 	]);

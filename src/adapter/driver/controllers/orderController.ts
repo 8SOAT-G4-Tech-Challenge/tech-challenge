@@ -5,10 +5,16 @@ import { OrderService } from '@application/services';
 import logger from '@common/logger';
 import { handleError } from '@driver/errorHandler';
 import { Order } from '@models/order';
-import { GetOrderQueryParams } from '@ports/input/orders';
+import {
+	CreateOrderParams,
+	GetOrderByIdParams,
+	GetOrderQueryParams,
+	UpdateOrderParams,
+} from '@ports/input/orders';
+import { CreateOrderResponse } from '@ports/output/orders';
 
 export class OrderController {
-	private readonly orderService;
+	private readonly orderService: OrderService;
 
 	constructor(orderService: OrderService) {
 		this.orderService = orderService;
@@ -24,6 +30,55 @@ export class OrderController {
 			reply.code(StatusCodes.OK).send(orders);
 		} catch (error) {
 			logger.error(`Unexpected error when trying to get orders: ${error}`);
+			handleError(req, reply, error);
+		}
+	}
+
+	async getOrderById(
+		req: FastifyRequest<{ Params: GetOrderByIdParams }>,
+		reply: FastifyReply
+	) {
+		try {
+			logger.info('Listing order by id');
+			const order: CreateOrderResponse = await this.orderService.getOrderById(
+				req?.params
+			);
+			reply.code(StatusCodes.CREATED).send(order);
+		} catch (error) {
+			logger.error(`Unexpected error when trying to create order: ${error}`);
+			handleError(req, reply, error);
+		}
+	}
+
+	async createOrder(
+		req: FastifyRequest<{ Body: CreateOrderParams }>,
+		reply: FastifyReply
+	) {
+		try {
+			logger.info('Creating order');
+			const order: CreateOrderResponse = await this.orderService.createOrder(
+				req.body
+			);
+			reply.code(StatusCodes.CREATED).send(order);
+		} catch (error) {
+			logger.error(`Unexpected error when trying to create order: ${error}`);
+			handleError(req, reply, error);
+		}
+	}
+
+	async updateOrder(
+		req: FastifyRequest<{ Params: Pick<Order, 'id'>; Body: UpdateOrderParams }>,
+		reply: FastifyReply
+	) {
+		try {
+			logger.info('Updating order', req?.params?.id);
+			const order: CreateOrderResponse = await this.orderService.updateOrder({
+				...req.body,
+				id: req?.params?.id,
+			});
+			reply.code(StatusCodes.OK).send(order);
+		} catch (error) {
+			logger.error(`Unexpected error when trying to create order: ${error}`);
 			handleError(req, reply, error);
 		}
 	}
