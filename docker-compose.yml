@@ -10,9 +10,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: docker
       POSTGRES_DB: tech-challenger
-      PGDATA: '/data/postgres'
+      PGDATA: '/var/lib/postgresql/data'
     volumes:
-      - ./data/pg:/data/postgres
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - tech-challenger-network
     healthcheck:
@@ -41,3 +41,6 @@ services:
 networks:
   tech-challenger-network:
     driver: bridge
+
+volumes:
+  postgres-data:
