@@ -1,55 +1,49 @@
+import { InvalidCustomerException } from '@driver/exceptions/invalidCustomerException';
 import { Customer } from '@models/customer';
 import { CustomerRepository } from '@ports/repository/customerRepository';
-import { InvalidCustomerException } from '@driver/exceptions/invalidCustomerException';
-import { CustomerCreateUpdateParams } from '@src/core/domain/types/customer';
+import { CustomerDto, customerSchema } from '@src/adapter/driver/schemas/customerSchema';
+import { StatusCodes } from 'http-status-codes';
 
 export class CustomerService {
 	constructor(private readonly customerRepository: CustomerRepository) {}
 
 	async getCustomers(): Promise<Customer[]> {
-		try {
-			const costumers = await this.customerRepository.getCustomers();
-			return costumers;
-		} catch (error) {
-			throw new Error(
-				`An unexpected error occurred while fetching customers from the database: ${error.message}`
-			);
-		}
+		const costumers = await this.customerRepository.getCustomers();
+		return costumers;
 	}
 
 	async getCustomerByProperty(property: {
 		id?: string;
 		cpf?: string;
 	}): Promise<Customer | null> {
-		try {
-			if ('id' in property) {
-				return await this.customerRepository.getCustomerById(property.id!);
-			} else if ('cpf' in property) {
-				return await this.customerRepository.getCustomerByCpf(property.cpf!);
-			} else {
-				throw new InvalidCustomerException(
-					'Provide a valid property to perform the search.'
-				);
-			}
-		} catch (error) {
-			throw new Error(
-				`An unexpected error occurred while fetching customer: ${error.message}`
+		if ('id' in property) {
+			return await this.customerRepository.getCustomerById(property.id!);
+		} else if ('cpf' in property) {
+			return await this.customerRepository.getCustomerByCpf(property.cpf!);
+		} else {
+			throw new InvalidCustomerException(
+				'Provide a valid property to perform the search.'
 			);
 		}
 	}
 
-	async createCustomer(customerData: CustomerCreateUpdateParams): Promise<Customer> {
-		try {
-			if (!customerData.name && !customerData.email) {
-				throw new InvalidCustomerException(
-					'At least one of the fields "name" or "email" must be provided.'
-				);
-			}
-			return this.customerRepository.createCustomer(customerData);
-		} catch (error) {
-			throw new Error(
-				`An unexpected error occurred while creating a new customer: ${error.message}`
-			);
+	async createCustomer(customerDto: CustomerDto): Promise<CustomerDto> {
+		customerDto = customerSchema.parse(customerDto);
+
+		const existingCustomer = await this.customerRepository.getCustomerByCpf(customerDto.cpf);
+		if (existingCustomer) {
+			throw new InvalidCustomerException('A customer with this CPF already exists.');
 		}
+
+		return this.customerRepository.createCustomer(customerDto);
+	}
+
+	async deleteCustomer(id: string): Promise<void> {
+		const existingCustomer = await this.customerRepository.getCustomerById(id);
+		if (!existingCustomer) {
+			throw new InvalidCustomerException(`Customer with ID ${id} not found.`, StatusCodes.NOT_FOUND);
+		}
+
+		return this.customerRepository.deleteCustomer(id);
 	}
 }

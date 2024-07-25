@@ -1,10 +1,10 @@
-import { Customer } from '@prisma/client';
 import { CustomerService } from '@services/customerService';
 import { handleError } from '@src/core/common/errorHandler';
 import logger from '@src/core/common/logger';
-import { CustomerCreateUpdateParams } from '@src/core/domain/types/customer';
+import { Customer } from '@src/core/domain/models/customer';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
+import { CustomerDto } from '../schemas/customerSchema';
 
 export class CustomerController {
 	constructor(private readonly customerService: CustomerService) { }
@@ -50,11 +50,25 @@ export class CustomerController {
 	async createCustomer(req: FastifyRequest, reply: FastifyReply) {
 		try {
 			logger.info('Creating customer');
-			const { name, email, cpf }: CustomerCreateUpdateParams = req.body as CustomerCreateUpdateParams;
-			const createdCustomer: CustomerCreateUpdateParams = await this.customerService.createCustomer({ name, email, cpf });
+			const { name, email, cpf }: CustomerDto = req.body as CustomerDto;
+			const createdCustomer: CustomerDto = await this.customerService.createCustomer({ name, email, cpf });
 			reply.code(StatusCodes.CREATED).send(createdCustomer);
 		} catch (error) {
 			const errorMessage = `Unexpected when creating for customer`;
+            logger.error(`${errorMessage}: ${error}`);
+            handleError(req, reply, error);
+		}
+	}
+
+	async deleteCustomer(req: FastifyRequest, reply: FastifyReply): Promise<void> {
+		const { id } = req.params as { id: string };
+
+		try {
+			logger.info('Deleting customer');
+			await this.customerService.deleteCustomer(id);
+			reply.code(200).send({ message: 'Customer successfully deleted' });
+		} catch (error) {
+			const errorMessage = `Unexpected when deleting for customer`;
             logger.error(`${errorMessage}: ${error}`);
             handleError(req, reply, error);
 		}

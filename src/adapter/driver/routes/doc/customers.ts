@@ -241,3 +241,77 @@ export const SwaggerCreateCustomers = {
         }
     }
 }
+
+export const SwaggerDeleteCustomers = {
+    schema: {
+        summary: 'Delete customer',
+        description: 'Delete a customer by ID',
+        tags: ['Customer'],
+        params: {
+            type: 'object',
+            properties: {
+                id: {
+                    type: 'string',
+                    format: 'uuid',
+                    description: 'The unique identifier of the customer to delete'
+                }
+            },
+            required: ['id'],
+            additionalProperties: false
+        },
+        response: {
+            200: {
+                description: 'Customer successfully deleted',
+                type: 'object',
+                properties: {
+                    message: {
+                        type: 'string',
+                        example: 'Customer successfully deleted'
+                    }
+                }
+            },
+            404: {
+                description: 'Customer not found',
+                type: 'object',
+                properties: {
+                    path: {
+                        type: 'string'
+                    },
+                    status: {
+                        type: 'string'
+                    },
+                    message: {
+                        type: 'string'
+                    },
+                    details: {
+                        type: 'array',
+                        items: {
+                            type: 'string'
+                        }
+                    }
+                }
+            },
+            500: {
+                description: 'Unexpected error when deleting customer',
+                type: 'object',
+                properties: {
+                    path: {
+                        type: 'string'
+                    },
+                    status: {
+                        type: 'string'
+                    },
+                    message: {
+                        type: 'string'
+                    },
+                    details: {
+                        type: 'array',
+                        items: {
+                            type: 'string'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

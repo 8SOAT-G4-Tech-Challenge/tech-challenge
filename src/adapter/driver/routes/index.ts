@@ -1,5 +1,3 @@
-import { FastifyInstance } from 'fastify';
-
 import {
 	CustomerService,
 	OrderService,
@@ -18,8 +16,8 @@ import {
 	ProductController,
 	UserController,
 } from '@driver/controllers';
-
-import { SwaggerCreateCustomers, SwaggerGetCustomers, SwaggerGetCustomersProperty } from './doc/customers';
+import { FastifyInstance } from 'fastify';
+import { SwaggerCreateCustomers, SwaggerDeleteCustomers, SwaggerGetCustomers, SwaggerGetCustomersProperty } from './doc/customers';
 import { SwaggerGetOrders } from './doc/orders';
 import { SwaggerGetUsers } from './doc/users';
 
@@ -59,6 +57,11 @@ export const routes = async (fastify: FastifyInstance) => {
 		'/customers',
 		SwaggerCreateCustomers,
 		customerController.createCustomer.bind(customerController)
+	);
+	fastify.delete(
+		'/customers/:id',
+		SwaggerDeleteCustomers,
+		customerController.deleteCustomer.bind(customerController)
 	);
 	fastify.get(
 		'/products',
