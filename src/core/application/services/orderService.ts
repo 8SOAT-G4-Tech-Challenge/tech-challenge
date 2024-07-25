@@ -1,9 +1,9 @@
 import logger from '@common/logger';
-import { Order } from '@models/order';
 import { OrderStatusEnum } from '@domain/enums/orderStatusEnum';
 import { InvalidOrderStatusException } from '@driver/exceptions/invalidOrderStatusException';
-import { OrderRepository } from '@ports/repository/orderRepository';
+import { Order } from '@models/order';
 import { GetOrderQueryParams } from '@ports/input/orders';
+import { OrderRepository } from '@ports/repository/orderRepository';
 
 export class OrderService {
 	constructor(private readonly orderRepository: OrderRepository) {}

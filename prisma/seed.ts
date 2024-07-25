@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-
-import { OrderStatusEnum } from '../src/core/domain/types/orderStatusType';
-import { PaymentOrderStatusEnum } from '../src/core/domain/types/paymentOrderType';
+import { OrderStatusEnum } from '../src/core/domain/enums/orderStatusEnum';
+import { PaymentOrderStatusEnum } from '../src/core/domain/enums/paymentOrderEnum';
 
 const prisma = new PrismaClient();
 

@@ -1,8 +1,9 @@
-import { BaseException } from '@driver/exceptions/baseException';
 import { StatusCodes } from 'http-status-codes';
 
+import { BaseException } from '@driver/exceptions/baseException';
+
 export class InvalidCustomerException extends BaseException {
-    constructor(message: string, status: StatusCodes = StatusCodes.BAD_REQUEST) {
-        super(message, InvalidCustomerException.name, status);
-    };
+	constructor(message: string, status: StatusCodes = StatusCodes.BAD_REQUEST) {
+		super(message, InvalidCustomerException.name, status);
+	}
 }
