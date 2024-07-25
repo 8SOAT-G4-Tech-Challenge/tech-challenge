@@ -15,7 +15,8 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
 	};
 
 	if (error instanceof ZodError) {
-		responseError.message = 'Error during validation';
+		responseError.message = error.message;
+		responseError.status = StatusCodes.BAD_REQUEST;
 	}
 
 	if (error instanceof BaseException) {
@@ -38,6 +39,11 @@ export function handleError(
 		message: message || error.message,
 		details: [],
 	};
+
+	if (error instanceof ZodError) {
+		responseError.message = error.errors.map(err => `${err.path.join('.')}: ${err.message}`).join(', ');
+		responseError.status = StatusCodes.BAD_REQUEST;
+	}
 
 	if (error instanceof BaseException) {
 		responseError.message = error.message;

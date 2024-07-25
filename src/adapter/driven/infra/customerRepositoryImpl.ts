@@ -1,7 +1,7 @@
 import { prisma } from '@driven/infra/lib/prisma';
+import { Customer } from '@prisma/client';
 import { CustomerDto } from '@src/adapter/driver/schemas/customerSchema';
 import { CustomerRepository } from '@src/core/application/ports/repository/customerRepository';
-import { Customer } from '@src/core/domain/models/customer';
 
 export class CustomerRepositoryImpl implements CustomerRepository {
 	async getCustomers(): Promise<Customer[]> {
