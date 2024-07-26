@@ -113,7 +113,6 @@ model Order {
   id         String   @id @default(uuid())
   customerId String?  @db.VarChar(255) @unique
   status     OrderStatus   @default(created)
-  amount     Decimal  @db.Money
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
@@ -141,9 +140,10 @@ model PaymentOrder {
   id        String   @id @default(uuid())
   orderId   String   @db.VarChar(255) @unique
   status    PaymentOrderStatus @default(pending)
-  paidAt    DateTime?
+  paidAt    DateTime? @map("paid_at")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  amount    Decimal  @db.Money
 
   order     Order    @relation(fields: [orderId], references: [id]) // Um PaymentOrder pertence a um Order
 	
