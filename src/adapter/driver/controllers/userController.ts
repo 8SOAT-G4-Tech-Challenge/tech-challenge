@@ -12,7 +12,7 @@ export class UserController {
 		try {
 			logger.info('Listing users');
 			const users: User[] = await this.userService.getUsers();
-			reply.code(StatusCodes.CREATED).send(users);
+			reply.code(StatusCodes.OK).send(users);
 		} catch (error) {
 			const errorMessage = `Unexpected error when listing for users`;
             logger.error(`${errorMessage}: ${error}`);

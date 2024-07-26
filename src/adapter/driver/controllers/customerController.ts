@@ -13,7 +13,7 @@ export class CustomerController {
 		try {
 			logger.info('Listing customers');
 			const customers: Customer[] = await this.customerService.getCustomers();
-			reply.code(StatusCodes.CREATED).send(customers);
+			reply.code(StatusCodes.OK).send(customers);
 		} catch (error) {
 			const errorMessage = `Unexpected error when listing for customers`;
             logger.error(`${errorMessage}: ${error}`);
