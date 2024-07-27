@@ -3,7 +3,7 @@ import { User } from '@models/user';
 import { UserRepository } from '@ports/repository/userRepository';
 
 export class UserRepositoryImpl implements UserRepository {
-	async getUsers(): Promise<User[] | []> {
+	async getUsers(): Promise<User[]> {
 		const users = await prisma.user.findMany({
 			select: {
 				id: true,
