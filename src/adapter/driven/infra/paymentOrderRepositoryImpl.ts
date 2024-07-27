@@ -18,7 +18,10 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 			},
 		});
 
-		return paymentOrders;
+		return paymentOrders.map((paymentOrder) => ({
+			...paymentOrder,
+			amount: parseFloat(paymentOrder.amount.toString()),
+		}));
 	}
 
 	async getPaymentOrderById(id: string): Promise<PaymentOrder | null> {
@@ -35,19 +38,32 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 			},
 		});
 
+		if (paymentOrder) {
+			return {
+				...paymentOrder,
+				amount: parseFloat(paymentOrder.amount.toString()),
+			};
+		}
+
 		return paymentOrder;
 	}
 
-	async createPaymentOrder(orderId: string, amount: number): Promise<PaymentOrder> {
+	async createPaymentOrder(
+		orderId: string,
+		amount: number
+	): Promise<PaymentOrder> {
 		const createdPaymentOrder = await prisma.paymentOrder.create({
 			data: {
-				orderId: orderId,
+				orderId,
 				status: PaymentOrderStatusEnum.approved,
 				amount: new Decimal(amount),
 				paidAt: new Date(),
-			}
+			},
 		});
 
-		return createdPaymentOrder;
+		return {
+			...createdPaymentOrder,
+			amount: parseFloat(createdPaymentOrder.amount.toString()),
+		};
 	}
 }

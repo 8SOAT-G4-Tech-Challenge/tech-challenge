@@ -1,12 +1,11 @@
-import { Decimal } from "@prisma/client/runtime/library";
-import { PaymentOrderStatusType } from "../types/paymentOrderType";
+import { PaymentOrderStatusType } from '../types/paymentOrderType';
 
 export interface PaymentOrder {
 	id: string;
 	orderId: string;
-    status: PaymentOrderStatusType;
+	status: PaymentOrderStatusType;
 	paidAt: Date | null;
-    amount: Decimal;
+	amount: number;
 	createdAt: Date;
 	updatedAt: Date;
 }
