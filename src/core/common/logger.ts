@@ -1,6 +1,6 @@
-import pino from 'pino'
+import pino from 'pino';
 
 export default pino({
-    enabled: true,
-    level: 'info',
+	enabled: true,
+	level: 'info',
 });

@@ -1,39 +1,30 @@
 import { prisma } from '@driven/infra/lib/prisma';
 import { Product } from '@models/product';
-import { ProductCategory } from '@models/productCategory';
 import { ProductRepository } from '@ports/repository/productRepository';
 
 export class ProductRepositoryImpl implements ProductRepository {
 	async getProducts(): Promise<Product[]> {
-		return prisma.product.findMany({
-			select: {
-				id: true,
-				name: true,
-				amount: true,
-				description: true,
+		const products = await prisma.product.findMany({
+			include: {
 				category: true,
-				createdAt: true,
-				updatedAt: true,
 			},
 		});
+		return products.map((product) => ({
+			...product,
+			amount: parseFloat(product.amount.toString()),
+		}));
 	}
 
-	async getProductCategories(): Promise<ProductCategory[]> {
-		return prisma.productCategory.findMany({
-			select: {
-				id: true,
-				name: true,
-				createdAt: true,
-				updatedAt: true,
+	async getProductsByCategory(categoryId: string): Promise<Product[]> {
+		const products = await prisma.product.findMany({
+			where: { categoryId },
+			include: {
+				category: true,
 			},
 		});
-	}
-
-	async createProductCategory(
-		productCategory: ProductCategory
-	): Promise<ProductCategory> {
-		return prisma.productCategory.create({
-			data: productCategory,
-		});
+		return products.map((product) => ({
+			...product,
+			amount: parseFloat(product.amount.toString()),
+		}));
 	}
 }

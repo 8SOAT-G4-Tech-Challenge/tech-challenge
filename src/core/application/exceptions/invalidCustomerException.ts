@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 
-import { BaseException } from '@driver/exceptions/baseException';
+import { BaseException } from '@application/exceptions/baseException';
 
 export class InvalidCustomerException extends BaseException {
 	constructor(message: string) {
