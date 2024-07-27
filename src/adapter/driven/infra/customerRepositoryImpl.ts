@@ -14,7 +14,7 @@ export class CustomerRepositoryImpl implements CustomerRepository {
 				updatedAt: true,
 			},
 		});
-		
+
 		return costumers;
 	}
 
