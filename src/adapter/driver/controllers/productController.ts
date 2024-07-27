@@ -1,42 +1,29 @@
-import { ProductCategoryDto } from '@driver/schemas/productCategorySchema';
-import { ProductService } from '@services/productService';
-import { handleError } from '@src/core/common/errorHandler';
-import logger from '@src/core/common/logger';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
 
+import logger from '@common/logger';
+import { handleError } from '@driver/errorHandler';
+import { ProductService } from '@services/productService';
+
 export class ProductController {
-    constructor(private readonly productService: ProductService) { }
+	private readonly productService;
 
-    async getProducts(req: FastifyRequest, reply: FastifyReply) {
-        try {
-            logger.info('Listing products')
-        } catch (error) {
-            const errorMessage = `Unexpected error when listing for products`;
-            logger.error(`${errorMessage}: ${error}`);
-            handleError(req, reply, error);
-        }
-    };
+	constructor(productService: ProductService) {
+		this.productService = productService;
+	}
 
-    async getProductCategories(req: FastifyRequest, reply: FastifyReply) {
-        try {
-            logger.info('Listing product categories');
-            reply.code(StatusCodes.OK).send(await this.productService.getProductCategories());
-        } catch (error) {
-            const errorMessage = `Unexpected error when listing for product categories`;
-            logger.error(`${errorMessage}: ${error}`);
-            handleError(req, reply, error);
-        }
-    };
-
-    async createProductCategory(req: FastifyRequest, reply: FastifyReply) {
-        try {
-            logger.info(`Creating product category: ${JSON.stringify(req.body)}`);
-            reply.code(StatusCodes.CREATED).send(await this.productService.createProductCategory(req.body as ProductCategoryDto));
-        } catch (error) {
-            const errorMessage = `Unexpected when creating for product category`;
-            logger.error(`${errorMessage}: ${error}`);
-            handleError(req, reply, error);
-        }
-    };
+	async getProducts(req: FastifyRequest, reply: FastifyReply) {
+		try {
+			if (req.query && Object.keys(req.query).length > 0) {
+				logger.info(`Listing products with parameters: ${JSON.stringify(req.query)}`);
+			} else {
+				logger.info('Listing products');
+			}
+			reply.code(StatusCodes.OK).send(await this.productService.getProducts(req.query));
+		} catch (error) {
+			const errorMessage = 'Unexpected error when listing for products';
+			logger.error(`${errorMessage}: ${error}`);
+			handleError(req, reply, error);
+		}
+	}
 }

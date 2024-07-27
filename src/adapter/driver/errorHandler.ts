@@ -2,16 +2,15 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
 import { ZodError } from 'zod';
 
-import { BaseException } from '@driver/exceptions/baseException';
+import { BaseException } from '@exceptions/baseException';
 
 type FastifyErrorHandler = FastifyInstance['errorHandler'];
 
 export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
 	const responseError = {
-		path: request.routerPath,
+		path: request.url,
 		status: StatusCodes.INTERNAL_SERVER_ERROR,
 		message: error.message,
-		details: [],
 	};
 
 	if (error instanceof ZodError) {
@@ -37,11 +36,12 @@ export function handleError(
 		path: req.url,
 		status: StatusCodes.INTERNAL_SERVER_ERROR,
 		message: message || error.message,
-		details: [],
 	};
 
 	if (error instanceof ZodError) {
-		responseError.message = error.errors.map(err => `${err.path.join('.')}: ${err.message}`).join(', ');
+		responseError.message = error.errors
+			.map((err) => `${err.path.join('.')}: ${err.message}`)
+			.join(', ');
 		responseError.status = StatusCodes.BAD_REQUEST;
 	}
 

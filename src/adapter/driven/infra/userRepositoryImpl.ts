@@ -9,14 +9,13 @@ export class UserRepositoryImpl implements UserRepository {
 				id: true,
 				name: true,
 				email: true,
-				password: false,
-				sessionToken: false,
+				password: true,
+				sessionToken: true,
 				isAdmin: true,
 				createdAt: true,
 				updatedAt: true,
 			},
 		});
-
 		return users;
 	}
 }

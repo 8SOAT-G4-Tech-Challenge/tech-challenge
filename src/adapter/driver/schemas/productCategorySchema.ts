@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-export const productCategorySchema = z.object({
-	name: z.string(),
+const productCategoryCreateSchema = z.object({
+	name: z.string().min(3)
 }).required();
 
-export type ProductCategoryDto = z.infer<typeof productCategorySchema>
+export {
+	productCategoryCreateSchema
+};

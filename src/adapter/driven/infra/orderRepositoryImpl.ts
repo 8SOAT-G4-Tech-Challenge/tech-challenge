@@ -1,10 +1,10 @@
 import { OrderStatusType } from '@domain/types/orderStatusType';
 import { prisma } from '@driven/infra/lib/prisma';
 import { Order } from '@models/order';
-import { IOrderRepository } from '@ports/orderRepository';
+import { OrderRepository } from '@ports/repository/orderRepository';
 import logger from '@src/core/common/logger';
 
-export class OrderRepositoryImpl implements IOrderRepository {
+export class OrderRepositoryImpl implements OrderRepository {
 	async getOrders(): Promise<Order[]> {
 		const orders = await prisma.order.findMany({
 			include: {

@@ -1,10 +1,6 @@
-import { Product } from '@models/product';
-import { ProductCategory } from '@models/productCategory';
+import { Product } from '@src/core/domain/models/product';
 
 export interface ProductRepository {
-	getProducts(): Promise<Product[]>;
-	createProductCategory(
-		productCategory: ProductCategory
-	): Promise<ProductCategory>;
-	getProductCategories(): Promise<ProductCategory[]>;
+    getProducts(): Promise<Product[]>;
+    getProductsByCategory(categoryId: string): Promise<Product[]>;
 }

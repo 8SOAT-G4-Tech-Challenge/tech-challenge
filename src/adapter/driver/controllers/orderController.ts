@@ -2,13 +2,17 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
 
 import { OrderService } from '@application/services';
-import { handleError } from '@common/errorHandler';
 import logger from '@common/logger';
+import { handleError } from '@driver/errorHandler';
 import { Order } from '@models/order';
 import { GetOrderQueryParams } from '@ports/input/orders';
 
 export class OrderController {
-	constructor(private readonly orderService: OrderService) {}
+	private readonly orderService;
+
+	constructor(orderService: OrderService) {
+		this.orderService = orderService;
+	}
 
 	async getOrders(
 		req: FastifyRequest<{ Querystring: GetOrderQueryParams }>,
