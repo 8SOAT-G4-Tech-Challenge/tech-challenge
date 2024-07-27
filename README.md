@@ -95,6 +95,7 @@ npm run dev
 ### ESLint
 
 - Instalar extensão "ESLint" para VSCode
+- Instalar extensão "Prettier - Code formatter"
 - Habilitar no VSCode para correção automatica ao salvar:
 - Acessar o Menu -> View - Command Palette -> Preferences: Open User Settings (JSON) e adicionar a seguinte linha, caso não tenha:
 
@@ -102,6 +103,21 @@ npm run dev
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true,
 	},
+  "eslint.format.enable": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"prettier.singleQuote": true,
+	"prettier.useTabs": true,
+	"editor.formatOnSave": true
+```
+
+- Caso ocorra erro ao adicionar as configurações "editor.codeActionsOnSave"
+  acima, tente adicionar:
+
+```js
+  "editor.codeActionsOnSave": {
+		"source.fixAll": "always",
+		"source.fixAll.eslint": "always"
+	}
 ```
 
 ### Variável de ambiente
