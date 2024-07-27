@@ -1,7 +1,7 @@
 import fastify from 'fastify';
 
-import { errorHandler } from '@driver/errorHandler';
 import logger from '@common/logger';
+import { errorHandler } from '@driver/errorHandler';
 import fastifyCors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import fastifyMultipart from '@fastify/multipart';

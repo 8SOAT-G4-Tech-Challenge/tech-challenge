@@ -9,7 +9,7 @@ export class ProductRepositoryImpl implements ProductRepository {
 				category: true
 			}
 		});
-	};
+	}
 
 	async getProductsByCategory(categoryId: string): Promise<Product[]> {
 		return prisma.product.findMany({
@@ -18,5 +18,5 @@ export class ProductRepositoryImpl implements ProductRepository {
 				category: true
 			}
 		});
-	};
+	}
 }

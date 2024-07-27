@@ -1,12 +1,13 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
 import { ZodError } from 'zod';
+
 import { BaseException } from '@exceptions/baseException';
 
 type FastifyErrorHandler = FastifyInstance['errorHandler'];
 
 export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
-	let responseError = {
+	const responseError = {
 		path: request.url,
 		status: StatusCodes.INTERNAL_SERVER_ERROR,
 		message: error.message
@@ -34,7 +35,7 @@ export function handleError(
 	const responseError = {
 		path: req.url,
 		status: StatusCodes.INTERNAL_SERVER_ERROR,
-		message: message ? message : error.message
+		message: message || error.message
 	};
 
 	if (error instanceof BaseException) {

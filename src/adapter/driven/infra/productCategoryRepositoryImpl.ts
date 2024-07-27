@@ -3,7 +3,7 @@ import { ProductCategory } from '@models/productCategory';
 import { ProductCategoryRepository } from '@ports/repository/productCategoryRepository';
 
 export class ProductCategoryRepositoryImpl implements ProductCategoryRepository {
-    async getProductCategories(): Promise<ProductCategory[]> {
+	async getProductCategories(): Promise<ProductCategory[]> {
 		return prisma.productCategory.findMany({
 			select: {
 				id: true,
@@ -12,7 +12,7 @@ export class ProductCategoryRepositoryImpl implements ProductCategoryRepository 
 				updatedAt: true,
 			},
 		});
-	};
+	}
 
 	async createProductCategory(
 		productCategory: ProductCategory
@@ -20,11 +20,11 @@ export class ProductCategoryRepositoryImpl implements ProductCategoryRepository 
 		return prisma.productCategory.create({
 			data: productCategory,
 		});
-	};
+	}
 
 	async getProductCategoryByName(name: string): Promise<ProductCategory | null> {
 		return prisma.productCategory.findUnique({
 			where: { name }
 		});
-	};
+	}
 }

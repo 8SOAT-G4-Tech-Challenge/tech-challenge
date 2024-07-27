@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
-import { BaseException } from "@exceptions/baseException";
+
+import { BaseException } from '@exceptions/baseException';
 
 export class InvalidOrderStatusException extends BaseException {
 	constructor(message: string) {

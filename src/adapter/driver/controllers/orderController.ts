@@ -2,8 +2,8 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
 
 import { OrderService } from '@application/services';
-import { handleError } from '@driver/errorHandler';
 import logger from '@common/logger';
+import { handleError } from '@driver/errorHandler';
 import { Order } from '@models/order';
 import { GetOrderQueryParams } from '@ports/input/orders';
 

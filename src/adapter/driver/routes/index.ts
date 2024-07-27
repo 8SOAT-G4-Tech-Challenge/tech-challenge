@@ -24,15 +24,15 @@ import {
 
 import { SwaggerCreateCustomers, SwaggerGetCustomers, SwaggerGetCustomersProperty } from './doc/customer';
 import { SwaggerGetOrders } from './doc/order';
-import { SwaggerGetUsers } from './doc/user';
 import { SwaggerGetProducts } from './doc/product';
 import { SwaggerCreateProductCategories, SwaggerGetProductCategories } from './doc/productCategory';
+import { SwaggerGetUsers } from './doc/user';
 
 const userRepository = new UserRepositoryImpl();
 const customerRepository = new CustomerRepositoryImpl();
 const productRepository = new ProductRepositoryImpl();
 const orderRepository = new OrderRepositoryImpl();
-const productCategoryRepository = new ProductCategoryRepositoryImpl()
+const productCategoryRepository = new ProductCategoryRepositoryImpl();
 
 const userService = new UserService(userRepository);
 const customerService = new CustomerService(customerRepository);
@@ -50,7 +50,7 @@ const orderController = new OrderController(orderService);
 export const routes = async (fastify: FastifyInstance) => {
 	fastify.get(
 		'/users',
-		SwaggerGetUsers, 
+		SwaggerGetUsers,
 		userController.getUsers.bind(userController)
 	);
 	fastify.get(

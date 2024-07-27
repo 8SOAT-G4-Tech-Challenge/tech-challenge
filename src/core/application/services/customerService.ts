@@ -24,13 +24,12 @@ export class CustomerService {
 		try {
 			if ('id' in property) {
 				return await this.customerRepository.getCustomerById(property.id!);
-			} else if ('cpf' in property) {
+			} if ('cpf' in property) {
 				return await this.customerRepository.getCustomerByCpf(property.cpf!);
-			} else {
-				throw new InvalidCustomerException(
-					'Provide a valid property to perform the search.'
-				);
 			}
+			throw new InvalidCustomerException(
+				'Provide a valid property to perform the search.'
+			);
 		} catch (error) {
 			throw new Error(
 				`An unexpected error occurred while fetching customer: ${error.message}`
