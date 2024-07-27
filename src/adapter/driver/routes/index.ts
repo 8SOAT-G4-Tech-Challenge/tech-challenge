@@ -76,12 +76,12 @@ export const routes = async (fastify: FastifyInstance) => {
 	fastify.post(
 		'/product-categories',
 		SwaggerCreateProductCategories,
-		productCategoryController.createProductCategory.bind(productController)
+		productCategoryController.createProductCategory.bind(productCategoryController)
 	);
 	fastify.get(
 		'/product-categories',
 		SwaggerGetProductCategories,
-		productCategoryController.getProductCategories.bind(productController)
+		productCategoryController.getProductCategories.bind(productCategoryController)
 	);
 	fastify.get(
 		'/orders',

@@ -1,6 +1,6 @@
 import logger from '@common/logger';
 import { OrderStatusEnum } from '@domain/enums/orderStatusEnum';
-import { InvalidOrderStatusException } from '@driver/exceptions/invalidOrderStatusException';
+import { InvalidOrderStatusException } from '@exceptions/invalidOrderStatusException';
 import { Order } from '@models/order';
 import { GetOrderQueryParams } from '@ports/input/orders';
 import { OrderRepository } from '@ports/repository/orderRepository';

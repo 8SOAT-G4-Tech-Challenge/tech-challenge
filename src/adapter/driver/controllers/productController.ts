@@ -1,6 +1,6 @@
 import { ProductService } from '@services/productService';
 import { handleError } from '@driver/errorHandler';
-import logger from '@src/core/common/logger';
+import logger from '@common/logger';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
 
