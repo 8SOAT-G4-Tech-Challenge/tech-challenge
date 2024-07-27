@@ -5,21 +5,21 @@ import {
 	OrderService,
 	ProductCategoryService,
 	ProductService,
-	UserService
+	UserService,
 } from '@application/services';
 import {
 	CustomerRepositoryImpl,
 	OrderRepositoryImpl,
 	ProductCategoryRepositoryImpl,
 	ProductRepositoryImpl,
-	UserRepositoryImpl
+	UserRepositoryImpl,
 } from '@driven/infra';
 import {
 	CustomerController,
 	OrderController,
 	ProductCategoryController,
 	ProductController,
-	UserController
+	UserController,
 } from '@driver/controllers';
 
 import { SwaggerCreateCustomers, SwaggerGetCustomers, SwaggerGetCustomersProperty } from './doc/customer';

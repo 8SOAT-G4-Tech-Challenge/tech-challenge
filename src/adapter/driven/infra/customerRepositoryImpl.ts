@@ -4,7 +4,17 @@ import { CustomerRepository } from '@ports/repository/customerRepository';
 
 export class CustomerRepositoryImpl implements CustomerRepository {
 	async getCustomers(): Promise<Customer[]> {
-		return prisma.customer.findMany();
+		const costumers = await prisma.customer.findMany({
+			select: {
+				id: true,
+				name: true,
+				email: true,
+				cpf: true,
+				createdAt: true,
+				updatedAt: true,
+			},
+		});
+		return costumers;
 	}
 
 	async getCustomerById(id: string): Promise<Customer | null> {
