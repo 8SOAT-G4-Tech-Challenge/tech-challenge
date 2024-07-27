@@ -10,12 +10,12 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
 	const responseError = {
 		path: request.url,
 		status: StatusCodes.INTERNAL_SERVER_ERROR,
-		message: error.message
+		message: error.message,
 	};
 
 	if (error instanceof ZodError) {
-		responseError.message = 'Error during validation';
-		console.log('Hahahahaha', error);
+		responseError.message = error.message;
+		responseError.status = StatusCodes.BAD_REQUEST;
 	}
 
 	if (error instanceof BaseException) {
@@ -35,8 +35,15 @@ export function handleError(
 	const responseError = {
 		path: req.url,
 		status: StatusCodes.INTERNAL_SERVER_ERROR,
-		message: message || error.message
+		message: message || error.message,
 	};
+
+	if (error instanceof ZodError) {
+		responseError.message = error.errors
+			.map((err) => `${err.path.join('.')}: ${err.message}`)
+			.join(', ');
+		responseError.status = StatusCodes.BAD_REQUEST;
+	}
 
 	if (error instanceof BaseException) {
 		responseError.message = error.message;

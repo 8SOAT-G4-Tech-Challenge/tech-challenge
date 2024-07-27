@@ -1,7 +1,12 @@
+import { StatusCodes } from 'http-status-codes';
+
+import { InvalidCustomerException } from '@exceptions/invalidCustomerException';
 import { Customer } from '@models/customer';
 import { CustomerRepository } from '@ports/repository/customerRepository';
-import { InvalidCustomerException } from '@src/core/application/exceptions/invalidCustomerException';
-import { CustomerCreateUpdateParams } from '@src/core/domain/types/customer';
+import {
+	CustomerDto,
+	customerSchema,
+} from '@src/adapter/driver/schemas/customerSchema';
 
 export class CustomerService {
 	private readonly customerRepository;
@@ -11,14 +16,8 @@ export class CustomerService {
 	}
 
 	async getCustomers(): Promise<Customer[]> {
-		try {
-			const costumers = await this.customerRepository.getCustomers();
-			return costumers;
-		} catch (error) {
-			throw new Error(
-				`An unexpected error occurred while fetching customers from the database: ${error.message}`
-			);
-		}
+		const costumers = await this.customerRepository.getCustomers();
+		return costumers;
 	}
 
 	async getCustomerByProperty(property: {
@@ -42,20 +41,30 @@ export class CustomerService {
 		}
 	}
 
-	async createCustomer(
-		customerData: CustomerCreateUpdateParams
-	): Promise<Customer> {
-		try {
-			if (!customerData.name && !customerData.email) {
-				throw new InvalidCustomerException(
-					'At least one of the fields "name" or "email" must be provided.'
-				);
-			}
-			return this.customerRepository.createCustomer(customerData);
-		} catch (error) {
-			throw new Error(
-				`An unexpected error occurred while creating a new customer: ${error.message}`
+	async createCustomer(customerDto: CustomerDto): Promise<CustomerDto> {
+		customerSchema.parse(customerDto);
+
+		const existingCustomer = await this.customerRepository.getCustomerByCpf(
+			customerDto.cpf
+		);
+		if (existingCustomer) {
+			throw new InvalidCustomerException(
+				'A customer with this CPF already exists.'
 			);
 		}
+
+		return this.customerRepository.createCustomer(customerDto);
+	}
+
+	async deleteCustomer(id: string): Promise<void> {
+		const existingCustomer = await this.customerRepository.getCustomerById(id);
+		if (!existingCustomer) {
+			throw new InvalidCustomerException(
+				`Customer with ID ${id} not found.`,
+				StatusCodes.NOT_FOUND
+			);
+		}
+
+		return this.customerRepository.deleteCustomer(id);
 	}
 }

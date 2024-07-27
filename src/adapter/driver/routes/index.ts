@@ -27,10 +27,16 @@ import { PaymentOrderRepositoryImpl } from '@src/adapter/driven/infra/paymentOrd
 import { PaymentOrderController } from '../controllers/paymentOrderController';
 import {
 	SwaggerCreateCustomers,
+	SwaggerDeleteCustomers,
 	SwaggerGetCustomers,
 	SwaggerGetCustomersProperty,
 } from './doc/customer';
-import { SwaggerGetOrders } from './doc/order';
+import {
+	SwaggerCreateOrder,
+	SwaggerGetOrders,
+	SwaggerGetOrdersById,
+	SwaggerUpdateOrder,
+} from './doc/order';
 import {
 	SwaggerGetPaymentOrderById,
 	SwaggerGetPaymentOrders,
@@ -93,6 +99,11 @@ export const routes = async (fastify: FastifyInstance) => {
 		SwaggerCreateCustomers,
 		customerController.createCustomer.bind(customerController)
 	);
+	fastify.delete(
+		'/customers/:id',
+		SwaggerDeleteCustomers,
+		customerController.deleteCustomer.bind(customerController)
+	);
 	fastify.get(
 		'/products',
 		SwaggerGetProducts,
@@ -131,5 +142,20 @@ export const routes = async (fastify: FastifyInstance) => {
 		'/paymentOrders/:orderId/payment',
 		SwaggerPaymentOrderMakePayment,
 		paymentOrderController.makePayment.bind(paymentOrderController)
+	);
+	fastify.post(
+		'/orders/:id',
+		SwaggerGetOrdersById,
+		orderController.getOrderById.bind(orderController)
+	);
+	fastify.post(
+		'/orders',
+		SwaggerCreateOrder,
+		orderController.createOrder.bind(orderController)
+	);
+	fastify.put(
+		'/orders/:id',
+		SwaggerUpdateOrder,
+		orderController.updateOrder.bind(orderController)
 	);
 };

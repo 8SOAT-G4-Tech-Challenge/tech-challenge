@@ -2,10 +2,11 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
 
 import { handleError } from '@driver/errorHandler';
-import { Customer } from '@prisma/client';
 import { CustomerService } from '@services/customerService';
 import logger from '@src/core/common/logger';
-import { CustomerCreateUpdateParams } from '@src/core/domain/types/customer';
+import { Customer } from '@src/core/domain/models/customer';
+
+import { CustomerDto } from '../schemas/customerSchema';
 
 export class CustomerController {
 	private readonly customerService: CustomerService;
@@ -31,24 +32,37 @@ export class CustomerController {
 			const { id, cpf } = req.query as { id?: string; cpf?: string };
 
 			if (!(id || cpf)) {
-				reply.code(StatusCodes.BAD_REQUEST).send({ error: 'Bad Request', message: 'Please provide either an ID or a CPF to search for a customer.' });
+				reply.code(StatusCodes.BAD_REQUEST).send({
+					error: 'Bad Request',
+					message:
+						'Please provide either an ID or a CPF to search for a customer.',
+				});
 			}
 
 			if (id && cpf) {
-				reply.code(StatusCodes.BAD_REQUEST).send({ error: 'Bad Request', message: 'Please provide either an ID or a CPF, not both.' });
+				reply.code(StatusCodes.BAD_REQUEST).send({
+					error: 'Bad Request',
+					message: 'Please provide either an ID or a CPF, not both.',
+				});
 			}
 
 			const searchParam = id ? { id } : { cpf };
 			logger.info(`Listing customers by ${id ? 'ID' : 'CPF'}`);
-			const customer = await this.customerService.getCustomerByProperty(searchParam);
+			const customer = await this.customerService.getCustomerByProperty(
+				searchParam
+			);
 
 			if (customer) {
 				reply.code(StatusCodes.OK).send(customer);
 			} else {
-				reply.code(StatusCodes.NOT_FOUND).send({ error: 'Not Found', message: `Customer with ${id ? 'ID' : 'CPF'} ${id || cpf} not found` });
+				reply.code(StatusCodes.NOT_FOUND).send({
+					error: 'Not Found',
+					message: `Customer with ${id ? 'ID' : 'CPF'} ${id || cpf} not found`,
+				});
 			}
 		} catch (error) {
-			const errorMessage = 'Unexpected error when listing for customer by property';
+			const errorMessage =
+				'Unexpected error when listing for customer by property';
 			logger.error(`${errorMessage}: ${error}`);
 			handleError(req, reply, error);
 		}
@@ -57,13 +71,29 @@ export class CustomerController {
 	async createCustomer(req: FastifyRequest, reply: FastifyReply) {
 		try {
 			logger.info('Creating customer');
-			const { name, email, cpf }: CustomerCreateUpdateParams =
-				req.body as CustomerCreateUpdateParams;
-			const createdCustomer: CustomerCreateUpdateParams =
+			const { name, email, cpf }: CustomerDto = req.body as CustomerDto;
+			const createdCustomer: CustomerDto =
 				await this.customerService.createCustomer({ name, email, cpf });
 			reply.code(StatusCodes.CREATED).send(createdCustomer);
 		} catch (error) {
 			const errorMessage = 'Unexpected when creating for customer';
+			logger.error(`${errorMessage}: ${error}`);
+			handleError(req, reply, error);
+		}
+	}
+
+	async deleteCustomer(
+		req: FastifyRequest,
+		reply: FastifyReply
+	): Promise<void> {
+		const { id } = req.params as { id: string };
+
+		try {
+			logger.info('Deleting customer');
+			await this.customerService.deleteCustomer(id);
+			reply.code(200).send({ message: 'Customer successfully deleted' });
+		} catch (error) {
+			const errorMessage = 'Unexpected when deleting for customer';
 			logger.error(`${errorMessage}: ${error}`);
 			handleError(req, reply, error);
 		}

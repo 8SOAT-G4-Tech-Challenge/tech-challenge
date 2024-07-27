@@ -36,7 +36,7 @@ model Customer {
   createdAt	DateTime @default(now()) @map("created_at")
 	updatedAt DateTime @updatedAt @map("updated_at")
 
-  orders    Order?
+  orders    Order[]
 	// orders    Order[] // Um Customer pode ter muitos Orders
 
 	@@map("customer")
@@ -111,7 +111,7 @@ enum OrderStatus {
 
 model Order {
   id         String   @id @default(uuid())
-  customerId String?  @db.VarChar(255) @unique
+  customerId String?  @db.VarChar(255)
   status     OrderStatus   @default(created)
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
