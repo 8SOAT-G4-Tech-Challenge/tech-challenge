@@ -1,0 +1,21 @@
+name: CI/CD
+
+on:
+  pull_request:
+    branches:
+      ['develop']
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Using Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.x
+      - name: Run install, build
+        run: |
+          npm install
+          npm run build
