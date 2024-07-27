@@ -6,7 +6,11 @@ import { GetOrderQueryParams } from '@ports/input/orders';
 import { OrderRepository } from '@ports/repository/orderRepository';
 
 export class OrderService {
-	constructor(private readonly orderRepository: OrderRepository) {}
+	private readonly orderRepository;
+
+	constructor(orderRepository: OrderRepository) {
+		this.orderRepository = orderRepository;
+	}
 
 	async getOrders({ status }: GetOrderQueryParams): Promise<Order[]> {
 		if (status && Object.values(OrderStatusEnum).includes(status)) {
