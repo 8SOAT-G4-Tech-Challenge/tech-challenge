@@ -1,7 +1,7 @@
-import { OrderStatusType } from './types/orderStatus.type';
+import { OrderStatusType } from '@domain/types/orderStatusType';
 
 export interface Order {
-    id: string;
+	id: string;
 	customerId: string | null;
 	status: OrderStatusType;
 	amount: number;

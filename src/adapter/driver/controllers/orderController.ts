@@ -1,0 +1,26 @@
+import { FastifyReply, FastifyRequest } from 'fastify';
+import { StatusCodes } from 'http-status-codes';
+
+import { OrderService } from '@application/services';
+import { handleError } from '@driver/errorHandler';
+import logger from '@common/logger';
+import { Order } from '@models/order';
+import { GetOrderQueryParams } from '@ports/input/orders';
+
+export class OrderController {
+	constructor(private readonly orderService: OrderService) {}
+
+	async getOrders(
+		req: FastifyRequest<{ Querystring: GetOrderQueryParams }>,
+		reply: FastifyReply
+	) {
+		try {
+			logger.info('Listing orders');
+			const orders: Order[] = await this.orderService.getOrders(req.query);
+			reply.code(StatusCodes.OK).send(orders);
+		} catch (error) {
+			logger.error(`Unexpected error when trying to get orders: ${error}`);
+			handleError(req, reply, error);
+		}
+	}
+}

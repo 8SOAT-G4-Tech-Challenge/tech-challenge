@@ -1,6 +1,6 @@
 import { prisma } from '@driven/infra/lib/prisma';
-import { UserRepository } from '@ports/userRepository';
-import { User } from '@src/core/domain/user';
+import { User } from '@models/user';
+import { UserRepository } from '@ports/repository/userRepository';
 
 export class UserRepositoryImpl implements UserRepository {
 	async getUsers(): Promise<User[]> {

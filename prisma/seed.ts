@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { OrderStatusEnum } from '../src/core/domain/enums/orderStatusEnum';
+import { PaymentOrderStatusEnum } from '../src/core/domain/enums/paymentOrderEnum';
 
 const prisma = new PrismaClient();
 
@@ -143,16 +145,16 @@ async function main() {
 
 	const order1Amount = itemsOrder1.reduce(
 		(sum, item) => sum + Number(item.product.amount) * Number(item.quantity),
-		0,
+		0
 	);
 	const order2Amount = itemsOrder2.reduce(
 		(sum, item) => sum + Number(item.product.amount) * Number(item.quantity),
-		0,
+		0
 	);
 
 	const order3Amount = itemsOrder3.reduce(
 		(sum, item) => sum + Number(item.product.amount) * Number(item.quantity),
-		0,
+		0
 	);
 
 	const [order1, order2, order3] = await Promise.all([
@@ -161,13 +163,13 @@ async function main() {
 				customer: {
 					connect: { id: customer1.id },
 				},
-				status: 'received',
+				status: OrderStatusEnum.received,
 				amount: order1Amount,
 			},
 		}),
 		prisma.order.create({
 			data: {
-				status: 'received',
+				status: OrderStatusEnum.preparation,
 				amount: order2Amount,
 			},
 		}),
@@ -176,7 +178,7 @@ async function main() {
 				customer: {
 					connect: { id: customer2.id },
 				},
-				status: 'received',
+				status: OrderStatusEnum.received,
 				amount: order3Amount,
 			},
 		}),
@@ -184,45 +186,38 @@ async function main() {
 
 	// Criar itens do pedido
 	await Promise.all([
-		...itemsOrder1.map((item) => prisma
-			.orderItem.create({
+		...itemsOrder1.map((item) =>
+			prisma.orderItem.create({
 				data: {
-					order: {
-						connect: { id: order1.id },
-					},
-					product: {
-						connect: { id: item.product.id },
-					},
+					productId: item.product.id,
+					orderId: order1.id,
+					details: 'Sem cheddar',
 					quantity: item.quantity,
 					amount: Number(item.product.amount) * item.quantity,
 				},
-			})),
-		...itemsOrder2.map((item) => prisma
-			.orderItem.create({
+			})
+		),
+		...itemsOrder2.map((item) =>
+			prisma.orderItem.create({
 				data: {
-					order: {
-						connect: { id: order2.id },
-					},
-					product: {
-						connect: { id: item.product.id },
-					},
+					productId: item.product.id,
+					orderId: order2.id,
+					quantity: item.quantity,
+					details: 'Capricha chefe',
+					amount: Number(item.product.amount) * Number(item.quantity),
+				},
+			})
+		),
+		...itemsOrder3.map((item) =>
+			prisma.orderItem.create({
+				data: {
+					productId: item.product.id,
+					orderId: order3.id,
 					quantity: item.quantity,
 					amount: Number(item.product.amount) * Number(item.quantity),
 				},
-			})),
-		...itemsOrder3.map((item) => prisma
-			.orderItem.create({
-				data: {
-					order: {
-						connect: { id: order3.id },
-					},
-					product: {
-						connect: { id: item.product.id },
-					},
-					quantity: item.quantity,
-					amount: Number(item.product.amount) * Number(item.quantity),
-				},
-			})),
+			})
+		),
 	]);
 
 	// Criar pagamentos dos pedidos
@@ -232,7 +227,7 @@ async function main() {
 				order: {
 					connect: { id: order1.id },
 				},
-				status: 'paid',
+				status: PaymentOrderStatusEnum.approved,
 				paidAt: new Date(),
 			},
 		}),
@@ -241,7 +236,7 @@ async function main() {
 				order: {
 					connect: { id: order2.id },
 				},
-				status: 'received',
+				status: PaymentOrderStatusEnum.pending,
 			},
 		}),
 		prisma.paymentOrder.create({
@@ -249,7 +244,7 @@ async function main() {
 				order: {
 					connect: { id: order3.id },
 				},
-				status: 'received',
+				status: PaymentOrderStatusEnum.pending,
 			},
 		}),
 	]);

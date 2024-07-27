@@ -1,6 +1,6 @@
-import { CustomerRepository } from '@ports/customerRepository';
-import { Customer } from '@models/customer';
 import { prisma } from '@driven/infra/lib/prisma';
+import { Customer } from '@models/customer';
+import { CustomerRepository } from '@ports/repository/customerRepository';
 
 export class CustomerRepositoryImpl implements CustomerRepository {
 	async getCustomers(): Promise<Customer[]> {

@@ -1,4 +1,4 @@
-import { BaseException } from "@src/core/application/exceptions/baseException";
+import { BaseException } from "@application/exceptions/baseException";
 import { StatusCodes } from "http-status-codes";
 
 export class InvalidCustomerException extends BaseException {

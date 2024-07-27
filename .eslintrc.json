@@ -14,13 +14,27 @@
 		"ecmaVersion": "latest",
 		"sourceType": "module"
 	},
-	"plugins": ["@typescript-eslint"],
+	"plugins": ["@typescript-eslint", "eslint-plugin-import-helpers"],
 	"rules": {
 		"linebreak-style": "off",
 		"indent": [2, "tab"],
 		"no-tabs": 0,
 		"no-console": "off",
-		"import/prefer-default-export": "off"
+		"import/prefer-default-export": "off",
+		"import/extensions": "off",
+		"class-methods-use-this": "off",
+		"comma-dangle": "off",
+		"import-helpers/order-imports": [
+			"warn",
+			{
+				"newlinesBetween": "always",
+				"groups": ["module", "/^@/", ["parent", "sibling", "index"]],
+				"alphabetize": { "order": "asc", "ignoreCase": true }
+			}
+		],
+		"implicit-arrow-linebreak": "off",
+		"function-paren-newline": "off",
+		"operator-linebreak": "off"
 	},
 	"settings": {
 		"import/resolver": {

@@ -1,17 +1,18 @@
-import { ProductRepository } from '@ports/productRepository';
-import { Product, ProductCategory } from '@prisma/client';
-import { productCategoryCreateSchema } from '@driver/schemas/productCategorySchema';
+import { ProductRepository } from '@ports/repository/productRepository';
+import { Product } from '@prisma/client';
 import { productFilterSchema } from '@driver/schemas/productSchema';
-import logger from '@src/core/common/logger';
+import { ProductCategoryService } from '@services/productCategoryService';
+import logger from '@common/logger';
 
 export class ProductService {
-	constructor(private readonly productRepository: ProductRepository) { }
+	constructor(private readonly productCategoryService: ProductCategoryService, 
+		private readonly productRepository: ProductRepository) {}
 
 	async getProducts(filters: any): Promise<Product[]> {
 		productFilterSchema.parse(filters);
 		if (filters.category) {
 			logger.info(`Searching category by name: ${filters.category}`);
-			const productCategory = await this.productRepository.getProductCategoryByName(filters.category);
+			const productCategory = await this.productCategoryService.getProductCategoryByName(filters.category);
 			if (productCategory) {
 				logger.info(`Success search product category ${JSON.stringify(productCategory)}`)
 				return this.productRepository.getProductsByCategory(productCategory.id);
@@ -21,14 +22,5 @@ export class ProductService {
 		} else {
 			return this.productRepository.getProducts();
 		}
-	}
-
-	async getProductCategories(): Promise<ProductCategory[]> {
-		return this.productRepository.getProductCategories();
-	}
-
-	async createProductCategory(productCategoryData: any): Promise<ProductCategory> {
-		productCategoryData = productCategoryCreateSchema.parse(productCategoryData);
-		return this.productRepository.createProductCategory(productCategoryData);
 	}
 }

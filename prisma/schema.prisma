@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl-arm64-openssl-3.0.x"]
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -99,10 +99,19 @@ model OrderItem {
   @@map("order_item")
 }
 
+enum OrderStatus {
+  created
+  received
+	preparation
+	ready
+	finished
+	canceled
+}
+
 model Order {
   id         String   @id @default(uuid())
   customerId String?  @db.VarChar(255) @unique
-  status     String   @db.VarChar(255)
+  status     OrderStatus   @default(created)
   amount     Decimal  @db.Money
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
@@ -114,10 +123,23 @@ model Order {
   @@map("order")
 }
 
+// https://www.mercadopago.com.br/developers/pt/reference/payments/_payments_id/get
+enum PaymentOrderStatus {
+	pending
+  approved
+  authorized
+  in_process
+  in_mediation
+  rejected
+  cancelled
+  refunded
+  charged_back
+}
+
 model PaymentOrder {
   id        String   @id @default(uuid())
   orderId   String   @db.VarChar(255) @unique
-  status    String   @db.VarChar(255)
+  status    PaymentOrderStatus @default(pending)
   paidAt    DateTime?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
