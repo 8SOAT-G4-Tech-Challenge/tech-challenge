@@ -7,7 +7,11 @@ import { UserService } from '@services/userService';
 import logger from '@src/core/common/logger';
 
 export class UserController {
-	constructor(private readonly userService: UserService) { }
+	private readonly userService;
+
+	constructor(userService: UserService) {
+		this.userService = userService;
+	}
 
 	async getUsers(req: FastifyRequest, reply: FastifyReply) {
 		try {

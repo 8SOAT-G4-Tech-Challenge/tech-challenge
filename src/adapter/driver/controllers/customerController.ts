@@ -8,7 +8,11 @@ import logger from '@src/core/common/logger';
 import { CustomerCreateUpdateParams } from '@src/core/domain/types/customer';
 
 export class CustomerController {
-	constructor(private readonly customerService: CustomerService) {}
+	private readonly customerService: CustomerService;
+
+	constructor(customerService: CustomerService) {
+		this.customerService = customerService;
+	}
 
 	async getCustomers(req: FastifyRequest, reply: FastifyReply) {
 		try {

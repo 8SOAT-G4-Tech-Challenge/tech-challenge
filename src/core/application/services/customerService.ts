@@ -4,7 +4,11 @@ import { InvalidCustomerException } from '@src/core/application/exceptions/inval
 import { CustomerCreateUpdateParams } from '@src/core/domain/types/customer';
 
 export class CustomerService {
-	constructor(private readonly customerRepository: CustomerRepository) {}
+	private readonly customerRepository;
+
+	constructor(customerRepository: CustomerRepository) {
+		this.customerRepository = customerRepository;
+	}
 
 	async getCustomers(): Promise<Customer[]> {
 		try {
@@ -24,7 +28,8 @@ export class CustomerService {
 		try {
 			if ('id' in property) {
 				return await this.customerRepository.getCustomerById(property.id!);
-			} if ('cpf' in property) {
+			}
+			if ('cpf' in property) {
 				return await this.customerRepository.getCustomerByCpf(property.cpf!);
 			}
 			throw new InvalidCustomerException(
@@ -37,7 +42,9 @@ export class CustomerService {
 		}
 	}
 
-	async createCustomer(customerData: CustomerCreateUpdateParams): Promise<Customer> {
+	async createCustomer(
+		customerData: CustomerCreateUpdateParams
+	): Promise<Customer> {
 		try {
 			if (!customerData.name && !customerData.email) {
 				throw new InvalidCustomerException(

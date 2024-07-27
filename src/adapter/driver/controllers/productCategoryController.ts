@@ -6,7 +6,11 @@ import { handleError } from '@driver/errorHandler';
 import { ProductCategoryService } from '@services/productCategoryService';
 
 export class ProductCategoryController {
-	constructor(private readonly productCategoryService: ProductCategoryService) { }
+	private readonly productCategoryService;
+
+	constructor(productCategoryService: ProductCategoryService) {
+		this.productCategoryService = productCategoryService;
+	}
 
 	async getProductCategories(req: FastifyRequest, reply: FastifyReply) {
 		try {

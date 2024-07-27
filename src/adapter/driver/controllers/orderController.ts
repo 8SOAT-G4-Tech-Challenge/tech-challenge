@@ -8,7 +8,11 @@ import { Order } from '@models/order';
 import { GetOrderQueryParams } from '@ports/input/orders';
 
 export class OrderController {
-	constructor(private readonly orderService: OrderService) {}
+	private readonly orderService;
+
+	constructor(orderService: OrderService) {
+		this.orderService = orderService;
+	}
 
 	async getOrders(
 		req: FastifyRequest<{ Querystring: GetOrderQueryParams }>,
