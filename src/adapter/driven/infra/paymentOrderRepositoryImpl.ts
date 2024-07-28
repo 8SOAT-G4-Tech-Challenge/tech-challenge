@@ -1,5 +1,10 @@
 import { prisma } from '@driven/infra/lib/prisma';
 import { Decimal } from '@prisma/client/runtime/library';
+import {
+	GetPaymentOrderByIdParams,
+	GetPaymentOrderByOrderIdParams,
+	MakePaymentOrderParams,
+} from '@src/core/application/ports/input/paymentOrders';
 import { PaymentOrderRepository } from '@src/core/application/ports/repository/paymentOrderRepository';
 import { PaymentOrderStatusEnum } from '@src/core/domain/enums/paymentOrderEnum';
 import { PaymentOrder } from '@src/core/domain/models/paymentOrder';
@@ -24,9 +29,39 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 		}));
 	}
 
-	async getPaymentOrderById(id: string): Promise<PaymentOrder | null> {
+	async getPaymentOrderById(
+		getPaymentOrderByIdParams: GetPaymentOrderByIdParams
+	): Promise<PaymentOrder | null> {
 		const paymentOrder = await prisma.paymentOrder.findUnique({
-			where: { id },
+			where: { id: getPaymentOrderByIdParams.id },
+			select: {
+				id: true,
+				orderId: true,
+				amount: true,
+				paidAt: true,
+				status: true,
+				createdAt: true,
+				updatedAt: true,
+			},
+		});
+
+		if (paymentOrder) {
+			return {
+				...paymentOrder,
+				amount: parseFloat(paymentOrder.amount.toString()),
+			};
+		}
+
+		return paymentOrder;
+	}
+
+	async getPaymentOrderByOrderId(
+		getPaymentOrderByOrderIdParams: GetPaymentOrderByOrderIdParams
+	): Promise<PaymentOrder | null> {
+		const { orderId } = getPaymentOrderByOrderIdParams;
+
+		const paymentOrder = await prisma.paymentOrder.findUnique({
+			where: { orderId },
 			select: {
 				id: true,
 				orderId: true,
@@ -49,14 +84,13 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 	}
 
 	async createPaymentOrder(
-		orderId: string,
-		amount: number
+		makePaymentOrderParams: MakePaymentOrderParams
 	): Promise<PaymentOrder> {
 		const createdPaymentOrder = await prisma.paymentOrder.create({
 			data: {
-				orderId,
+				orderId: makePaymentOrderParams.orderId,
 				status: PaymentOrderStatusEnum.approved,
-				amount: new Decimal(amount),
+				amount: new Decimal(makePaymentOrderParams.amount),
 				paidAt: new Date(),
 			},
 		});

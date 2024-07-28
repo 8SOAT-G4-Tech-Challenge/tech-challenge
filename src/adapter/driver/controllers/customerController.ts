@@ -3,6 +3,10 @@ import { StatusCodes } from 'http-status-codes';
 
 import { handleError } from '@driver/errorHandler';
 import { CustomerService } from '@services/customerService';
+import {
+	DeleteCustomerParams,
+	GetCustomerByPropertyParams,
+} from '@src/core/application/ports/input/customers';
 import logger from '@src/core/common/logger';
 import { Customer } from '@src/core/domain/models/customer';
 
@@ -27,7 +31,10 @@ export class CustomerController {
 		}
 	}
 
-	async getCustomerByProperty(req: FastifyRequest, reply: FastifyReply) {
+	async getCustomerByProperty(
+		req: FastifyRequest<{ Body: GetCustomerByPropertyParams }>,
+		reply: FastifyReply
+	) {
 		try {
 			const { id, cpf } = req.query as { id?: string; cpf?: string };
 
@@ -68,12 +75,14 @@ export class CustomerController {
 		}
 	}
 
-	async createCustomer(req: FastifyRequest, reply: FastifyReply) {
+	async createCustomer(
+		req: FastifyRequest<{ Body: CustomerDto }>,
+		reply: FastifyReply
+	) {
 		try {
 			logger.info('Creating customer');
-			const { name, email, cpf }: CustomerDto = req.body as CustomerDto;
 			const createdCustomer: CustomerDto =
-				await this.customerService.createCustomer({ name, email, cpf });
+				await this.customerService.createCustomer(req.body);
 			reply.code(StatusCodes.CREATED).send(createdCustomer);
 		} catch (error) {
 			const errorMessage = 'Unexpected when creating for customer';
@@ -83,14 +92,14 @@ export class CustomerController {
 	}
 
 	async deleteCustomer(
-		req: FastifyRequest,
+		req: FastifyRequest<{ Body: DeleteCustomerParams }>,
 		reply: FastifyReply
 	): Promise<void> {
 		const { id } = req.params as { id: string };
 
 		try {
 			logger.info('Deleting customer');
-			await this.customerService.deleteCustomer(id);
+			await this.customerService.deleteCustomer({ id });
 			reply.code(200).send({ message: 'Customer successfully deleted' });
 		} catch (error) {
 			const errorMessage = 'Unexpected when deleting for customer';

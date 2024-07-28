@@ -39,6 +39,7 @@ import {
 } from './doc/order';
 import {
 	SwaggerGetPaymentOrderById,
+	SwaggerGetPaymentOrderByOrderId,
 	SwaggerGetPaymentOrders,
 	SwaggerPaymentOrderMakePayment,
 } from './doc/paymentOrders';
@@ -66,7 +67,10 @@ const productService = new ProductService(
 	productRepository
 );
 const orderService = new OrderService(orderRepository);
-const paymentOrderService = new PaymentOrderService(paymentOrderRepository);
+const paymentOrderService = new PaymentOrderService(
+	paymentOrderRepository,
+	orderRepository
+);
 
 const userController = new UserController(userService);
 const customerController = new CustomerController(customerService);
@@ -129,21 +133,6 @@ export const routes = async (fastify: FastifyInstance) => {
 		orderController.getOrders.bind(orderController)
 	);
 	fastify.get(
-		'/paymentOrders',
-		SwaggerGetPaymentOrders,
-		paymentOrderController.getPaymentOrders.bind(paymentOrderController)
-	);
-	fastify.get(
-		'/paymentOrders/:id',
-		SwaggerGetPaymentOrderById,
-		paymentOrderController.getPaymentOrderById.bind(paymentOrderController)
-	);
-	fastify.post(
-		'/paymentOrders/:orderId/payment',
-		SwaggerPaymentOrderMakePayment,
-		paymentOrderController.makePayment.bind(paymentOrderController)
-	);
-	fastify.post(
 		'/orders/:id',
 		SwaggerGetOrdersById,
 		orderController.getOrderById.bind(orderController)
@@ -157,5 +146,25 @@ export const routes = async (fastify: FastifyInstance) => {
 		'/orders/:id',
 		SwaggerUpdateOrder,
 		orderController.updateOrder.bind(orderController)
+	);
+	fastify.get(
+		'/payment-orders',
+		SwaggerGetPaymentOrders,
+		paymentOrderController.getPaymentOrders.bind(paymentOrderController)
+	);
+	fastify.get(
+		'/payment-orders/:id',
+		SwaggerGetPaymentOrderById,
+		paymentOrderController.getPaymentOrderById.bind(paymentOrderController)
+	);
+	fastify.get(
+		'/orders/:orderId/payment-orders',
+		SwaggerGetPaymentOrderByOrderId,
+		paymentOrderController.getPaymentOrderByOrderId.bind(paymentOrderController)
+	);
+	fastify.post(
+		'/payment-orders/make-payment',
+		SwaggerPaymentOrderMakePayment,
+		paymentOrderController.makePayment.bind(paymentOrderController)
 	);
 };
