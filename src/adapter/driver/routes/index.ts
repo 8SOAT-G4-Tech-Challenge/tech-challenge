@@ -34,7 +34,12 @@ import {
 	SwaggerGetOrdersById,
 	SwaggerUpdateOrder,
 } from './doc/order';
-import { SwaggerGetProducts } from './doc/product';
+import {
+	SwaggerGetProducts,
+	SwaggerCreateProducts,
+	SwaggerDeleteProducts,
+	/* 	SwaggerUpdateProducts, */
+} from './doc/product';
 import {
 	SwaggerCreateProductCategories,
 	SwaggerGetProductCategories,
@@ -99,6 +104,16 @@ export const routes = async (fastify: FastifyInstance) => {
 		productController.getProducts.bind(productController)
 	);
 	fastify.post(
+		'/products',
+		SwaggerCreateProducts,
+		productController.createProducts.bind(productController)
+	);
+	fastify.delete(
+		'/products/:id',
+		SwaggerDeleteProducts,
+		productController.deleteProducts.bind(productController)
+	);
+	fastify.post(
 		'/product-categories',
 		SwaggerCreateProductCategories,
 		productCategoryController.createProductCategory.bind(
@@ -132,4 +147,10 @@ export const routes = async (fastify: FastifyInstance) => {
 		SwaggerUpdateOrder,
 		orderController.updateOrder.bind(orderController)
 	);
+
+	/* fastify.put(
+		'/products/:id',
+		SwaggerUpdateProducts,
+		productController.updateProducts.bind(productController)
+	); */
 };

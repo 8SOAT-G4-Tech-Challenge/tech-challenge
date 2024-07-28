@@ -1,5 +1,9 @@
 import logger from '@common/logger';
-import { productFilterSchema } from '@driver/schemas/productSchema';
+import {
+	ProductDto,
+	productFilterSchema,
+	productSchema,
+} from '@driver/schemas/productSchema';
 import { Product } from '@models/product';
 import { ProductRepository } from '@ports/repository/productRepository';
 import { ProductCategoryService } from '@services/productCategoryService';
@@ -34,5 +38,18 @@ export class ProductService {
 			return [];
 		}
 		return this.productRepository.getProducts();
+	}
+
+	async deleteProducts(id: string): Promise<void> {
+		try {
+			await this.productRepository.deleteProducts(id);
+		} catch (error) {
+			throw new Error('An unexpected error occurred while deleting');
+		}
+	}
+
+	async createProducts(productDto: ProductDto): Promise<ProductDto> {
+		productSchema.parse(productDto);
+		return this.productRepository.createProducts(productDto);
 	}
 }
