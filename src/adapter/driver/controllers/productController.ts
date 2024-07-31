@@ -4,6 +4,9 @@ import { StatusCodes } from 'http-status-codes';
 import logger from '@common/logger';
 import { handleError } from '@driver/errorHandler';
 import { ProductDto } from '@driver/schemas/productSchema';
+import { UpdateProductParams } from '@ports/input/products';
+import { UpdateProductResponse } from '@ports/output/products';
+import { Product } from '@prisma/client';
 import { ProductService } from '@services/productService';
 
 export class ProductController {
@@ -62,7 +65,7 @@ export class ProductController {
 			handleError(req, reply, error);
 		}
 	}
-	/*
+
 	async updateProducts(
 		req: FastifyRequest<{
 			Params: Pick<Product, 'id'>;
@@ -72,15 +75,15 @@ export class ProductController {
 	) {
 		try {
 			logger.info('Updating product', req?.params?.id);
-			const order: updateProductResponse =
-				await this.productService.updateProduct({
+			const product: UpdateProductResponse =
+				await this.productService.updateProducts({
 					...req.body,
 					id: req?.params?.id,
 				});
-			reply.code(StatusCodes.OK).send(order);
+			reply.code(StatusCodes.OK).send(product);
 		} catch (error) {
 			logger.error(`Unexpected error when trying to update product: ${error}`);
 			handleError(req, reply, error);
 		}
-	} */
+	}
 }

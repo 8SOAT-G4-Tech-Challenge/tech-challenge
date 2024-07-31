@@ -12,8 +12,8 @@ export const productSchema = z.object({
 	amount: z.number(),
 	description: z.string().nullable(),
 	categoryId: z.string(),
-	createdAt: z.date(),
-	updatedAt: z.date(),
+	createdAt: z.date().optional(),
+	updatedAt: z.date().optional(),
 });
 
 export type ProductDto = z.infer<typeof productSchema>;

@@ -8,6 +8,10 @@ import { Product } from '@models/product';
 import { ProductRepository } from '@ports/repository/productRepository';
 import { ProductCategoryService } from '@services/productCategoryService';
 
+import { InvalidProductException } from '../exceptions/invalidProductException';
+import { UpdateProductParams } from '../ports/input/products';
+import { UpdateProductResponse } from '../ports/output/products';
+
 export class ProductService {
 	private readonly productCategoryService;
 
@@ -51,5 +55,20 @@ export class ProductService {
 	async createProducts(productDto: ProductDto): Promise<ProductDto> {
 		productSchema.parse(productDto);
 		return this.productRepository.createProducts(productDto);
+	}
+
+	async updateProducts(
+		product: UpdateProductParams
+	): Promise<UpdateProductResponse> {
+		const { success } = productSchema.safeParse(product);
+
+		if (!success) {
+			throw new InvalidProductException(
+				"Can't update product without providing a valid status"
+			);
+		}
+
+		logger.info(`Updating product: ${product.id}`);
+		return this.productRepository.updateProducts(product);
 	}
 }

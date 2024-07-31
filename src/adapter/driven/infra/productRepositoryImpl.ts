@@ -1,6 +1,10 @@
 import { prisma } from '@driven/infra/lib/prisma';
 import { ProductRepository } from '@ports/repository/productRepository';
 import { ProductDto } from '@src/adapter/driver/schemas/productSchema';
+import { DataNotFoundException } from '@src/core/application/exceptions/dataNotFound';
+import { UpdateProductParams } from '@src/core/application/ports/input/products';
+import { UpdateProductResponse } from '@src/core/application/ports/output/products';
+import logger from '@src/core/common/logger';
 
 export class ProductRepositoryImpl implements ProductRepository {
 	async getProducts(): Promise<ProductDto[]> {
@@ -43,7 +47,6 @@ export class ProductRepositoryImpl implements ProductRepository {
 	}
 
 	async createProducts(product: ProductDto): Promise<ProductDto> {
-		/* const createdProducts = await prisma.product.create({ */
 		const createdProducts = await prisma.product.create({
 			data: product,
 		});
@@ -52,28 +55,42 @@ export class ProductRepositoryImpl implements ProductRepository {
 			amount: parseFloat(product.amount.toString()),
 		};
 	}
-}
 
-/*
 	async updateProducts(
 		product: UpdateProductParams
 	): Promise<UpdateProductResponse> {
+		const { id, name, amount, description, categoryId } = product;
+
+		const updateData: Partial<UpdateProductParams> = {};
+
+		if (name !== undefined) {
+			updateData.name = name;
+		}
+		if (amount !== undefined) {
+			updateData.amount = parseFloat(amount.toString());
+		}
+		if (description !== undefined) {
+			updateData.description = description;
+		}
+		if (categoryId !== undefined) {
+			updateData.categoryId = categoryId;
+		}
+
+		updateData.updatedAt = new Date();
+
 		const updatedProduct = await prisma.product
 			.update({
 				where: {
-					id: product.id,
+					id,
 				},
-				data: {
-					status: product.status,
-				},
+				data: updateData,
 			})
 			.catch(() => {
-				throw new DataNotFoundException(
-					`Order with id: ${product.id} not found`
-				);
+				throw new DataNotFoundException(`Product with id: ${id} not found`);
 			});
 
 		logger.info(`Product updated: ${JSON.stringify(updatedProduct)}`);
 
 		return updatedProduct;
-	} */
+	}
+}

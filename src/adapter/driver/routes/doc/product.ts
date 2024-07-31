@@ -26,7 +26,7 @@ export const SwaggerGetProducts = {
 							type: 'string',
 						},
 						amount: {
-							type: 'string',
+							type: 'number',
 							format: 'money',
 						},
 						category: {
