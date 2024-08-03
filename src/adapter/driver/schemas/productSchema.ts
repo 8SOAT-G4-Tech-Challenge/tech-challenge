@@ -8,7 +8,7 @@ export { productFilterSchema };
 
 export const productSchema = z.object({
 	name: z.string(),
-	amount: z.number(),
+	value: z.number(),
 	description: z.string(),
 	categoryId: z.string().uuid(),
 });
@@ -16,7 +16,7 @@ export const productSchema = z.object({
 export const updateProductSchema = z.object({
 	id: z.string().uuid(),
 	name: z.string(),
-	amount: z.number(),
+	value: z.number(),
 	description: z.string().optional(),
 	categoryId: z.string().uuid(),
 });

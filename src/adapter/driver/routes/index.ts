@@ -6,6 +6,7 @@ import {
 	ProductCategoryService,
 	ProductService,
 	UserService,
+	CartService,
 } from '@application/services';
 import {
 	CustomerRepositoryImpl,
@@ -13,6 +14,7 @@ import {
 	ProductCategoryRepositoryImpl,
 	ProductRepositoryImpl,
 	UserRepositoryImpl,
+	CartRepositoryImpl,
 } from '@driven/infra';
 import {
 	CustomerController,
@@ -20,6 +22,7 @@ import {
 	ProductCategoryController,
 	ProductController,
 	UserController,
+	CartController,
 } from '@driver/controllers';
 
 import {
@@ -52,6 +55,7 @@ const customerRepository = new CustomerRepositoryImpl();
 const productRepository = new ProductRepositoryImpl();
 const orderRepository = new OrderRepositoryImpl();
 const productCategoryRepository = new ProductCategoryRepositoryImpl();
+const cartRepository = new CartRepositoryImpl();
 
 const userService = new UserService(userRepository);
 const customerService = new CustomerService(customerRepository);
@@ -63,6 +67,11 @@ const productService = new ProductService(
 	productRepository
 );
 const orderService = new OrderService(orderRepository);
+const cartService = new CartService(
+	cartRepository,
+	orderRepository,
+	productRepository
+);
 
 const userController = new UserController(userService);
 const customerController = new CustomerController(customerService);
@@ -71,6 +80,7 @@ const productCategoryController = new ProductCategoryController(
 );
 const productController = new ProductController(productService);
 const orderController = new OrderController(orderService);
+const cartController = new CartController(cartService);
 
 // Usem esse site para gerar o swagger a partir do JSON -> https://roger13.github.io/SwagDefGen/
 export const routes = async (fastify: FastifyInstance) => {
@@ -152,5 +162,17 @@ export const routes = async (fastify: FastifyInstance) => {
 		'/orders/:id',
 		SwaggerUpdateOrder,
 		orderController.updateOrder.bind(orderController)
+	);
+	fastify.post(
+		'/orders/:id',
+		cartController.addItemToCart.bind(cartController)
+	);
+	fastify.put(
+		'/order-items/:id',
+		cartController.updateCartItem.bind(cartController)
+	);
+	fastify.delete(
+		'/order-items/:id',
+		cartController.deleteCartItem.bind(cartController)
 	);
 };

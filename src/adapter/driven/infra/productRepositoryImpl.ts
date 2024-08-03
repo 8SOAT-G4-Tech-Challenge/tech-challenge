@@ -2,7 +2,10 @@ import logger from '@common/logger';
 import { prisma } from '@driven/infra/lib/prisma';
 import { DataNotFoundException } from '@exceptions/dataNotFound';
 import { Product } from '@models/product';
-import { UpdateProductParams } from '@ports/input/products';
+import {
+	CreateProductParams,
+	UpdateProductParams,
+} from '@ports/input/products';
 import { ProductRepository } from '@ports/repository/productRepository';
 
 export class ProductRepositoryImpl implements ProductRepository {
@@ -12,9 +15,10 @@ export class ProductRepositoryImpl implements ProductRepository {
 				category: true,
 			},
 		});
+
 		return products.map((product) => ({
 			...product,
-			amount: parseFloat(product.amount.toString()),
+			value: parseFloat(product.value.toString()),
 		}));
 	}
 
@@ -25,9 +29,10 @@ export class ProductRepositoryImpl implements ProductRepository {
 				category: true,
 			},
 		});
+
 		return products.map((product) => ({
 			...product,
-			amount: parseFloat(product.amount.toString()),
+			value: parseFloat(product.value.toString()),
 		}));
 	}
 
@@ -45,10 +50,10 @@ export class ProductRepositoryImpl implements ProductRepository {
 		}
 	}
 
-	async createProducts(product: Product): Promise<Product> {
+	async createProducts(product: CreateProductParams): Promise<Product> {
 		const createdProducts = await prisma.product.create({
 			data: {
-				amount: product.amount,
+				value: product.value,
 				description: product.description,
 				name: product.name,
 				categoryId: product.categoryId,
@@ -57,7 +62,7 @@ export class ProductRepositoryImpl implements ProductRepository {
 
 		return {
 			...createdProducts,
-			amount: parseFloat(product.amount.toString()),
+			value: parseFloat(product.value.toString()),
 		};
 	}
 
@@ -79,7 +84,27 @@ export class ProductRepositoryImpl implements ProductRepository {
 
 		return {
 			...updatedProduct,
-			amount: parseFloat(updatedProduct.amount.toString()),
+			value: parseFloat(updatedProduct.value.toString()),
+		};
+	}
+
+	async getProductById(id: string): Promise<Product> {
+		const product = await prisma.product
+			.findFirstOrThrow({
+				where: {
+					id,
+				},
+				include: {
+					category: true,
+				},
+			})
+			.catch(() => {
+				throw new DataNotFoundException(`Product with id: ${id} not found`);
+			});
+
+		return {
+			...product,
+			value: parseFloat(product.value.toString()),
 		};
 	}
 }

@@ -28,7 +28,7 @@ export const SwaggerGetOrders = {
 						status: {
 							type: 'string',
 						},
-						amount: {
+						value: {
 							type: 'number',
 						},
 						createdAt: {
@@ -57,7 +57,7 @@ export const SwaggerGetOrders = {
 										type: 'integer',
 										format: 'int32',
 									},
-									amount: {
+									value: {
 										type: 'string',
 									},
 									details: {
@@ -83,7 +83,7 @@ export const SwaggerGetOrders = {
 											name: {
 												type: 'string',
 											},
-											amount: {
+											value: {
 												type: 'string',
 											},
 											description: {
@@ -267,7 +267,7 @@ export const SwaggerGetOrdersById = {
 					status: {
 						type: 'string',
 					},
-					amount: {
+					value: {
 						type: 'number',
 					},
 					createdAt: {
@@ -296,7 +296,7 @@ export const SwaggerGetOrdersById = {
 									type: 'integer',
 									format: 'int32',
 								},
-								amount: {
+								value: {
 									type: 'string',
 								},
 								details: {
@@ -322,7 +322,7 @@ export const SwaggerGetOrdersById = {
 										name: {
 											type: 'string',
 										},
-										amount: {
+										value: {
 											type: 'string',
 										},
 										description: {

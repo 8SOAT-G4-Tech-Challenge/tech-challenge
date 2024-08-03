@@ -25,8 +25,8 @@ export const SwaggerGetProducts = {
 						name: {
 							type: 'string',
 						},
-						amount: {
-							type: 'number',
+						value: {
+							type: 'string',
 							format: 'money',
 						},
 						category: {
@@ -162,9 +162,9 @@ export const SwaggerCreateProducts = {
 					type: 'string',
 					description: 'Product Id',
 				},
-				amount: {
+				value: {
 					type: 'number',
-					description: 'Product amount',
+					description: 'Product value',
 				},
 				description: {
 					type: 'string',
@@ -187,7 +187,7 @@ export const SwaggerCreateProducts = {
 					name: {
 						type: 'string',
 					},
-					amount: {
+					value: {
 						type: 'number',
 					},
 					description: {
@@ -263,9 +263,9 @@ export const SwaggerUpdateProducts = {
 				type: 'string',
 				description: 'Product Id',
 			},
-			amount: {
+			value: {
 				type: 'number',
-				description: 'Product amount',
+				description: 'Product value',
 			},
 			description: {
 				type: 'string',
@@ -287,7 +287,7 @@ export const SwaggerUpdateProducts = {
 					name: {
 						type: 'string',
 					},
-					amount: {
+					value: {
 						type: 'number',
 					},
 					description: {

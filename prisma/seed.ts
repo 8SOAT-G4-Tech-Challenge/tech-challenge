@@ -91,7 +91,7 @@ async function main() {
 			update: {},
 			create: {
 				name: 'Coca-Cola',
-				amount: 3.5,
+				value: 3.5,
 				description: 'Bebida refrescante',
 				category: {
 					connect: { id: category1.id },
@@ -103,7 +103,7 @@ async function main() {
 			update: {},
 			create: {
 				name: 'Cheeseburger',
-				amount: 1.5,
+				value: 1.5,
 				description:
 					'Hambúrguer com uma fatia de queijo derretido por cima do hambúrguer de carne',
 				category: {
@@ -116,7 +116,7 @@ async function main() {
 			update: {},
 			create: {
 				name: 'Milkshake',
-				amount: 2.5,
+				value: 2.5,
 				description: 'Milkshake ovomaltine',
 				category: {
 					connect: { id: category1.id },
@@ -209,7 +209,7 @@ async function main() {
 					orderId: order1.id,
 					details: 'Sem cheddar',
 					quantity: item.quantity,
-					amount: Number(item.product.amount) * item.quantity,
+					value: Number(item.product.value) * item.quantity,
 				},
 			})
 		),
@@ -220,7 +220,7 @@ async function main() {
 					orderId: order2.id,
 					quantity: item.quantity,
 					details: 'Capricha chefe',
-					amount: Number(item.product.amount) * Number(item.quantity),
+					value: Number(item.product.value) * Number(item.quantity),
 				},
 			})
 		),
@@ -230,7 +230,7 @@ async function main() {
 					productId: item.product.id,
 					orderId: order3.id,
 					quantity: item.quantity,
-					amount: Number(item.product.amount) * Number(item.quantity),
+					value: Number(item.product.value) * Number(item.quantity),
 				},
 			})
 		),
@@ -245,7 +245,7 @@ async function main() {
 				},
 				status: PaymentOrderStatusEnum.approved,
 				paidAt: new Date(),
-				amount: 30,
+				value: 30,
 			},
 		}),
 		prisma.paymentOrder.create({
@@ -254,7 +254,7 @@ async function main() {
 					connect: { id: order2.id },
 				},
 				status: PaymentOrderStatusEnum.pending,
-				amount: 20,
+				value: 20,
 			},
 		}),
 		prisma.paymentOrder.create({
@@ -263,7 +263,7 @@ async function main() {
 					connect: { id: order3.id },
 				},
 				status: PaymentOrderStatusEnum.pending,
-				amount: 20,
+				value: 20,
 			},
 		}),
 	]);
