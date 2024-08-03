@@ -1,13 +1,12 @@
+import logger from '@common/logger';
 import { prisma } from '@driven/infra/lib/prisma';
+import { DataNotFoundException } from '@exceptions/dataNotFound';
+import { Product } from '@models/product';
+import { UpdateProductParams } from '@ports/input/products';
 import { ProductRepository } from '@ports/repository/productRepository';
-import { ProductDto } from '@src/adapter/driver/schemas/productSchema';
-import { DataNotFoundException } from '@src/core/application/exceptions/dataNotFound';
-import { UpdateProductParams } from '@src/core/application/ports/input/products';
-import { UpdateProductResponse } from '@src/core/application/ports/output/products';
-import logger from '@src/core/common/logger';
 
 export class ProductRepositoryImpl implements ProductRepository {
-	async getProducts(): Promise<ProductDto[]> {
+	async getProducts(): Promise<Product[]> {
 		const products = await prisma.product.findMany({
 			include: {
 				category: true,
@@ -19,7 +18,7 @@ export class ProductRepositoryImpl implements ProductRepository {
 		}));
 	}
 
-	async getProductsByCategory(categoryId: string): Promise<ProductDto[]> {
+	async getProductsByCategory(categoryId: string): Promise<Product[]> {
 		const products = await prisma.product.findMany({
 			where: { categoryId },
 			include: {
@@ -46,51 +45,41 @@ export class ProductRepositoryImpl implements ProductRepository {
 		}
 	}
 
-	async createProducts(product: ProductDto): Promise<ProductDto> {
+	async createProducts(product: Product): Promise<Product> {
 		const createdProducts = await prisma.product.create({
-			data: product,
+			data: {
+				amount: product.amount,
+				description: product.description,
+				name: product.name,
+				categoryId: product.categoryId,
+			},
 		});
+
 		return {
 			...createdProducts,
 			amount: parseFloat(product.amount.toString()),
 		};
 	}
 
-	async updateProducts(
-		product: UpdateProductParams
-	): Promise<UpdateProductResponse> {
-		const { id, name, amount, description, categoryId } = product;
-
-		const updateData: Partial<UpdateProductParams> = {};
-
-		if (name !== undefined) {
-			updateData.name = name;
-		}
-		if (amount !== undefined) {
-			updateData.amount = parseFloat(amount.toString());
-		}
-		if (description !== undefined) {
-			updateData.description = description;
-		}
-		if (categoryId !== undefined) {
-			updateData.categoryId = categoryId;
-		}
-
-		updateData.updatedAt = new Date();
-
+	async updateProducts(product: UpdateProductParams): Promise<Product> {
 		const updatedProduct = await prisma.product
 			.update({
 				where: {
-					id,
+					id: product.id,
 				},
-				data: updateData,
+				data: product,
 			})
 			.catch(() => {
-				throw new DataNotFoundException(`Product with id: ${id} not found`);
+				throw new DataNotFoundException(
+					`Product with id: ${product.id} not found`
+				);
 			});
 
 		logger.info(`Product updated: ${JSON.stringify(updatedProduct)}`);
 
-		return updatedProduct;
+		return {
+			...updatedProduct,
+			amount: parseFloat(updatedProduct.amount.toString()),
+		};
 	}
 }

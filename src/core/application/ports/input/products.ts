@@ -4,5 +4,11 @@ export type UpdateProductParams = {
 	amount?: number;
 	description?: string;
 	categoryId?: string;
-	updatedAt?: Date;
+};
+
+export type CreateProductParams = {
+	name: string;
+	amount: number;
+	description: string;
+	categoryId: string;
 };

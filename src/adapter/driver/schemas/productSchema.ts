@@ -7,13 +7,16 @@ const productFilterSchema = z.object({
 export { productFilterSchema };
 
 export const productSchema = z.object({
-	id: z.string().uuid().optional(),
 	name: z.string(),
 	amount: z.number(),
-	description: z.string().nullable(),
-	categoryId: z.string(),
-	createdAt: z.date().optional(),
-	updatedAt: z.date().optional(),
+	description: z.string(),
+	categoryId: z.string().uuid(),
 });
 
-export type ProductDto = z.infer<typeof productSchema>;
+export const updateProductSchema = z.object({
+	id: z.string().uuid(),
+	name: z.string(),
+	amount: z.number(),
+	description: z.string().optional(),
+	categoryId: z.string().uuid(),
+});

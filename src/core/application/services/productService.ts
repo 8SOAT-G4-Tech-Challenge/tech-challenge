@@ -1,16 +1,17 @@
 import logger from '@common/logger';
 import {
-	ProductDto,
 	productFilterSchema,
 	productSchema,
+	updateProductSchema,
 } from '@driver/schemas/productSchema';
+import { InvalidProductException } from '@exceptions/invalidProductException';
 import { Product } from '@models/product';
+import {
+	CreateProductParams,
+	UpdateProductParams,
+} from '@ports/input/products';
 import { ProductRepository } from '@ports/repository/productRepository';
 import { ProductCategoryService } from '@services/productCategoryService';
-
-import { InvalidProductException } from '../exceptions/invalidProductException';
-import { UpdateProductParams } from '../ports/input/products';
-import { UpdateProductResponse } from '../ports/output/products';
 
 export class ProductService {
 	private readonly productCategoryService;
@@ -52,19 +53,24 @@ export class ProductService {
 		}
 	}
 
-	async createProducts(productDto: ProductDto): Promise<ProductDto> {
-		productSchema.parse(productDto);
-		return this.productRepository.createProducts(productDto);
-	}
-
-	async updateProducts(
-		product: UpdateProductParams
-	): Promise<UpdateProductResponse> {
-		const { success } = productSchema.safeParse(product);
+	async createProducts(productDto: CreateProductParams): Promise<Product> {
+		const { success } = productSchema.safeParse(productDto);
 
 		if (!success) {
 			throw new InvalidProductException(
-				"Can't update product without providing a valid status"
+				"There's a problem with parameters sent, check documentation"
+			);
+		}
+
+		return this.productRepository.createProducts(productDto);
+	}
+
+	async updateProducts(product: UpdateProductParams): Promise<Product> {
+		const { success } = updateProductSchema.safeParse(product);
+
+		if (!success) {
+			throw new InvalidProductException(
+				"There's a problem with parameters sent, check documentation"
 			);
 		}
 

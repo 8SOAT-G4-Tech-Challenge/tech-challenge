@@ -154,7 +154,7 @@ export const SwaggerCreateProducts = {
 	schema: {
 		summary: 'Create products',
 		description: 'Create products',
-		tags: ['Products'],
+		tags: ['Product'],
 		body: {
 			type: 'object',
 			properties: {
@@ -169,6 +169,10 @@ export const SwaggerCreateProducts = {
 				description: {
 					type: 'string',
 					description: 'Product description',
+				},
+				categoryId: {
+					type: 'string',
+					description: 'Product category',
 				},
 			},
 		},
@@ -187,7 +191,10 @@ export const SwaggerCreateProducts = {
 						type: 'number',
 					},
 					description: {
-						type: 'description',
+						type: 'string',
+					},
+					categoryId: {
+						type: 'string',
 					},
 					createdAt: {
 						type: 'string',
@@ -249,11 +256,24 @@ export const SwaggerUpdateProducts = {
 	schema: {
 		summary: 'Update products',
 		description: 'Update products',
-		tags: ['Products'],
+		tags: ['Product'],
 		params: { id: { type: 'string' } },
 		body: {
-			status: {
+			name: {
 				type: 'string',
+				description: 'Product Id',
+			},
+			amount: {
+				type: 'number',
+				description: 'Product amount',
+			},
+			description: {
+				type: 'string',
+				description: 'Product description',
+			},
+			categoryId: {
+				type: 'string',
+				description: 'Product category',
 			},
 		},
 		response: {
@@ -264,20 +284,25 @@ export const SwaggerUpdateProducts = {
 					id: {
 						type: 'string',
 					},
-					productId: {
+					name: {
 						type: 'string',
-						format: 'nullable',
 					},
-					status: {
+					amount: {
+						type: 'number',
+					},
+					description: {
+						type: 'string',
+					},
+					categoryId: {
 						type: 'string',
 					},
 					createdAt: {
 						type: 'string',
-						format: 'date-time',
+						format: 'datetime',
 					},
 					updatedAt: {
 						type: 'string',
-						format: 'date-time',
+						format: 'datetime',
 					},
 				},
 			},

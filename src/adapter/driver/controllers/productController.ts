@@ -3,8 +3,10 @@ import { StatusCodes } from 'http-status-codes';
 
 import logger from '@common/logger';
 import { handleError } from '@driver/errorHandler';
-import { ProductDto } from '@driver/schemas/productSchema';
-import { UpdateProductParams } from '@ports/input/products';
+import {
+	CreateProductParams,
+	UpdateProductParams,
+} from '@ports/input/products';
 import { UpdateProductResponse } from '@ports/output/products';
 import { Product } from '@prisma/client';
 import { ProductService } from '@services/productService';
@@ -53,12 +55,15 @@ export class ProductController {
 		}
 	}
 
-	async createProducts(req: FastifyRequest, reply: FastifyReply) {
+	async createProducts(
+		req: FastifyRequest<{ Body: CreateProductParams }>,
+		reply: FastifyReply
+	) {
 		try {
 			logger.info(`Creating product: ${JSON.stringify(req.body)}`);
 			reply
 				.code(StatusCodes.CREATED)
-				.send(await this.productService.createProducts(req.body as ProductDto));
+				.send(await this.productService.createProducts(req.body));
 		} catch (error) {
 			const errorMessage = 'Unexpected when creating for product';
 			logger.error(`${errorMessage}: ${error}`);
