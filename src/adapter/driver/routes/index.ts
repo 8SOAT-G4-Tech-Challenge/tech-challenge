@@ -36,7 +36,9 @@ import {
 	SwaggerCreateOrder,
 	SwaggerGetOrdersById,
 	SwaggerUpdateOrder,
+	SwaggerAddItemToCart,
 } from './doc/order';
+import { SwaggerDeleteOrderItem, SwaggerUpdateCartItem } from './doc/orderItem';
 import {
 	SwaggerGetProducts,
 	SwaggerCreateProducts,
@@ -66,7 +68,7 @@ const productService = new ProductService(
 	productCategoryService,
 	productRepository
 );
-const orderService = new OrderService(orderRepository);
+const orderService = new OrderService(orderRepository, cartRepository);
 const cartService = new CartService(
 	cartRepository,
 	orderRepository,
@@ -165,14 +167,17 @@ export const routes = async (fastify: FastifyInstance) => {
 	);
 	fastify.post(
 		'/orders/:id',
+		SwaggerAddItemToCart,
 		cartController.addItemToCart.bind(cartController)
 	);
 	fastify.put(
 		'/order-items/:id',
+		SwaggerUpdateCartItem,
 		cartController.updateCartItem.bind(cartController)
 	);
 	fastify.delete(
 		'/order-items/:id',
+		SwaggerDeleteOrderItem,
 		cartController.deleteCartItem.bind(cartController)
 	);
 };

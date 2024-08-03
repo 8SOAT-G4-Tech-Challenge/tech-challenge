@@ -257,7 +257,7 @@ export const SwaggerUpdateProducts = {
 		summary: 'Update products',
 		description: 'Update products',
 		tags: ['Product'],
-		params: { id: { type: 'string' } },
+		params: { id: { type: 'string', format: 'uuid' } },
 		body: {
 			name: {
 				type: 'string',
