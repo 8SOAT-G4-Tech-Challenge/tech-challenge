@@ -9,4 +9,5 @@ export interface CartRepository {
 	updateCartItem(product: UpdateCartItemRepositoryProps): Promise<OrderItem>;
 	deleteCartItem(id: string): Promise<void>;
 	getCartItemById(id: string): Promise<OrderItem>;
+	getAllCartItemsByOrderId(orderId: string): Promise<OrderItem[]>;
 }

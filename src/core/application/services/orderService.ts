@@ -11,13 +11,20 @@ import {
 	UpdateOrderParams,
 } from '@ports/input/orders';
 import { CreateOrderResponse } from '@ports/output/orders';
+import { CartRepository } from '@ports/repository/cartRepository';
 import { OrderRepository } from '@ports/repository/orderRepository';
 
 export class OrderService {
 	private readonly orderRepository: OrderRepository;
 
-	constructor(orderRepository: OrderRepository) {
+	private readonly cartRepository: CartRepository;
+
+	constructor(
+		orderRepository: OrderRepository,
+		cartRepository: CartRepository
+	) {
 		this.orderRepository = orderRepository;
+		this.cartRepository = cartRepository;
 	}
 
 	async getOrders({ status }: GetOrderQueryParams): Promise<Order[]> {
@@ -79,7 +86,30 @@ export class OrderService {
 		}
 
 		logger.info(`Updating order: ${order.id}`);
-
 		return this.orderRepository.updateOrder(order);
+	}
+
+	async getOrderTotalValueById(id: string): Promise<number> {
+		if (!id) {
+			throw new InvalidOrderException(
+				"Can't return order total value without providing a valid ID"
+			);
+		}
+
+		const productItems = await this.cartRepository.getAllCartItemsByOrderId(id);
+
+		if (!productItems.length) {
+			throw new InvalidOrderException(
+				"Can't return order total value without order items"
+			);
+		}
+
+		const totalValue = productItems.reduce(
+			(acc, productItem) => acc + productItem.value,
+			0
+		);
+
+		logger.info(`Total value from order ${id} is ${totalValue}`);
+		return totalValue;
 	}
 }

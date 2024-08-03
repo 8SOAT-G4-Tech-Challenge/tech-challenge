@@ -40,15 +40,15 @@ export class CartService {
 			);
 		}
 
-		const order: Order = await this.orderRepository.getOrderById({
-			id: product.orderId,
-		});
-
 		if (product.quantity > this.MAX_ITEMS_PER_PRODUCT) {
 			throw new InvalidProductException(
 				`The quantity must be equal or less than ${this.MAX_ITEMS_PER_PRODUCT}`
 			);
 		}
+
+		const order: Order = await this.orderRepository.getOrderById({
+			id: product.orderId,
+		});
 
 		const productItem: Product = await this.productRepository.getProductById(
 			product.productId

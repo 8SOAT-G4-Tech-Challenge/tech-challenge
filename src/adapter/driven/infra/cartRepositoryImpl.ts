@@ -90,4 +90,19 @@ export class CartRepositoryImpl implements CartRepository {
 			value: parseFloat(orderItem.value.toString()),
 		};
 	}
+
+	async getAllCartItemsByOrderId(orderId: string): Promise<OrderItem[]> {
+		const cartItems = await prisma.orderItem.findMany({
+			where: {
+				orderId,
+			},
+		});
+
+		logger.info(`Cart items found: ${JSON.stringify(cartItems)}`);
+
+		return cartItems.map((cartItem) => ({
+			...cartItem,
+			value: parseFloat(cartItem.value.toString()),
+		}));
+	}
 }
