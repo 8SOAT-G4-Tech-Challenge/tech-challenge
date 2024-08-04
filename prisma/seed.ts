@@ -85,7 +85,7 @@ async function main() {
 	]);
 
 	// Criar produtos
-	const [product1, product2] = await Promise.all([
+	const [product1, product2, product3] = await Promise.all([
 		prisma.product.upsert({
 			where: { name: 'Coca-Cola' },
 			update: {},
@@ -111,6 +111,18 @@ async function main() {
 				},
 			},
 		}),
+		prisma.product.upsert({
+			where: { name: 'Milkshake' },
+			update: {},
+			create: {
+				name: 'Milkshake',
+				amount: 2.5,
+				description: 'Milkshake ovomaltine',
+				category: {
+					connect: { id: category1.id },
+				},
+			},
+		}),
 	]);
 
 	// Criar imagens de produtos
@@ -132,6 +144,26 @@ async function main() {
 				url: 'https://example.com/cheeseburguer.jpg',
 				product: {
 					connect: { id: product2.id },
+				},
+			},
+		}),
+		prisma.productImage.upsert({
+			where: { url: 'https://example.com/milkshake.jpg' },
+			update: {},
+			create: {
+				url: 'https://example.com/milkshake.jpg',
+				product: {
+					connect: { id: product3.id },
+				},
+			},
+		}),
+		prisma.productImage.upsert({
+			where: { url: 'https://example.com/milkshake-2.jpg' },
+			update: {},
+			create: {
+				url: 'https://example.com/milkshake-2.jpg',
+				product: {
+					connect: { id: product3.id },
 				},
 			},
 		}),
