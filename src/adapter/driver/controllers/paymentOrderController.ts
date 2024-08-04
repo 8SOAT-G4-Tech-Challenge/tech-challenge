@@ -1,15 +1,15 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
 
-import { handleError } from '@driver/errorHandler';
 import {
 	GetPaymentOrderByIdParams,
 	GetPaymentOrderByOrderIdParams,
 	MakePaymentOrderParams,
-} from '@src/core/application/ports/input/paymentOrders';
-import { PaymentOrderService } from '@src/core/application/services/paymentOrderService';
-import logger from '@src/core/common/logger';
-import { PaymentOrder } from '@src/core/domain/models/paymentOrder';
+} from '@application/ports/input/paymentOrders';
+import logger from '@common/logger';
+import { handleError } from '@driver/errorHandler';
+import { PaymentOrder } from '@models/paymentOrder';
+import { PaymentOrderService } from '@services/paymentOrderService';
 
 export class PaymentOrderController {
 	private readonly paymentOrderService: PaymentOrderService;

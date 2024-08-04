@@ -1,8 +1,8 @@
+import { DeleteCustomerParams } from '@application/ports/input/customers';
+import { CustomerRepository } from '@application/ports/repository/customerRepository';
 import { prisma } from '@driven/infra/lib/prisma';
-import { CustomerDto } from '@src/adapter/driver/schemas/customerSchema';
-import { DeleteCustomerParams } from '@src/core/application/ports/input/customers';
-import { CustomerRepository } from '@src/core/application/ports/repository/customerRepository';
-import { Customer } from '@src/core/domain/models/customer';
+import { CustomerDto } from '@driver/schemas/customerSchema';
+import { Customer } from '@models/customer';
 
 export class CustomerRepositoryImpl implements CustomerRepository {
 	async getCustomers(): Promise<Customer[]> {

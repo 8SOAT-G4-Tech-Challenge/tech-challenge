@@ -1,13 +1,13 @@
-import { prisma } from '@driven/infra/lib/prisma';
-import { Decimal } from '@prisma/client/runtime/library';
 import {
 	GetPaymentOrderByIdParams,
 	GetPaymentOrderByOrderIdParams,
 	MakePaymentOrderParams,
-} from '@src/core/application/ports/input/paymentOrders';
-import { PaymentOrderRepository } from '@src/core/application/ports/repository/paymentOrderRepository';
-import { PaymentOrderStatusEnum } from '@src/core/domain/enums/paymentOrderEnum';
-import { PaymentOrder } from '@src/core/domain/models/paymentOrder';
+} from '@application/ports/input/paymentOrders';
+import { PaymentOrderRepository } from '@application/ports/repository/paymentOrderRepository';
+import { PaymentOrderStatusEnum } from '@domain/enums/paymentOrderEnum';
+import { prisma } from '@driven/infra/lib/prisma';
+import { PaymentOrder } from '@models/paymentOrder';
+import { Decimal } from '@prisma/client/runtime/library';
 
 export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 	async getPaymentOrders(): Promise<PaymentOrder[]> {

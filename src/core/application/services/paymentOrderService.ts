@@ -1,15 +1,14 @@
-import { OrderStatusEnum } from '@src/core/domain/enums/orderStatusEnum';
-import { PaymentOrder } from '@src/core/domain/models/paymentOrder';
-
-import { InvalidPaymentOrderException } from '../exceptions/invalidPaymentOrderException';
-import { UpdateOrderParams } from '../ports/input/orders';
+import { OrderStatusEnum } from '@domain/enums/orderStatusEnum';
+import { PaymentOrder } from '@domain/models/paymentOrder';
+import { InvalidPaymentOrderException } from '@exceptions/invalidPaymentOrderException';
+import { UpdateOrderParams } from '@ports/input/orders';
 import {
-	MakePaymentOrderParams,
-	GetPaymentOrderByOrderIdParams,
 	GetPaymentOrderByIdParams,
-} from '../ports/input/paymentOrders';
-import { OrderRepository } from '../ports/repository/orderRepository';
-import { PaymentOrderRepository } from '../ports/repository/paymentOrderRepository';
+	GetPaymentOrderByOrderIdParams,
+	MakePaymentOrderParams,
+} from '@ports/input/paymentOrders';
+import { OrderRepository } from '@ports/repository/orderRepository';
+import { PaymentOrderRepository } from '@ports/repository/paymentOrderRepository';
 
 export class PaymentOrderService {
 	private readonly paymentOrderRepository;

@@ -2,16 +2,15 @@ import { StatusCodes } from 'http-status-codes';
 
 import { InvalidCustomerException } from '@exceptions/invalidCustomerException';
 import { Customer } from '@models/customer';
+import {
+	DeleteCustomerParams,
+	GetCustomerByPropertyParams,
+} from '@ports/input/customers';
 import { CustomerRepository } from '@ports/repository/customerRepository';
 import {
 	CustomerDto,
 	customerSchema,
 } from '@src/adapter/driver/schemas/customerSchema';
-
-import {
-	DeleteCustomerParams,
-	GetCustomerByPropertyParams,
-} from '../ports/input/customers';
 
 export class CustomerService {
 	private readonly customerRepository;

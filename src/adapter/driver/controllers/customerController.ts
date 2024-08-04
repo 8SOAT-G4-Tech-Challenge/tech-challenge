@@ -1,14 +1,14 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { StatusCodes } from 'http-status-codes';
 
-import { handleError } from '@driver/errorHandler';
-import { CustomerService } from '@services/customerService';
 import {
 	DeleteCustomerParams,
 	GetCustomerByPropertyParams,
-} from '@src/core/application/ports/input/customers';
-import logger from '@src/core/common/logger';
-import { Customer } from '@src/core/domain/models/customer';
+} from '@application/ports/input/customers';
+import logger from '@common/logger';
+import { handleError } from '@driver/errorHandler';
+import { Customer } from '@models/customer';
+import { CustomerService } from '@services/customerService';
 
 import { CustomerDto } from '../schemas/customerSchema';
 
