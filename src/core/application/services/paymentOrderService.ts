@@ -1,7 +1,6 @@
 import { OrderStatusEnum } from '@domain/enums/orderStatusEnum';
 import { PaymentOrder } from '@domain/models/paymentOrder';
 import { InvalidPaymentOrderException } from '@exceptions/invalidPaymentOrderException';
-import { UpdateOrderParams } from '@ports/input/orders';
 import {
 	GetPaymentOrderByIdParams,
 	GetPaymentOrderByOrderIdParams,
@@ -10,17 +9,23 @@ import {
 import { OrderRepository } from '@ports/repository/orderRepository';
 import { PaymentOrderRepository } from '@ports/repository/paymentOrderRepository';
 
+import { OrderService } from './orderService';
+
 export class PaymentOrderService {
 	private readonly paymentOrderRepository;
 
 	private readonly orderRepository: OrderRepository;
 
+	private readonly orderService: OrderService;
+
 	constructor(
 		paymentOrderRepository: PaymentOrderRepository,
-		orderRepository: OrderRepository
+		orderRepository: OrderRepository,
+		orderService: OrderService
 	) {
 		this.paymentOrderRepository = paymentOrderRepository;
 		this.orderRepository = orderRepository;
+		this.orderService = orderService;
 	}
 
 	async getPaymentOrders(): Promise<PaymentOrder[]> {
@@ -55,38 +60,32 @@ export class PaymentOrderService {
 	async makePayment(
 		makePaymentOrderParams: MakePaymentOrderParams
 	): Promise<void> {
-		const order = await this.orderRepository.getOrderById({
-			id: makePaymentOrderParams.orderId,
-		});
+		const { orderId } = makePaymentOrderParams;
 
+		const order = await this.orderRepository.getOrderCreatedById({
+			id: orderId,
+		});
 		if (!order) {
 			throw new InvalidPaymentOrderException(
-				`Order with id: ${makePaymentOrderParams.orderId} not found`
+				`Order with id: ${orderId} not found`
 			);
 		}
 
 		const existingPaymentOrder =
-			await this.paymentOrderRepository.getPaymentOrderByOrderId(
-				makePaymentOrderParams
-			);
-
+			await this.paymentOrderRepository.getPaymentOrderByOrderId({ orderId });
 		if (existingPaymentOrder) {
 			throw new InvalidPaymentOrderException(
-				`Payment Order for the Order ID: ${makePaymentOrderParams.orderId} already exists`
+				`Payment Order for the Order ID: ${orderId} already exists`
 			);
 		}
 
-		await this.paymentOrderRepository.createPaymentOrder(
-			makePaymentOrderParams
-		);
+		const value =
+			(await this.orderService.getOrderTotalValueById(orderId)) ?? 0;
+		await this.paymentOrderRepository.createPaymentOrder({ orderId, value });
 
-		// Método para pegar amount: passar orderId e calcular o valor total do pedido
-
-		const updateOrderParams: UpdateOrderParams = {
+		await this.orderRepository.updateOrder({
 			id: order.id,
 			status: OrderStatusEnum.received,
-		};
-
-		await this.orderRepository.updateOrder(updateOrderParams);
+		});
 	}
 }

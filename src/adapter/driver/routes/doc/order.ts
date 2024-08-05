@@ -4,7 +4,7 @@ export const SwaggerGetOrders = {
 	schema: {
 		summary: 'Get orders data',
 		description: 'Returns all orders or orders by status',
-		tags: ['Orders'],
+		tags: ['Order'],
 		querystring: {
 			status: {
 				type: 'string',
@@ -28,7 +28,7 @@ export const SwaggerGetOrders = {
 						status: {
 							type: 'string',
 						},
-						amount: {
+						value: {
 							type: 'number',
 						},
 						createdAt: {
@@ -57,7 +57,7 @@ export const SwaggerGetOrders = {
 										type: 'integer',
 										format: 'int32',
 									},
-									amount: {
+									value: {
 										type: 'string',
 									},
 									details: {
@@ -83,7 +83,7 @@ export const SwaggerGetOrders = {
 											name: {
 												type: 'string',
 											},
-											amount: {
+											value: {
 												type: 'string',
 											},
 											description: {
@@ -250,8 +250,8 @@ export const SwaggerGetOrdersById = {
 	schema: {
 		summary: 'Get orders by Id',
 		description: 'Returns orders by Id',
-		tags: ['Orders'],
-		params: { id: { type: 'string' } },
+		tags: ['Order'],
+		params: { id: { type: 'string', format: 'uuid' } },
 		response: {
 			200: {
 				description: 'Success get orders data',
@@ -267,7 +267,7 @@ export const SwaggerGetOrdersById = {
 					status: {
 						type: 'string',
 					},
-					amount: {
+					value: {
 						type: 'number',
 					},
 					createdAt: {
@@ -296,7 +296,7 @@ export const SwaggerGetOrdersById = {
 									type: 'integer',
 									format: 'int32',
 								},
-								amount: {
+								value: {
 									type: 'string',
 								},
 								details: {
@@ -322,7 +322,7 @@ export const SwaggerGetOrdersById = {
 										name: {
 											type: 'string',
 										},
-										amount: {
+										value: {
 											type: 'string',
 										},
 										description: {
@@ -490,8 +490,8 @@ export const SwaggerUpdateOrder = {
 		description: `Update order - possible status: ${Object.values(
 			OrderStatusEnum
 		)}`,
-		tags: ['Orders'],
-		params: { id: { type: 'string' } },
+		tags: ['Order'],
+		params: { id: { type: 'string', format: 'uuid' } },
 		body: {
 			status: {
 				type: 'string',
@@ -572,7 +572,7 @@ export const SwaggerCreateOrder = {
 	schema: {
 		summary: 'Create order',
 		description: 'Create an empty order with status equals created',
-		tags: ['Orders'],
+		tags: ['Order'],
 		body: {
 			type: 'object',
 			properties: {
@@ -593,6 +593,97 @@ export const SwaggerCreateOrder = {
 					},
 					status: {
 						type: 'string',
+					},
+					createdAt: {
+						type: 'string',
+						format: 'date-time',
+					},
+					updatedAt: {
+						type: 'string',
+						format: 'date-time',
+					},
+				},
+			},
+			400: {
+				description: 'Bad request',
+				type: 'object',
+				properties: {
+					path: {
+						type: 'string',
+					},
+					status: {
+						type: 'number',
+					},
+					message: {
+						type: 'string',
+					},
+					details: {
+						type: 'array',
+						items: {
+							type: 'string',
+						},
+					},
+				},
+			},
+			500: {
+				description: 'Server error',
+				type: 'object',
+				properties: {
+					path: {
+						type: 'string',
+					},
+					status: {
+						type: 'string',
+					},
+					message: {
+						type: 'string',
+					},
+					details: {
+						type: 'array',
+						items: {
+							type: 'string',
+						},
+					},
+				},
+			},
+		},
+	},
+};
+
+export const SwaggerAddItemToCart = {
+	schema: {
+		summary: 'Add order item to cart',
+		description: 'Add order item to cart and return created order item',
+		tags: ['Order'],
+		params: { id: { type: 'string', format: 'uuid' } },
+		body: {
+			productId: { type: 'string' },
+			quantity: { type: 'number' },
+			details: { type: 'string' },
+		},
+		response: {
+			201: {
+				description: 'Item added to cart successfully',
+				type: 'object',
+				properties: {
+					id: {
+						type: 'string',
+					},
+					orderId: {
+						type: 'string',
+					},
+					productId: {
+						type: 'string',
+					},
+					quantity: {
+						type: 'number',
+					},
+					value: {
+						type: 'number',
+					},
+					details: {
+						type: 'string',
+						format: 'nullable',
 					},
 					createdAt: {
 						type: 'string',

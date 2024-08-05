@@ -1,6 +1,10 @@
 export type MakePaymentOrderParams = {
 	orderId: string;
-	amount: number;
+};
+
+export type CreatePaymentOrderParams = {
+	orderId: string;
+	value: number;
 };
 
 export type GetPaymentOrderByIdParams = {

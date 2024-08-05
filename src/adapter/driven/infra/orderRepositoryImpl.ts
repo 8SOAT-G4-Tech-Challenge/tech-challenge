@@ -65,6 +65,39 @@ export class OrderRepositoryImpl implements OrderRepository {
 		return order;
 	}
 
+	async getOrderCreatedById({ id }: GetOrderByIdParams): Promise<Order> {
+		const order = await prisma.order
+			.findFirstOrThrow({
+				include: {
+					items: {
+						include: {
+							product: {
+								include: {
+									category: true,
+									images: true,
+								},
+							},
+						},
+					},
+					customer: true,
+					payment: true,
+				},
+				where: {
+					id,
+					status: 'created',
+				},
+			})
+			.catch(() => {
+				throw new DataNotFoundException(
+					`Order with id: ${id} and status 'created' not found`
+				);
+			});
+
+		logger.info(`Order with status 'created' found: ${JSON.stringify(order)}`);
+
+		return order;
+	}
+
 	async getOrdersByStatus(status: OrderStatusType): Promise<Order[]> {
 		const orders = await prisma.order.findMany({
 			where: {

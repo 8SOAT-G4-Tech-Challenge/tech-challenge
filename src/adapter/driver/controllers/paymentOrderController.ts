@@ -96,9 +96,13 @@ export class PaymentOrderController {
 		req: FastifyRequest<{ Body: MakePaymentOrderParams }>,
 		reply: FastifyReply
 	): Promise<void> {
+		const params: MakePaymentOrderParams = req.params as {
+			orderId: string;
+		};
+
 		try {
 			logger.info('Making payment order');
-			await this.paymentOrderService.makePayment(req.body);
+			await this.paymentOrderService.makePayment(params);
 
 			reply
 				.code(StatusCodes.OK)

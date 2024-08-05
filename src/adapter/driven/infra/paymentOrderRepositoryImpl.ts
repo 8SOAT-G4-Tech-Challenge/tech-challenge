@@ -1,13 +1,12 @@
 import {
+	CreatePaymentOrderParams,
 	GetPaymentOrderByIdParams,
 	GetPaymentOrderByOrderIdParams,
-	MakePaymentOrderParams,
 } from '@application/ports/input/paymentOrders';
 import { PaymentOrderRepository } from '@application/ports/repository/paymentOrderRepository';
 import { PaymentOrderStatusEnum } from '@domain/enums/paymentOrderEnum';
 import { prisma } from '@driven/infra/lib/prisma';
 import { PaymentOrder } from '@models/paymentOrder';
-import { Decimal } from '@prisma/client/runtime/library';
 
 export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 	async getPaymentOrders(): Promise<PaymentOrder[]> {
@@ -16,7 +15,7 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 				id: true,
 				orderId: true,
 				status: true,
-				amount: true,
+				value: true,
 				paidAt: true,
 				createdAt: true,
 				updatedAt: true,
@@ -25,7 +24,7 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 
 		return paymentOrders.map((paymentOrder) => ({
 			...paymentOrder,
-			amount: parseFloat(paymentOrder.amount.toString()),
+			value: parseFloat(paymentOrder.value.toString()),
 		}));
 	}
 
@@ -37,7 +36,7 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 			select: {
 				id: true,
 				orderId: true,
-				amount: true,
+				value: true,
 				paidAt: true,
 				status: true,
 				createdAt: true,
@@ -48,7 +47,7 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 		if (paymentOrder) {
 			return {
 				...paymentOrder,
-				amount: parseFloat(paymentOrder.amount.toString()),
+				value: parseFloat(paymentOrder.value.toString()),
 			};
 		}
 
@@ -65,7 +64,7 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 			select: {
 				id: true,
 				orderId: true,
-				amount: true,
+				value: true,
 				paidAt: true,
 				status: true,
 				createdAt: true,
@@ -76,7 +75,7 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 		if (paymentOrder) {
 			return {
 				...paymentOrder,
-				amount: parseFloat(paymentOrder.amount.toString()),
+				value: parseFloat(paymentOrder.value.toString()),
 			};
 		}
 
@@ -84,20 +83,20 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 	}
 
 	async createPaymentOrder(
-		makePaymentOrderParams: MakePaymentOrderParams
+		createPaymentOrderParams: CreatePaymentOrderParams
 	): Promise<PaymentOrder> {
 		const createdPaymentOrder = await prisma.paymentOrder.create({
 			data: {
-				orderId: makePaymentOrderParams.orderId,
+				orderId: createPaymentOrderParams.orderId,
 				status: PaymentOrderStatusEnum.approved,
-				amount: new Decimal(makePaymentOrderParams.amount),
+				value: createPaymentOrderParams.value,
 				paidAt: new Date(),
 			},
 		});
 
 		return {
 			...createdPaymentOrder,
-			amount: parseFloat(createdPaymentOrder.amount.toString()),
+			value: parseFloat(createdPaymentOrder.value.toString()),
 		};
 	}
 }

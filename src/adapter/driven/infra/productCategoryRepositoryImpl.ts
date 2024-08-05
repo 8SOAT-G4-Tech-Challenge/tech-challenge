@@ -2,7 +2,8 @@ import { prisma } from '@driven/infra/lib/prisma';
 import { ProductCategory } from '@models/productCategory';
 import { ProductCategoryRepository } from '@ports/repository/productCategoryRepository';
 
-export class ProductCategoryRepositoryImpl implements ProductCategoryRepository {
+export class ProductCategoryRepositoryImpl
+implements ProductCategoryRepository {
 	async getProductCategories(): Promise<ProductCategory[]> {
 		return prisma.productCategory.findMany({
 			select: {
@@ -22,9 +23,16 @@ export class ProductCategoryRepositoryImpl implements ProductCategoryRepository 
 		});
 	}
 
-	async getProductCategoryByName(name: string): Promise<ProductCategory | null> {
-		return prisma.productCategory.findUnique({
-			where: { name }
+	async getProductCategoryByName(
+		nameFilter: string
+	): Promise<ProductCategory | null> {
+		return prisma.productCategory.findFirst({
+			where: {
+				name: {
+					equals: nameFilter,
+					mode: 'insensitive',
+				},
+			},
 		});
 	}
 }

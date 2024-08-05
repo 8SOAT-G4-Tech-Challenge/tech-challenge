@@ -1,14 +1,14 @@
 export type UpdateProductParams = {
 	id: string;
 	name?: string;
-	amount?: number;
+	value?: number;
 	description?: string;
 	categoryId?: string;
 };
 
 export type CreateProductParams = {
 	name: string;
-	amount: number;
+	value: number;
 	description: string;
 	categoryId: string;
 };

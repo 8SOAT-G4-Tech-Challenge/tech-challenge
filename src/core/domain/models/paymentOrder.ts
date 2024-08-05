@@ -5,7 +5,7 @@ export interface PaymentOrder {
 	orderId: string;
 	status: PaymentOrderStatusType;
 	paidAt: Date | null;
-	amount: number;
+	value: number;
 	createdAt: Date;
 	updatedAt: Date;
 }

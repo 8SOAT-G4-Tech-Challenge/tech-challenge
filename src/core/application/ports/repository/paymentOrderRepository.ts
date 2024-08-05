@@ -1,9 +1,9 @@
 import { PaymentOrder } from '@src/core/domain/models/paymentOrder';
 
 import {
+	CreatePaymentOrderParams,
 	GetPaymentOrderByIdParams,
 	GetPaymentOrderByOrderIdParams,
-	MakePaymentOrderParams,
 } from '../input/paymentOrders';
 
 export interface PaymentOrderRepository {
@@ -15,6 +15,6 @@ export interface PaymentOrderRepository {
 		getPaymentOrderByOrderIdParams: GetPaymentOrderByOrderIdParams
 	): Promise<PaymentOrder | null>;
 	createPaymentOrder(
-		makePaymentOrderParams: MakePaymentOrderParams
+		makePaymentOrderParams: CreatePaymentOrderParams
 	): Promise<PaymentOrder>;
 }

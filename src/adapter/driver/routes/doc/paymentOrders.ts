@@ -97,7 +97,7 @@ export const SwaggerGetPaymentOrderById = {
 						type: 'string',
 						format: 'datetime',
 					},
-					amount: {
+					value: {
 						type: 'string',
 					},
 					createdAt: {
@@ -180,7 +180,7 @@ export const SwaggerGetPaymentOrderByOrderId = {
 						type: 'string',
 						format: 'datetime',
 					},
-					amount: {
+					value: {
 						type: 'string',
 					},
 					createdAt: {
@@ -232,20 +232,16 @@ export const SwaggerPaymentOrderMakePayment = {
 		summary: 'Make a payment for an order (fake checkout)',
 		description: 'Processes the payment for the specified order',
 		tags: ['Payment Order'],
-		body: {
+		params: {
 			type: 'object',
 			properties: {
 				orderId: {
 					type: 'string',
 					format: 'uuid',
-					description: 'The ID of the order to make payment for',
-				},
-				amount: {
-					type: 'string',
-					description: 'The amount to be paid',
+					description: 'Order ID of an Order that needs to be paid',
 				},
 			},
-			required: ['amount'],
+			required: ['orderId'],
 		},
 		response: {
 			200: {

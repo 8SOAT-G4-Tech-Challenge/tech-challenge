@@ -69,8 +69,8 @@ model Product {
   id          String          @id @default(uuid())
   categoryId  String          @db.VarChar(255)
   name        String          @db.VarChar(255) @unique
-  amount      Decimal         @db.Money
   description String          @db.Text
+  value       Decimal         @db.Money
   createdAt   DateTime        @default(now()) @map("created_at")
   updatedAt   DateTime        @updatedAt @map("updated_at")
 
@@ -86,7 +86,7 @@ model OrderItem {
   orderId   String   @db.VarChar(255)
   productId String   @db.VarChar(255)
   quantity  Int
-  amount    Decimal  @db.Money
+  value     Decimal  @db.Money
   details   String?  @db.Text
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -143,7 +143,7 @@ model PaymentOrder {
   paidAt    DateTime? @map("paid_at")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  amount    Decimal  @db.Money
+  value     Decimal  @db.Money
 
   order     Order    @relation(fields: [orderId], references: [id]) // Um PaymentOrder pertence a um Order
 	
