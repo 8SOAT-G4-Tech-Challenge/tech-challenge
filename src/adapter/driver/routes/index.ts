@@ -215,19 +215,4 @@ export const routes = async (fastify: FastifyInstance) => {
 		SwaggerPaymentOrderMakePayment,
 		paymentOrderController.makePayment.bind(paymentOrderController)
 	);
-	fastify.post(
-		'/orders/:id',
-		SwaggerAddItemToCart,
-		cartController.addItemToCart.bind(cartController)
-	);
-	fastify.put(
-		'/order-items/:id',
-		SwaggerUpdateCartItem,
-		cartController.updateCartItem.bind(cartController)
-	);
-	fastify.delete(
-		'/order-items/:id',
-		SwaggerDeleteOrderItem,
-		cartController.deleteCartItem.bind(cartController)
-	);
 };
