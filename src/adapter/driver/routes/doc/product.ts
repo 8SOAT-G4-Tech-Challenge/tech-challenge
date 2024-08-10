@@ -188,7 +188,7 @@ export const SwaggerCreateProducts = {
 			properties: {
 				name: {
 					type: 'string',
-					description: 'Product Id',
+					description: 'Product name',
 				},
 				value: {
 					type: 'number',
@@ -300,7 +300,7 @@ export const SwaggerUpdateProducts = {
 			properties: {
 				name: {
 					type: 'string',
-					description: 'Product Id',
+					description: 'Product name',
 				},
 				value: {
 					type: 'number',

@@ -3,7 +3,6 @@ import { StatusCodes } from 'http-status-codes';
 
 import logger from '@common/logger';
 import { handleError } from '@driver/errorHandler';
-import { Order } from '@models/order';
 import { OrderItem } from '@models/orderItem';
 import {
 	AddItemToCartBody,
@@ -20,14 +19,17 @@ export class CartController {
 	}
 
 	async addItemToCart(
-		req: FastifyRequest<{ Params: Pick<Order, 'id'>; Body: AddItemToCartBody }>,
+		req: FastifyRequest<{
+			Params: { orderId: string };
+			Body: AddItemToCartBody;
+		}>,
 		reply: FastifyReply
 	) {
 		try {
-			logger.info(`Adding item to order: ${req?.params?.id}`);
+			logger.info(`Adding item to order: ${req?.params?.orderId}`);
 			const orderItem: OrderItem = await this.cartService.addItemToCart({
 				...req.body,
-				orderId: req?.params?.id,
+				orderId: req?.params?.orderId,
 			});
 			reply.code(StatusCodes.CREATED).send(orderItem);
 		} catch (error) {
