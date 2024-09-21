@@ -14,6 +14,11 @@ import { OrderRepository } from '@ports/repository/orderRepository';
 export class OrderRepositoryImpl implements OrderRepository {
 	async getOrders(): Promise<Order[]> {
 		const orders = await prisma.order.findMany({
+			where: {
+				status: {
+					notIn: ['finished', 'canceled'],
+				},
+			},
 			include: {
 				items: {
 					include: {

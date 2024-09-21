@@ -42,7 +42,8 @@ export class OrderService {
 
 		logger.info('Searching all orders');
 		const orders = await this.orderRepository.getOrders();
-		return orders;
+		const orderStatusPriority = ['ready', 'preparation', 'received', 'created'];
+		return this.sortOrdersByStatus(orders, orderStatusPriority);
 	}
 
 	async getOrderById({ id }: GetOrderByIdParams): Promise<Order> {
@@ -111,5 +112,17 @@ export class OrderService {
 
 		logger.info(`Total value from order ${id} is ${totalValue}`);
 		return totalValue;
+	}
+
+	private sortOrdersByStatus(orders: Order[], priority: string[]): Order[] {
+		const priorityMap = new Map(
+			priority.map((status, index) => [status, index])
+		);
+
+		return orders.sort((a, b) => {
+			const priorityA = priorityMap.get(a.status) ?? Infinity;
+			const priorityB = priorityMap.get(b.status) ?? Infinity;
+			return priorityA - priorityB;
+		});
 	}
 }
