@@ -13,6 +13,7 @@ import {
 import { CreateOrderResponse } from '@ports/output/orders';
 import { CartRepository } from '@ports/repository/cartRepository';
 import { OrderRepository } from '@ports/repository/orderRepository';
+import { OrderStatusType } from '@src/core/domain/types/orderStatusType';
 
 export class OrderService {
 	private readonly orderRepository: OrderRepository;
@@ -42,8 +43,7 @@ export class OrderService {
 
 		logger.info('Searching all orders');
 		const orders = await this.orderRepository.getOrders();
-		const orderStatusPriority = ['ready', 'preparation', 'received', 'created'];
-		return this.sortOrdersByStatus(orders, orderStatusPriority);
+		return this.sortOrdersByStatus(orders);
 	}
 
 	async getOrderById({ id }: GetOrderByIdParams): Promise<Order> {
@@ -114,14 +114,23 @@ export class OrderService {
 		return totalValue;
 	}
 
-	private sortOrdersByStatus(orders: Order[], priority: string[]): Order[] {
+	private sortOrdersByStatus(orders: Order[]): Order[] {
+		const statusPriority: OrderStatusType[] = [
+			'ready',
+			'preparation',
+			'received',
+			'created',
+		];
+
 		const priorityMap = new Map(
-			priority.map((status, index) => [status, index])
+			statusPriority.map((status, index) => [status, index])
 		);
 
 		return orders.sort((a, b) => {
-			const priorityA = priorityMap.get(a.status) ?? Infinity;
-			const priorityB = priorityMap.get(b.status) ?? Infinity;
+			const priorityA =
+				priorityMap.get(a.status as OrderStatusType) ?? Infinity;
+			const priorityB =
+				priorityMap.get(b.status as OrderStatusType) ?? Infinity;
 			return priorityA - priorityB;
 		});
 	}
