@@ -140,6 +140,7 @@ model PaymentOrder {
   id        String   @id @default(uuid())
   orderId   String   @db.VarChar(255) @unique
   status    PaymentOrderStatus @default(pending)
+  qrData    String?   @db.VarChar(255) @map("qr_data")
   paidAt    DateTime? @map("paid_at")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

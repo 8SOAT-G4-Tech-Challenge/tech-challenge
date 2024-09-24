@@ -102,11 +102,10 @@ export class PaymentOrderController {
 
 		try {
 			logger.info('Making payment order');
-			await this.paymentOrderService.makePayment(params);
+			const paymentOrder: PaymentOrder =
+				await this.paymentOrderService.makePayment(params);
 
-			reply
-				.code(StatusCodes.OK)
-				.send({ message: 'Order payment successfully completed' });
+			reply.code(StatusCodes.OK).send(paymentOrder);
 		} catch (error) {
 			const errorMessage = 'Unexpected error when making payment order';
 			logger.error(`${errorMessage}: ${error}`);

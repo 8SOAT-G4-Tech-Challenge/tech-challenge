@@ -5,6 +5,7 @@ export type MakePaymentOrderParams = {
 export type CreatePaymentOrderParams = {
 	orderId: string;
 	value: number;
+	qrData: string;
 };
 
 export type GetPaymentOrderByIdParams = {

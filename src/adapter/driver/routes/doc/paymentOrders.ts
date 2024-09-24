@@ -229,8 +229,9 @@ export const SwaggerGetPaymentOrderByOrderId = {
 
 export const SwaggerPaymentOrderMakePayment = {
 	schema: {
-		summary: 'Make a payment for an order (fake checkout)',
-		description: 'Processes the payment for the specified order',
+		summary: 'Make a payment for an order',
+		description:
+			'Creates the payment order and integrates with Mercado Pago to obtain the Payment QR Code',
 		tags: ['Payment Order'],
 		params: {
 			type: 'object',
@@ -248,7 +249,33 @@ export const SwaggerPaymentOrderMakePayment = {
 				description: 'Order payment successfully completed',
 				type: 'object',
 				properties: {
-					message: {
+					id: {
+						type: 'string',
+						format: 'uuid',
+					},
+					orderId: {
+						type: 'string',
+						format: 'uuid',
+					},
+					status: {
+						type: 'string',
+					},
+					qrData: {
+						type: 'string',
+					},
+					paidAt: {
+						type: 'string',
+						format: 'datetime',
+					},
+					createdAt: {
+						type: 'string',
+						format: 'datetime',
+					},
+					updatedAt: {
+						type: 'string',
+						format: 'datetime',
+					},
+					value: {
 						type: 'string',
 					},
 				},

@@ -246,6 +246,7 @@ async function main() {
 				status: PaymentOrderStatusEnum.approved,
 				paidAt: new Date(),
 				value: 30,
+				qrData: null,
 			},
 		}),
 		prisma.paymentOrder.create({
@@ -255,6 +256,7 @@ async function main() {
 				},
 				status: PaymentOrderStatusEnum.pending,
 				value: 20,
+				qrData: null,
 			},
 		}),
 		prisma.paymentOrder.create({
@@ -264,6 +266,7 @@ async function main() {
 				},
 				status: PaymentOrderStatusEnum.pending,
 				value: 20,
+				qrData: null,
 			},
 		}),
 	]);

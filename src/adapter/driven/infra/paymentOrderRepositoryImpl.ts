@@ -88,9 +88,9 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 		const createdPaymentOrder = await prisma.paymentOrder.create({
 			data: {
 				orderId: createPaymentOrderParams.orderId,
-				status: PaymentOrderStatusEnum.approved,
+				qrData: createPaymentOrderParams.qrData,
+				status: PaymentOrderStatusEnum.pending,
 				value: createPaymentOrderParams.value,
-				paidAt: new Date(),
 			},
 		});
 
