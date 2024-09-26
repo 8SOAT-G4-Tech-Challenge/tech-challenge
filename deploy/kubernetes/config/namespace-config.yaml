@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: tech-challenge-group-4
+  labels:
+    name: tech-challenge-group-4

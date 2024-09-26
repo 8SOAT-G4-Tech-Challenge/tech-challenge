@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-config
+  namespace: tech-challenge-group-4
+  labels:
+    name: env-config
+data:
+  API_PORT: "3333"
+  POSTGRES_DB: tech-challenger
+  POSTGRES_USER: postgres
