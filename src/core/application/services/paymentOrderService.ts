@@ -7,7 +7,6 @@ import {
 	GetPaymentOrderByOrderIdParams,
 	MakePaymentOrderParams,
 } from '@ports/input/paymentOrders';
-import { OrderRepository } from '@ports/repository/orderRepository';
 import { PaymentOrderRepository } from '@ports/repository/paymentOrderRepository';
 
 import { MercadoPagoService } from './mercadoPagoService';
@@ -16,20 +15,16 @@ import { OrderService } from './orderService';
 export class PaymentOrderService {
 	private readonly paymentOrderRepository;
 
-	private readonly orderRepository: OrderRepository;
-
 	private readonly orderService: OrderService;
 
 	private readonly mercadoPagoService: MercadoPagoService;
 
 	constructor(
 		paymentOrderRepository: PaymentOrderRepository,
-		orderRepository: OrderRepository,
 		orderService: OrderService,
 		mercadoPagoService: MercadoPagoService
 	) {
 		this.paymentOrderRepository = paymentOrderRepository;
-		this.orderRepository = orderRepository;
 		this.orderService = orderService;
 		this.mercadoPagoService = mercadoPagoService;
 	}
@@ -68,7 +63,7 @@ export class PaymentOrderService {
 	): Promise<PaymentOrder> {
 		const { orderId } = makePaymentOrderParams;
 
-		const order = await this.orderRepository.getOrderCreatedById({
+		const order = await this.orderService.getOrderCreatedById({
 			id: orderId,
 		});
 		if (!order) {

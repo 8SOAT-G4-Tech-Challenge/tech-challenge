@@ -99,14 +99,13 @@ const cartService = new CartService(
 const environmentService = new EnvironmentService();
 
 const mercadoPagoService = new MercadoPagoService(
-	cartRepository,
-	productRepository,
+	cartService,
+	productService,
 	environmentService
 );
 
 const paymentOrderService = new PaymentOrderService(
 	paymentOrderRepository,
-	orderRepository,
 	orderService,
 	mercadoPagoService
 );

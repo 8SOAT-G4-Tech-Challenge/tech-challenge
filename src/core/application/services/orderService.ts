@@ -60,6 +60,21 @@ export class OrderService {
 		return orderFound;
 	}
 
+	async getOrderCreatedById({ id }: GetOrderByIdParams): Promise<Order> {
+		const { success } = getOrderByIdSchema.safeParse({ id });
+
+		if (!success) {
+			throw new InvalidOrderException(
+				`Error listing order by Id. Invalid Id: ${id}`
+			);
+		}
+
+		logger.info(`Searching order created by Id: ${id}`);
+		const orderFound = await this.orderRepository.getOrderCreatedById({ id });
+
+		return orderFound;
+	}
+
 	async createOrder(order: CreateOrderParams): Promise<CreateOrderResponse> {
 		if (order?.customerId) {
 			logger.info(`Creating order with customer: ${order?.customerId}`);

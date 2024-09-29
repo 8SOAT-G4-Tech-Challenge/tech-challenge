@@ -58,6 +58,13 @@ export class ProductService {
 		return this.productRepository.getProducts();
 	}
 
+	async getProductById(id: string): Promise<ProductWithDetails> {
+		const paymentOrder: ProductWithDetails | null =
+			await this.productRepository.getProductById(id);
+
+		return paymentOrder;
+	}
+
 	async deleteProducts({ id }: GetProducByIdParams): Promise<void> {
 		const { success } = getProductByIdSchema.safeParse({ id });
 		if (!success) {

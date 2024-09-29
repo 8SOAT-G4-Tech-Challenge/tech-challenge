@@ -9,33 +9,34 @@ import {
 	CreateQrResponse,
 } from '@models/mercadoPagoQr';
 import { OrderItem } from '@models/orderItem';
-import { CartRepository } from '@ports/repository/cartRepository';
-import { ProductRepository } from '@ports/repository/productRepository';
 import {
-	convertKeysToSnakeCase,
 	convertKeysToCamelCase,
+	convertKeysToSnakeCase,
 } from '@src/utils/caseConverterUtil';
 
+import { CartService } from './cartService';
+import { ProductService } from './productService';
+
 export class MercadoPagoService {
+	private readonly cartService: CartService;
+
+	private readonly productService: ProductService;
+
 	private readonly baseUrl: string = 'https://api.mercadopago.com';
 
-	private readonly cartRepository: CartRepository;
-
 	private readonly posId: string;
-
-	private readonly productRepository: ProductRepository;
 
 	private readonly token: string;
 
 	private readonly userId: number;
 
 	constructor(
-		cartRepository: CartRepository,
-		productRepository: ProductRepository,
+		cartService: CartService,
+		productService: ProductService,
 		environmentService: EnvironmentService
 	) {
-		this.cartRepository = cartRepository;
-		this.productRepository = productRepository;
+		this.cartService = cartService;
+		this.productService = productService;
 
 		this.token = environmentService.getMercadoPagoToken();
 		this.userId = environmentService.getMercadoPagoUserId();
@@ -48,13 +49,11 @@ export class MercadoPagoService {
 	): Promise<CreateQrResponse> {
 		logger.info('Creating QR Payment Request...');
 
-		const orderItems = await this.cartRepository.getAllCartItemsByOrderId(
-			orderId
-		);
+		const orderItems = await this.cartService.getAllCartItemsByOrderId(orderId);
 
 		const createQrRequestItems: CreateQrRequestItem[] = await Promise.all(
 			orderItems.map(async (orderItem: OrderItem) => {
-				const product = await this.productRepository.getProductById(
+				const product = await this.productService.getProductById(
 					orderItem.productId
 				);
 
