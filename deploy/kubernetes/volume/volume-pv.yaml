@@ -9,7 +9,7 @@ spec:
   capacity:
     storage: 128Mi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   hostPath:

@@ -16,23 +16,23 @@ spec:
         app: prisma-studio
     spec:
       containers:
-      - name: prisma-studio
-        image: lucasaccurcio/tech-challenge-prisma-studio:v2
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 5555
-        env:
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: postgres-secret
-                key: POSTGRES_PASSWORD
-          - name: DATABASE_URL
-            value: "postgresql://postgres:$(POSTGRES_PASSWORD)@postgres-service:5432/tech-challenger"
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 500m
-            memory: 512Mi
+        - name: prisma-studio
+          image: lucasaccurcio/tech-challenge-prisma-studio:v2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5555
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: DATABASE_URL
+              value: 'postgresql://postgres:$(POSTGRES_PASSWORD)@postgres-service:5432/tech-challenger'
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

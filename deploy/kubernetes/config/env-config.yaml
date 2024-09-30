@@ -6,6 +6,6 @@ metadata:
   labels:
     name: env-config
 data:
-  API_PORT: "3333"
+  API_PORT: '3333'
   POSTGRES_DB: tech-challenger
   POSTGRES_USER: postgres

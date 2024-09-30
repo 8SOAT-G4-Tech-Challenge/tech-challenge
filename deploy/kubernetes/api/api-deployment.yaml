@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: api-tech-challenge
   namespace: tech-challenge-group-4
-  labels: 
+  labels:
     app: api-tech-challenge
 spec:
   replicas: 2
@@ -21,40 +21,40 @@ spec:
         app: api-tech-challenge
     spec:
       containers:
-      - name: api-tech-challenge-container
-        image: lucasaccurcio/tech-challenge-api:v3
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 3333
-        envFrom:
-        - configMapRef:
-            name: env-config
-        env:
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: postgres-secret
-                key: POSTGRES_PASSWORD
-          - name: DATABASE_URL
-            value: "postgresql://postgres:$(POSTGRES_PASSWORD)@postgres-service:5432/tech-challenger"
-        livenessProbe:
-          httpGet:
-            path: /docs
-            port: 3333
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          failureThreshold: 3
-        readinessProbe:
+        - name: api-tech-challenge-container
+          image: lucasaccurcio/tech-challenge-api:v3
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3333
+          envFrom:
+            - configMapRef:
+                name: env-config
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: DATABASE_URL
+              value: 'postgresql://postgres:$(POSTGRES_PASSWORD)@postgres-service:5432/tech-challenger'
+          livenessProbe:
+            httpGet:
+              path: /docs
+              port: 3333
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
             httpGet:
               path: /docs
               port: 3333
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 5
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 500m
-            memory: 512Mi
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
