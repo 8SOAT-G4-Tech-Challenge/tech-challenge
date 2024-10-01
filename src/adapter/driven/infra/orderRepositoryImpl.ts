@@ -1,4 +1,5 @@
 import logger from '@common/logger';
+import { OrderStatusEnum } from '@domain/enums/orderStatusEnum';
 import { OrderStatusType } from '@domain/types/orderStatusType';
 import { prisma } from '@driven/infra/lib/prisma';
 import { DataNotFoundException } from '@exceptions/dataNotFound';
@@ -158,5 +159,28 @@ export class OrderRepositoryImpl implements OrderRepository {
 		logger.info(`Order updated: ${JSON.stringify(updatedOrder)}`);
 
 		return updatedOrder;
+	}
+
+	async getNumberOfValidOrdersToday(): Promise<number> {
+		const startDate = new Date();
+		startDate.setHours(0, 0, 0, 0);
+		const endDate = new Date();
+		endDate.setHours(23, 59, 59);
+
+		const validOrders = await prisma.order.count({
+			where: {
+				createdAt: {
+					gte: startDate,
+					lte: endDate,
+				},
+				status: {
+					notIn: [OrderStatusEnum.canceled, OrderStatusEnum.created],
+				},
+			},
+		});
+
+		logger.info(`Number of valid orders today: ${JSON.stringify(validOrders)}`);
+
+		return validOrders;
 	}
 }

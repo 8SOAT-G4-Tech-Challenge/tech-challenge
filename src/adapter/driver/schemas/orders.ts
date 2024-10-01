@@ -12,5 +12,6 @@ export const updateOrderSchema = z
 	.object({
 		id: z.string(),
 		status: z.nativeEnum(OrderStatusEnum),
+		orderId: z.string(),
 	})
 	.required();

@@ -14,4 +14,5 @@ export interface OrderRepository {
 	getOrdersByStatus(status: OrderStatusType): Promise<Order[]>;
 	createOrder(order: CreateOrderParams): Promise<CreateOrderResponse>;
 	updateOrder(order: UpdateOrderParams): Promise<UpdateOrderResponse>;
+	getNumberOfValidOrdersToday(): Promise<number>;
 }
