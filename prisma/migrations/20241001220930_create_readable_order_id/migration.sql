@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "order" ADD COLUMN     "orderId" VARCHAR(255);
+ALTER TABLE "order" ADD COLUMN "orderId" VARCHAR(255);

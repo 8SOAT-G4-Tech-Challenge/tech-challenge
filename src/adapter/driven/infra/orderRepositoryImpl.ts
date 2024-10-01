@@ -174,8 +174,11 @@ export class OrderRepositoryImpl implements OrderRepository {
 					lte: endDate,
 				},
 				status: {
-					notIn: [OrderStatusEnum.canceled, OrderStatusEnum.created],
+					notIn: [OrderStatusEnum.created],
 				},
+				orderId: {
+					not: null,
+				}
 			},
 		});
 
