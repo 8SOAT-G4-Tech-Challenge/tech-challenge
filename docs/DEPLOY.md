@@ -5,6 +5,7 @@
 - [Docker](https://docs.docker.com/get-docker/);
 -	[Kubernetes](https://kubernetes.io/docs/tasks/tools/) - kubectl
 - [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/) - Opcional
+- [Lens](https://k8slens.dev/) - Kubernetes IDE para visualização dos recursos - Opcional
 
 ### Passo a passo
 
@@ -14,7 +15,7 @@
 Se você deseja iniciar um novo cluster exclusivo para esta aplicação, siga os passos abaixo - Necessária a instalação do ***Kind***:
 
 ```sh
-kind create cluster --config=deploy/kubernetes/kind-cluster-config.yaml --name=tech-challenge-cluster
+kind create cluster --config=deploy/kubernetes/config/kind-cluster-config.yaml --name=tech-challenge-cluster
 ```
 
 - **Habilitar o novo cluster criado**
@@ -26,7 +27,10 @@ kubectl cluster-info --context kind-tech-challenge-cluster
 **Etapa para deploy da aplicação:**
 
 - **Deploy automatizado:**
+
 1. Tonar o script executável:
+	
+	Observação: Usuários Windows poderão utilizar o ***Git Bash***
 ```sh
 chmod +x deploy.sh
 ```
@@ -77,6 +81,12 @@ kubectl apply -f deploy/kubernetes/prisma-studio
 1. Banco de dados:
 
 - Caso tenha feito deploy do Prisma Studio, o banco de dados poderá ser visualizado acessando `http://localhost:31555`
+
+- Se a página estiver indisponível, pode ser necessário redirecionar uma porta para que tenha acesso a aplicação:
+
+```sh
+kubectl port-forward svc/prisma-studio-service 31555:5555 -n tech-challenge-group-4
+```
 
 <br>
 
