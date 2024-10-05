@@ -18,6 +18,8 @@ import { ProductImageRepository } from '@ports/repository/productImageRepository
 import { ProductRepository } from '@ports/repository/productRepository';
 import { ProductCategoryService } from '@services/productCategoryService';
 
+import { DataNotFoundException } from '../exceptions/dataNotFound';
+
 export class ProductService {
 	private readonly productCategoryService;
 
@@ -134,6 +136,10 @@ export class ProductService {
 		const productExists = await this.productRepository.getProductById(
 			product.id
 		);
+
+		if (!productExists) {
+			throw new DataNotFoundException(`Product with id ${product.id} does not exist`);
+		}
 
 		const hasFilesToSave = product.images?.some(
 			(image) => image.filename.trim().length > 0

@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import logger from '@common/logger';
 import { handleError } from '@driver/errorHandler';
-import { Multipart, MultipartFile } from '@fastify/multipart';
+import { Multipart } from '@fastify/multipart';
 import {
 	CreateProductParams, GetProducByIdParams,
 	UpdateProductParams
@@ -111,29 +111,26 @@ export class ProductController {
 		}>,
 		reply: FastifyReply,
 	) {
-		console.log('updating product');
 		try {
 			logger.info('Updating product', req?.params?.id);
-			const parts = req.parts() as unknown as Multipart[];
+			const parts = req.parts();
 			let data: UpdateProductParams = {
 				id: req?.params?.id,
+				images: [],
 			};
-
-			const imageFiles: MultipartFile[] = [];
 
 			for await (const part of parts) {
 				if (part.type === 'file') {
-					imageFiles.push(part);
+					const fileBuffer = await part.toBuffer();
+					data.images?.push({ ...part, buffer: fileBuffer });
 				} else {
 					data = setField(
 						data,
-						part.fieldname as keyof UpdateProductParams,
+						part.fieldname as keyof CreateProductParams,
 						part.value as any,
 					);
 				}
 			}
-
-			data.images = imageFiles;
 
 			const product: UpdateProductResponse =
 				await this.productService.updateProducts(data);
