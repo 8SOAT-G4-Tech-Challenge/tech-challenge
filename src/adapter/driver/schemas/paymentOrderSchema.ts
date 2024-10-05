@@ -22,4 +22,18 @@ export const paymentOrderSchema = z
 	})
 	.required();
 
+export const paymentNotificationPaymentSchema = z
+	.object({
+		amount: z.number(),
+		caller_id: z.number(),
+		client_id: z.number(),
+		created_at: z.string(),
+		id: z.string(),
+		state: z.string(),
+		additional_info: z.object({
+			external_reference: z.string(),
+		}),
+	})
+	.required();
+
 export type PaymentOrderDto = z.infer<typeof paymentOrderSchema>;

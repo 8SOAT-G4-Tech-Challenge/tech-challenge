@@ -1,0 +1,6 @@
+export const NotificationPaymentStateEnum = {
+	FINISHED: 'FINISHED',
+	CONFIRMATION_REQUIRED: 'CONFIRMATION_REQUIRED',
+	CANCELED: 'CANCELED',
+	ERROR: 'ERROR',
+} as const;

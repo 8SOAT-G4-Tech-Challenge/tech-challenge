@@ -54,6 +54,7 @@ import {
 	SwaggerGetPaymentOrderByOrderId,
 	SwaggerGetPaymentOrders,
 	SwaggerPaymentOrderMakePayment,
+	SwaggerPaymentOrderProcessNotificationsPayment,
 } from './doc/paymentOrders';
 import {
 	SwaggerCreateProducts,
@@ -235,5 +236,12 @@ export const routes = async (fastify: FastifyInstance) => {
 		'/payment-orders/make-payment/:orderId',
 		SwaggerPaymentOrderMakePayment,
 		paymentOrderController.makePayment.bind(paymentOrderController)
+	);
+	fastify.post(
+		'/payment-orders/process-notifications-payment',
+		SwaggerPaymentOrderProcessNotificationsPayment,
+		paymentOrderController.processNotificationPayment.bind(
+			paymentOrderController
+		)
 	);
 };

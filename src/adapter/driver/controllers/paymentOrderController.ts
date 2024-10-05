@@ -112,4 +112,22 @@ export class PaymentOrderController {
 			handleError(req, reply, error);
 		}
 	}
+
+	async processNotificationPayment(
+		req: FastifyRequest,
+		reply: FastifyReply
+	): Promise<void> {
+		try {
+			logger.info(
+				`Process notification payment order ${JSON.stringify(req.body)}`
+			);
+			await this.paymentOrderService.processNotificationPayment(req.body);
+			reply.code(StatusCodes.NO_CONTENT).send();
+		} catch (error) {
+			const errorMessage =
+				'Unexpected error when process notification payment order';
+			logger.error(`${errorMessage}: ${error}`);
+			handleError(req, reply, error);
+		}
+	}
 }

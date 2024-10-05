@@ -12,7 +12,7 @@ import { OrderItem } from '@models/orderItem';
 import {
 	convertKeysToCamelCase,
 	convertKeysToSnakeCase,
-} from '@src/utils/caseConverterUtil';
+} from '@application/utils/caseConverterUtil';
 
 import { CartService } from './cartService';
 import { ProductService } from './productService';

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { OrderStatusEnum } from '@domain/enums/orderStatusEnum';
+import { OrderStatusEnum } from '@application/enumerations/orderStatusEnum';
 
 export const getOrderByIdSchema = z
 	.object({

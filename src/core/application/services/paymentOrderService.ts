@@ -1,6 +1,7 @@
 import logger from '@common/logger';
 import { PaymentOrder } from '@domain/models/paymentOrder';
 import { InvalidPaymentOrderException } from '@exceptions/invalidPaymentOrderException';
+import { NotificationPaymentException } from '@exceptions/notificationPaymentException';
 import { CreateQrResponse } from '@models/mercadoPagoQr';
 import {
 	GetPaymentOrderByIdParams,
@@ -11,6 +12,8 @@ import { PaymentOrderRepository } from '@ports/repository/paymentOrderRepository
 
 import { MercadoPagoService } from './mercadoPagoService';
 import { OrderService } from './orderService';
+import { paymentNotificationPaymentSchema } from '@driver/schemas/paymentOrderSchema';
+import { NotificationPaymentStateEnum } from '@application/enumerations/notificationPaymentStateEnum';
 
 export class PaymentOrderService {
 	private readonly paymentOrderRepository;
@@ -95,5 +98,25 @@ export class PaymentOrderService {
 			});
 
 		return createdPaymentOrder;
+	}
+
+	async processNotificationPayment(notificationData: any): Promise<void> {
+		paymentNotificationPaymentSchema.parse(notificationData);
+
+		switch (notificationData.state) {
+			case NotificationPaymentStateEnum.FINISHED:
+				logger.info('Finished payment');
+				break;
+			case NotificationPaymentStateEnum.CONFIRMATION_REQUIRED:
+				logger.info('Confirmation payment required');
+				break;
+			case NotificationPaymentStateEnum.CANCELED:
+				logger.info('Cancelated payment');
+				break;
+			default:
+				throw new NotificationPaymentException(
+					`Invalid notification payment type ${notificationData.state}`
+				);
+		}
 	}
 }
