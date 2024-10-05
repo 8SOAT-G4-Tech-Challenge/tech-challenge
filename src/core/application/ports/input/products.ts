@@ -13,10 +13,12 @@ export type UpdateProductParams = {
 	images?: MultipartFile[];
 };
 
+export type MultipartFileBuffer = MultipartFile & { buffer: Buffer }
+
 export type CreateProductParams = {
 	name: string;
 	value: number;
 	description: string;
 	categoryId: string;
-	images?: MultipartFile[];
+	images?: MultipartFileBuffer[];
 };

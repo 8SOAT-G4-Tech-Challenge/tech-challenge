@@ -5,9 +5,8 @@ import logger from '@common/logger';
 import { handleError } from '@driver/errorHandler';
 import { Multipart, MultipartFile } from '@fastify/multipart';
 import {
-	CreateProductParams,
-	GetProducByIdParams,
-	UpdateProductParams,
+	CreateProductParams, GetProducByIdParams,
+	UpdateProductParams
 } from '@ports/input/products';
 import { UpdateProductResponse } from '@ports/output/products';
 import { Product } from '@prisma/client';
@@ -70,7 +69,7 @@ export class ProductController {
 		reply: FastifyReply,
 	) {
 		try {
-			const parts = req.parts() as unknown as Multipart[];
+			const parts = req.parts();
 
 			let data: CreateProductParams = {
 				name: '',
@@ -80,11 +79,10 @@ export class ProductController {
 				images: [],
 			};
 
-			const imageFiles: MultipartFile[] = [];
-
 			for await (const part of parts) {
 				if (part.type === 'file') {
-					imageFiles.push(part);
+					const fileBuffer = await part.toBuffer();
+					data.images?.push({ ...part, buffer: fileBuffer });
 				} else {
 					data = setField(
 						data,
@@ -93,8 +91,6 @@ export class ProductController {
 					);
 				}
 			}
-
-			data.images = imageFiles;
 
 			logger.info(`Creating product: ${JSON.stringify(data.name)}`);
 
