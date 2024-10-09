@@ -30,10 +30,20 @@ export const paymentNotificationPaymentSchema = z
 		created_at: z.string(),
 		id: z.string(),
 		state: z.string(),
+		payment: z
+			.object({
+				id: z.number().optional(),
+				state: z.string().optional(),
+				type: z.string().optional(),
+			})
+			.optional(),
 		additional_info: z.object({
 			external_reference: z.string(),
 		}),
 	})
 	.required();
 
+export type NotificationPaymentDto = z.infer<
+	typeof paymentNotificationPaymentSchema
+>;
 export type PaymentOrderDto = z.infer<typeof paymentOrderSchema>;

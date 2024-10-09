@@ -2,6 +2,7 @@ import {
 	CreatePaymentOrderParams,
 	GetPaymentOrderByIdParams,
 	GetPaymentOrderByOrderIdParams,
+	UpdatePaymentOrderParams,
 } from '@application/ports/input/paymentOrders';
 import { PaymentOrderRepository } from '@application/ports/repository/paymentOrderRepository';
 import { PaymentOrderStatusEnum } from '@application/enumerations/paymentOrderEnum';
@@ -97,6 +98,22 @@ export class PaymentOrderRepositoryImpl implements PaymentOrderRepository {
 		return {
 			...createdPaymentOrder,
 			value: parseFloat(createdPaymentOrder.value.toString()),
+		};
+	}
+
+	async updatePaymentOrder(
+		updatePaymentOrderParams: UpdatePaymentOrderParams
+	): Promise<PaymentOrder> {
+		const updatePaymentOrder = await prisma.paymentOrder.update({
+			where: {
+				id: updatePaymentOrderParams.id,
+			},
+			data: updatePaymentOrderParams,
+		});
+
+		return {
+			...updatePaymentOrder,
+			value: parseFloat(updatePaymentOrder.value.toString()),
 		};
 	}
 }

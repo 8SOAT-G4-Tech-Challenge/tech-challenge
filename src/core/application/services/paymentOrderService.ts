@@ -1,19 +1,26 @@
 import logger from '@common/logger';
 import { PaymentOrder } from '@domain/models/paymentOrder';
 import { InvalidPaymentOrderException } from '@exceptions/invalidPaymentOrderException';
-import { NotificationPaymentException } from '@exceptions/notificationPaymentException';
+import { PaymentNotificationException } from '@exceptions/paymentNotificationException';
 import { CreateQrResponse } from '@models/mercadoPagoQr';
 import {
 	GetPaymentOrderByIdParams,
 	GetPaymentOrderByOrderIdParams,
 	MakePaymentOrderParams,
+	UpdatePaymentOrderParams,
 } from '@ports/input/paymentOrders';
 import { PaymentOrderRepository } from '@ports/repository/paymentOrderRepository';
 
 import { MercadoPagoService } from './mercadoPagoService';
 import { OrderService } from './orderService';
-import { paymentNotificationPaymentSchema } from '@driver/schemas/paymentOrderSchema';
-import { NotificationPaymentStateEnum } from '@application/enumerations/notificationPaymentStateEnum';
+import {
+	paymentNotificationPaymentSchema,
+	NotificationPaymentDto,
+} from '@driver/schemas/paymentOrderSchema';
+import { PaymentNotificationStateEnum } from '@src/core/application/enumerations/paymentNotificationStateEnum';
+import { PaymentOrderStatusEnum } from '@application/enumerations/paymentOrderEnum';
+import { UpdateOrderParams } from '../ports/input/orders';
+import { OrderStatusEnum } from '../enumerations/orderStatusEnum';
 
 export class PaymentOrderService {
 	private readonly paymentOrderRepository;
@@ -100,23 +107,105 @@ export class PaymentOrderService {
 		return createdPaymentOrder;
 	}
 
-	async processNotificationPayment(notificationData: any): Promise<void> {
-		paymentNotificationPaymentSchema.parse(notificationData);
-
+	async processPaymentNotification(
+		notificationData: NotificationPaymentDto
+	): Promise<void> {
 		switch (notificationData.state) {
-			case NotificationPaymentStateEnum.FINISHED:
-				logger.info('Finished payment');
+			case PaymentNotificationStateEnum.FINISHED:
+				await this.finalizePayment(notificationData);
 				break;
-			case NotificationPaymentStateEnum.CONFIRMATION_REQUIRED:
+			case PaymentNotificationStateEnum.CONFIRMATION_REQUIRED:
 				logger.info('Confirmation payment required');
 				break;
-			case NotificationPaymentStateEnum.CANCELED:
-				logger.info('Cancelated payment');
+			case PaymentNotificationStateEnum.CANCELED:
+				await this.cancelPayment(notificationData);
 				break;
 			default:
-				throw new NotificationPaymentException(
-					`Invalid notification payment type ${notificationData.state}`
+				throw new PaymentNotificationException(
+					`Invalid payment notification type ${notificationData.state}`
 				);
+		}
+	}
+
+	async finalizePayment(
+		notificationData: NotificationPaymentDto
+	): Promise<void> {
+		logger.info(`Finished payment: ${JSON.stringify(notificationData)}`);
+		logger.info(
+			`Searching for payment order by id: ${notificationData.additional_info.external_reference}`
+		);
+		let paymentOrder =
+			await this.paymentOrderRepository.getPaymentOrderByOrderId({
+				orderId: notificationData.additional_info.external_reference,
+			});
+		if (paymentOrder) {
+			logger.info(`Found payment order: ${JSON.stringify(paymentOrder)}`);
+			const updatePaymentOrderParams: UpdatePaymentOrderParams = {
+				id: paymentOrder.id,
+				status: PaymentOrderStatusEnum.approved,
+				paidAt: new Date(notificationData.created_at),
+				value: notificationData.amount,
+			};
+			logger.info(
+				`Updating payment order: ${JSON.stringify(updatePaymentOrderParams)}`
+			);
+			paymentOrder = await this.paymentOrderRepository.updatePaymentOrder(
+				updatePaymentOrderParams
+			);
+			logger.info(
+				`Payment order updated successfully: ${JSON.stringify(paymentOrder)}`
+			);
+
+			const updateOrder: UpdateOrderParams = {
+				id: paymentOrder.orderId,
+				status: OrderStatusEnum.received,
+			};
+			logger.info(`Updating order: ${JSON.stringify(updateOrder)}`);
+			const order = await this.orderService.updateOrder(updateOrder);
+			logger.info(`Order updated successfully: ${JSON.stringify(order)}`);
+		} else {
+			throw new PaymentNotificationException(
+				`Error processing payment notification. Payment order ${notificationData.additional_info.external_reference} not found.`
+			);
+		}
+	}
+
+	async cancelPayment(notificationData: NotificationPaymentDto): Promise<void> {
+		logger.info(`Cancelated payment: ${JSON.stringify(notificationData)}`);
+		logger.info(
+			`Searching for payment order by id: ${notificationData.additional_info.external_reference}`
+		);
+		let paymentOrder =
+			await this.paymentOrderRepository.getPaymentOrderByOrderId({
+				orderId: notificationData.additional_info.external_reference,
+			});
+		if (paymentOrder) {
+			logger.info(`Found payment order: ${JSON.stringify(paymentOrder)}`);
+			const updatePaymentOrderParams: UpdatePaymentOrderParams = {
+				id: paymentOrder.id,
+				status: PaymentOrderStatusEnum.cancelled,
+			};
+			logger.info(
+				`Updating payment order: ${JSON.stringify(updatePaymentOrderParams)}`
+			);
+			paymentOrder = await this.paymentOrderRepository.updatePaymentOrder(
+				updatePaymentOrderParams
+			);
+			logger.info(
+				`Payment order updated successfully: ${JSON.stringify(paymentOrder)}`
+			);
+
+			const updateOrder: UpdateOrderParams = {
+				id: paymentOrder.orderId,
+				status: OrderStatusEnum.canceled,
+			};
+			logger.info(`Updating order: ${JSON.stringify(updateOrder)}`);
+			const order = await this.orderService.updateOrder(updateOrder);
+			logger.info(`Order updated successfully: ${JSON.stringify(order)}`);
+		} else {
+			throw new PaymentNotificationException(
+				`Error processing payment notification. Payment order ${notificationData.additional_info.external_reference} not found.`
+			);
 		}
 	}
 }

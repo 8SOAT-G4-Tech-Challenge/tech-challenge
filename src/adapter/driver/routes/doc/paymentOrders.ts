@@ -323,7 +323,7 @@ export const SwaggerPaymentOrderMakePayment = {
 	},
 };
 
-export const SwaggerPaymentOrderProcessNotificationsPayment = {
+export const SwaggerPaymentOrderProcessPaymentNotifications = {
 	schema: {
 		summary: 'Process payment notifications for an order',
 		description:

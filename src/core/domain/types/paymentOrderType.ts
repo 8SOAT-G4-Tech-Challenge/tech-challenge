@@ -1,3 +1,3 @@
-import { PaymentOrderStatusEnum } from '@domain/enums/paymentOrderEnum';
+import { PaymentOrderStatusEnum } from '@application/enumerations/paymentOrderEnum';
 
 export type PaymentOrderStatusType = keyof typeof PaymentOrderStatusEnum;

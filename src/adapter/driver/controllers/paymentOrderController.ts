@@ -10,6 +10,7 @@ import logger from '@common/logger';
 import { handleError } from '@driver/errorHandler';
 import { PaymentOrder } from '@models/paymentOrder';
 import { PaymentOrderService } from '@services/paymentOrderService';
+import { NotificationPaymentDto } from '@driver/schemas/paymentOrderSchema';
 
 export class PaymentOrderController {
 	private readonly paymentOrderService: PaymentOrderService;
@@ -113,15 +114,15 @@ export class PaymentOrderController {
 		}
 	}
 
-	async processNotificationPayment(
-		req: FastifyRequest,
+	async processPaymentNotification(
+		req: FastifyRequest<{ Body: NotificationPaymentDto }>,
 		reply: FastifyReply
 	): Promise<void> {
 		try {
 			logger.info(
 				`Process notification payment order ${JSON.stringify(req.body)}`
 			);
-			await this.paymentOrderService.processNotificationPayment(req.body);
+			await this.paymentOrderService.processPaymentNotification(req.body);
 			reply.code(StatusCodes.NO_CONTENT).send();
 		} catch (error) {
 			const errorMessage =

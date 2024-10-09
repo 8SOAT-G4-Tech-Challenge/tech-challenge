@@ -2,8 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 
 import { BaseException } from '@src/core/application/exceptions/baseException';
 
-export class NotificationPaymentException extends BaseException {
+export class PaymentNotificationException extends BaseException {
 	constructor(message: string) {
-		super(message, NotificationPaymentException.name, StatusCodes.BAD_REQUEST);
+		super(message, PaymentNotificationException.name, StatusCodes.BAD_REQUEST);
 	}
 }
