@@ -1,22 +1,26 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { pipeline } from 'stream';
-import { promisify } from 'util';
 
-import { MultipartFile } from '@fastify/multipart';
+import { MultipartFileBuffer } from '@ports/input/products';
 import { FileSystemStorage } from '@src/core/application/ports/output/fileSystemStorage';
-
-const pump = promisify(pipeline);
+import logger from '@src/core/common/logger';
 
 export class FileSystemStorageImpl implements FileSystemStorage {
-	async saveFile(file: MultipartFile, productId: string): Promise<string> {
+	async saveFile(file: MultipartFileBuffer, productId: string): Promise<string> {
 		const uploadDir = path.join(__dirname, `/../../../uploads/${productId}`);
 		if (!fs.existsSync(uploadDir)) {
 			fs.mkdirSync(uploadDir, { recursive: true });
 		}
 
 		const filePath = path.join(uploadDir, file.filename);
-		await pump(file.file, fs.createWriteStream(filePath));
+
+		fs.writeFile(filePath, file.buffer, (err) => {
+			if (err) {
+				logger.error(`Error trying to save file: ${JSON.stringify(filePath)}`);
+				return;
+			}
+			logger.info(`File saved to: ${JSON.stringify(filePath)}`);
+		});
 
 		return `/uploads/${productId}/${file.filename}`;
 	}

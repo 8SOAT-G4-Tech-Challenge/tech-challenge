@@ -68,7 +68,7 @@ model ProductImage {
 model Product {
   id          String          @id @default(uuid())
   categoryId  String          @db.VarChar(255)
-  name        String          @db.VarChar(255) @unique
+  name        String          @db.VarChar(255)
   description String          @db.Text
   value       Decimal         @db.Money
   createdAt   DateTime        @default(now()) @map("created_at")

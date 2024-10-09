@@ -117,11 +117,6 @@ export class ProductRepositoryImpl implements ProductRepository {
 					description: product.description,
 					categoryId: product.categoryId,
 				},
-			})
-			.catch(() => {
-				throw new DataNotFoundException(
-					`Product with id: ${product.id} not found`,
-				);
 			});
 
 		logger.info(`Product updated: ${JSON.stringify(updatedProduct)}`);

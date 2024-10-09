@@ -1,5 +1,7 @@
 import { MultipartFile } from '@fastify/multipart';
 
+export type MultipartFileBuffer = MultipartFile & { buffer: Buffer }
+
 export type GetProducByIdParams = {
 	id: string;
 };
@@ -10,7 +12,7 @@ export type UpdateProductParams = {
 	value?: number;
 	description?: string;
 	categoryId?: string;
-	images?: MultipartFile[];
+	images?: MultipartFileBuffer[];
 };
 
 export type CreateProductParams = {
@@ -18,5 +20,5 @@ export type CreateProductParams = {
 	value: number;
 	description: string;
 	categoryId: string;
-	images?: MultipartFile[];
+	images?: MultipartFileBuffer[];
 };
