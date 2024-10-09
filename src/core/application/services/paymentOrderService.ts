@@ -13,10 +13,7 @@ import { PaymentOrderRepository } from '@ports/repository/paymentOrderRepository
 
 import { MercadoPagoService } from './mercadoPagoService';
 import { OrderService } from './orderService';
-import {
-	paymentNotificationPaymentSchema,
-	NotificationPaymentDto,
-} from '@driver/schemas/paymentOrderSchema';
+import { NotificationPaymentDto } from '@driver/schemas/paymentOrderSchema';
 import { PaymentNotificationStateEnum } from '@src/core/application/enumerations/paymentNotificationStateEnum';
 import { PaymentOrderStatusEnum } from '@application/enumerations/paymentOrderEnum';
 import { UpdateOrderParams } from '../ports/input/orders';

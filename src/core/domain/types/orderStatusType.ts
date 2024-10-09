@@ -1,3 +1,3 @@
-import { OrderStatusEnum } from '@domain/enums/orderStatusEnum';
+import { OrderStatusEnum } from '@application/enumerations/orderStatusEnum';
 
 export type OrderStatusType = keyof typeof OrderStatusEnum;
