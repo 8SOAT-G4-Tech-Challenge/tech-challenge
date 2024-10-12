@@ -1,5 +1,5 @@
+import { OrderStatusEnum } from '@application/enumerations/orderStatusEnum';
 import logger from '@common/logger';
-import { OrderStatusEnum } from '@domain/enums/orderStatusEnum';
 import { OrderStatusType } from '@domain/types/orderStatusType';
 import { prisma } from '@driven/infra/lib/prisma';
 import { DataNotFoundException } from '@exceptions/dataNotFound';
@@ -150,6 +150,7 @@ export class OrderRepositoryImpl implements OrderRepository {
 				},
 				data: {
 					status: order.status,
+					readableId: order.readableId,
 				},
 			})
 			.catch(() => {
@@ -176,7 +177,7 @@ export class OrderRepositoryImpl implements OrderRepository {
 				status: {
 					notIn: [OrderStatusEnum.created],
 				},
-				orderId: {
+				readableId: {
 					not: null,
 				}
 			},

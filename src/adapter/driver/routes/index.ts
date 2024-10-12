@@ -107,6 +107,7 @@ const mercadoPagoService = new MercadoPagoService(
 
 const paymentOrderService = new PaymentOrderService(
 	paymentOrderRepository,
+	orderRepository,
 	orderService,
 	mercadoPagoService
 );

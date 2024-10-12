@@ -14,6 +14,6 @@ export type CreateOrderParams = {
 
 export type UpdateOrderParams = {
 	id?: string;
-	orderId?: string;
+	readableId?: string;
 	status?: OrderStatusType;
 };

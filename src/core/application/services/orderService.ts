@@ -1,5 +1,5 @@
-import logger from '@common/logger';
 import { OrderStatusEnum } from '@application/enumerations/orderStatusEnum';
+import logger from '@common/logger';
 import { getOrderByIdSchema, updateOrderSchema } from '@driver/schemas/orders';
 import { InvalidOrderException } from '@exceptions/invalidOrderException';
 import { InvalidOrderStatusException } from '@exceptions/invalidOrderStatusException';

@@ -111,7 +111,7 @@ enum OrderStatus {
 
 model Order {
   id         String   @id @default(uuid())
-  orderId    String?  @db.VarChar(255)
+  readableId    String?  @db.VarChar(255)
   customerId String?  @db.VarChar(255)
   status     OrderStatus   @default(created)
   createdAt  DateTime @default(now()) @map("created_at")

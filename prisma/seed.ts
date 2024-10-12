@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
-import { OrderStatusEnum } from '../src/core/domain/enums/orderStatusEnum';
-import { PaymentOrderStatusEnum } from '../src/core/domain/enums/paymentOrderEnum';
+import { OrderStatusEnum } from '../src/core/application/enumerations/orderStatusEnum';
+import { PaymentOrderStatusEnum } from '../src/core/application/enumerations/paymentOrderEnum';
 
 const prisma = new PrismaClient();
 
@@ -87,7 +87,7 @@ async function main() {
 	// Criar produtos
 	const [product1, product2, product3] = await Promise.all([
 		prisma.product.upsert({
-			where: { name: 'Coca-Cola' },
+			where: { name: 'Coca-Cola', id: 'f434ca91-75e6-4d26-93ad-31a7e482deba' },
 			update: {},
 			create: {
 				name: 'Coca-Cola',
@@ -99,7 +99,7 @@ async function main() {
 			},
 		}),
 		prisma.product.upsert({
-			where: { name: 'Cheeseburger' },
+			where: { name: 'Cheeseburger', id: '6badf399-fd7b-4364-a916-d92e7f57a30e' },
 			update: {},
 			create: {
 				name: 'Cheeseburger',
@@ -112,7 +112,7 @@ async function main() {
 			},
 		}),
 		prisma.product.upsert({
-			where: { name: 'Milkshake' },
+			where: { name: 'Milkshake', id: '9726bed3-4d16-4b54-8316-0066eab2888e' },
 			update: {},
 			create: {
 				name: 'Milkshake',
@@ -183,6 +183,7 @@ async function main() {
 					connect: { id: customer1.id },
 				},
 				status: OrderStatusEnum.received,
+				readableId: '1',
 			},
 		}),
 		prisma.order.create({
@@ -196,6 +197,7 @@ async function main() {
 					connect: { id: customer2.id },
 				},
 				status: OrderStatusEnum.received,
+				readableId: '2',
 			},
 		}),
 	]);

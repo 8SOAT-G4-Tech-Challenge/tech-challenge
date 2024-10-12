@@ -1,3 +1,5 @@
+import { OrderStatusEnum } from '@application/enumerations/orderStatusEnum';
+import { PaymentNotificationStateEnum } from '@application/enumerations/paymentNotificationStateEnum';
 import { PaymentOrderStatusEnum } from '@application/enumerations/paymentOrderEnum';
 import logger from '@common/logger';
 import { PaymentOrder } from '@domain/models/paymentOrder';
@@ -11,10 +13,9 @@ import {
 	MakePaymentOrderParams,
 	UpdatePaymentOrderParams,
 } from '@ports/input/paymentOrders';
+import { OrderRepository } from '@ports/repository/orderRepository';
 import { PaymentOrderRepository } from '@ports/repository/paymentOrderRepository';
-import { PaymentNotificationStateEnum } from '@src/core/application/enumerations/paymentNotificationStateEnum';
 
-import { OrderStatusEnum } from '../enumerations/orderStatusEnum';
 import { UpdateOrderParams } from '../ports/input/orders';
 import { MercadoPagoService } from './mercadoPagoService';
 import { OrderService } from './orderService';
@@ -22,16 +23,20 @@ import { OrderService } from './orderService';
 export class PaymentOrderService {
 	private readonly paymentOrderRepository;
 
+	private readonly orderRepository;
+
 	private readonly orderService: OrderService;
 
 	private readonly mercadoPagoService: MercadoPagoService;
 
 	constructor(
 		paymentOrderRepository: PaymentOrderRepository,
+		orderRepository: OrderRepository,
 		orderService: OrderService,
 		mercadoPagoService: MercadoPagoService
 	) {
 		this.paymentOrderRepository = paymentOrderRepository;
+		this.orderRepository = orderRepository;
 		this.orderService = orderService;
 		this.mercadoPagoService = mercadoPagoService;
 	}
@@ -160,10 +165,15 @@ export class PaymentOrderService {
 				`Payment order updated successfully: ${JSON.stringify(paymentOrder)}`
 			);
 
+			const numberOfOrdersToday =
+				await this.orderRepository.getNumberOfValidOrdersToday() ?? 0;
+
 			const updateOrder: UpdateOrderParams = {
 				id: paymentOrder.orderId,
 				status: OrderStatusEnum.received,
+				readableId: `${numberOfOrdersToday + 1}`,
 			};
+
 			logger.info(`Updating order: ${JSON.stringify(updateOrder)}`);
 			const order = await this.orderService.updateOrder(updateOrder);
 			logger.info(`Order updated successfully: ${JSON.stringify(order)}`);
