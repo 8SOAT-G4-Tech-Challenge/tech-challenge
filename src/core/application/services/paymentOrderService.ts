@@ -135,7 +135,14 @@ export class PaymentOrderService {
 			await this.paymentOrderRepository.getPaymentOrderByOrderId({
 				orderId: notificationData.additional_info.external_reference,
 			});
-		if (paymentOrder) {
+
+		if (!paymentOrder) {
+			throw new PaymentNotificationException(
+				`Error processing payment finish notification. Payment order ${notificationData.additional_info.external_reference} not found.`
+			);
+		}
+
+		if (PaymentOrderStatusEnum.pending === paymentOrder.status) {
 			logger.info(`Found payment order: ${JSON.stringify(paymentOrder)}`);
 			const updatePaymentOrderParams: UpdatePaymentOrderParams = {
 				id: paymentOrder.id,
@@ -162,7 +169,7 @@ export class PaymentOrderService {
 			logger.info(`Order updated successfully: ${JSON.stringify(order)}`);
 		} else {
 			throw new PaymentNotificationException(
-				`Error processing payment notification. Payment order ${notificationData.additional_info.external_reference} not found.`
+				`Error processing payment finish notification. Payment order ${notificationData.additional_info.external_reference} with status other than pending. Current status: ${paymentOrder.status}`
 			);
 		}
 	}
@@ -176,7 +183,14 @@ export class PaymentOrderService {
 			await this.paymentOrderRepository.getPaymentOrderByOrderId({
 				orderId: notificationData.additional_info.external_reference,
 			});
-		if (paymentOrder) {
+
+		if (!paymentOrder) {
+			throw new PaymentNotificationException(
+				`Error processing payment cancelation notification. Payment order ${notificationData.additional_info.external_reference} not found.`
+			);
+		}
+
+		if (PaymentOrderStatusEnum.pending === paymentOrder.status) {
 			logger.info(`Found payment order: ${JSON.stringify(paymentOrder)}`);
 			const updatePaymentOrderParams: UpdatePaymentOrderParams = {
 				id: paymentOrder.id,
@@ -201,7 +215,7 @@ export class PaymentOrderService {
 			logger.info(`Order updated successfully: ${JSON.stringify(order)}`);
 		} else {
 			throw new PaymentNotificationException(
-				`Error processing payment notification. Payment order ${notificationData.additional_info.external_reference} not found.`
+				`Error processing payment cancelation notification. Payment order ${notificationData.additional_info.external_reference} with status other than pending. Current status: ${paymentOrder.status}`
 			);
 		}
 	}
