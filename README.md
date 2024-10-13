@@ -64,11 +64,11 @@ Para executar o deploy da aplicação siga a seguinte [documentação](docs/DEPL
 
 ### Desenho da infra-estrutura local da aplicação:
 
-To do
+![local](https://github.com/user-attachments/assets/77555751-c388-46b6-9e79-260dfd98e104)
 
 ### Desenho da infra-estrutura utilizando serviços de Cloud (To be):
 
-To do
+![aws_cloud](https://github.com/user-attachments/assets/21b13369-caea-438a-ae8e-3ba085b4888e)
 
 </details>
 
