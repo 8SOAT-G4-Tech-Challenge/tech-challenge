@@ -70,6 +70,10 @@ Para executar o deploy da aplicação siga a seguinte [documentação](docs/DEPL
 
 ![aws_cloud](https://github.com/user-attachments/assets/21b13369-caea-438a-ae8e-3ba085b4888e)
 
+### Vídeo de apresentação do projeto
+
+- [Tech challenge - Grupo 4 - Fase 2](https://youtu.be/gasm0z2YOBg)
+
 </details>
 
 ### Participantes do Projeto
