@@ -1,9 +1,9 @@
-import { productCategoryCreateSchema } from '@driver/schemas/productCategorySchema';
+import { productCategoryCreateUpdateSchema } from '@driver/schemas/productCategorySchema';
 import { ProductCategory } from '@models/productCategory';
 import { ProductCategoryRepository } from '@ports/repository/productCategoryRepository';
 
 import { InvalidProductCategoryException } from '../exceptions/invalidProductCategoryException';
-import { DeleteProductCategoryParams } from '../ports/input/productCategory';
+import { DeleteProductCategoryParams, UpdateProductCategoryParams } from '../ports/input/productCategory';
 
 export class ProductCategoryService {
 	private readonly productCategoryRepository;
@@ -25,9 +25,32 @@ export class ProductCategoryService {
 	async createProductCategory(
 		productCategoryData: any,
 	): Promise<ProductCategory> {
-		productCategoryCreateSchema.parse(productCategoryData);
+		productCategoryCreateUpdateSchema.parse(productCategoryData);
 		return this.productCategoryRepository.createProductCategory(
 			productCategoryData,
+		);
+	}
+
+	async updateProductCategory(
+		id: string,
+		productCategoryData: UpdateProductCategoryParams
+	): Promise<ProductCategory> {
+		productCategoryCreateUpdateSchema.parse(productCategoryData);
+
+		const existingProductCategory =
+		await this.productCategoryRepository.getProductCategoryById(
+			id,
+		);
+
+		if (!existingProductCategory) {
+			throw new InvalidProductCategoryException(
+				`Category Product with ID ${id} not found.`,
+			);
+		}
+
+		return this.productCategoryRepository.updateProductCategory(
+			id,
+			productCategoryData
 		);
 	}
 

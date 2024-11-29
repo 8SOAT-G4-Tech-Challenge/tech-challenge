@@ -113,19 +113,19 @@ export class PaymentOrderService {
 		notificationData: NotificationPaymentDto
 	): Promise<void> {
 		switch (notificationData.state) {
-			case PaymentNotificationStateEnum.FINISHED:
-				await this.finalizePayment(notificationData);
-				break;
-			case PaymentNotificationStateEnum.CONFIRMATION_REQUIRED:
-				logger.info('Confirmation payment required');
-				break;
-			case PaymentNotificationStateEnum.CANCELED:
-				await this.cancelPayment(notificationData);
-				break;
-			default:
-				throw new PaymentNotificationException(
-					`Invalid payment notification type ${notificationData.state}`
-				);
+		case PaymentNotificationStateEnum.FINISHED:
+			await this.finalizePayment(notificationData);
+			break;
+		case PaymentNotificationStateEnum.CONFIRMATION_REQUIRED:
+			logger.info('Confirmation payment required');
+			break;
+		case PaymentNotificationStateEnum.CANCELED:
+			await this.cancelPayment(notificationData);
+			break;
+		default:
+			throw new PaymentNotificationException(
+				`Invalid payment notification type ${notificationData.state}`
+			);
 		}
 	}
 

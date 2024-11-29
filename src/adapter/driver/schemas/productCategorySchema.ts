@@ -1,12 +1,10 @@
 import { z } from 'zod';
 
-const productCategoryCreateSchema = z
+export const productCategoryCreateUpdateSchema = z
 	.object({
 		name: z.string().min(3),
 	})
 	.required();
-
-export { productCategoryCreateSchema };
 
 export const getProductCategoryByIdSchema = z
 	.object({
