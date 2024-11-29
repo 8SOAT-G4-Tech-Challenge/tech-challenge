@@ -3,10 +3,21 @@ import { CustomerRepository } from '@application/ports/repository/customerReposi
 import { prisma } from '@driven/infra/lib/prisma';
 import { CustomerDto } from '@driver/schemas/customerSchema';
 import { Customer } from '@models/customer';
+import { cacheService } from '@src/core/application/services/cacheService';
 
 export class CustomerRepositoryImpl implements CustomerRepository {
+	private readonly cacheKey = 'customers:list';
+
+	private readonly expirationTime = 300;
+
 	async getCustomers(): Promise<Customer[]> {
-		const costumers = await prisma.customer.findMany({
+		const cacheData = await cacheService.get<Customer[]>(this.cacheKey);
+
+		if (cacheData) {
+			return cacheData;
+		}
+
+		const customers = await prisma.customer.findMany({
 			select: {
 				id: true,
 				name: true,
@@ -17,7 +28,8 @@ export class CustomerRepositoryImpl implements CustomerRepository {
 			},
 		});
 
-		return costumers;
+		await cacheService.set(this.cacheKey, customers, this.expirationTime);
+		return customers;
 	}
 
 	async getCustomerById(id: string): Promise<Customer | null> {

@@ -12,6 +12,8 @@ import {
 	customerSchema,
 } from '@src/adapter/driver/schemas/customerSchema';
 
+import { cacheService } from './cacheService';
+
 export class CustomerService {
 	private readonly customerRepository;
 
@@ -60,7 +62,11 @@ export class CustomerService {
 			);
 		}
 
-		return this.customerRepository.createCustomer(customerDto);
+		const createdCustomer = this.customerRepository.createCustomer(customerDto);
+
+		await cacheService.delete('customers:list');
+
+		return createdCustomer;
 	}
 
 	async deleteCustomer(
@@ -77,6 +83,11 @@ export class CustomerService {
 			);
 		}
 
-		return this.customerRepository.deleteCustomer(deleteCustomerParams);
+		const deletedCustomer =
+			this.customerRepository.deleteCustomer(deleteCustomerParams);
+
+		await cacheService.delete('customers:list');
+
+		return deletedCustomer;
 	}
 }
