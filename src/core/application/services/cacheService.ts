@@ -1,6 +1,5 @@
 import logger from '@common/logger';
-
-import redisClient from '../ports/output/redisClient';
+import redis from '@src/adapter/driven/infra/lib/redis';
 
 export class CacheService {
 	private logError(action: string, key: string, error: any): void {
@@ -11,7 +10,7 @@ export class CacheService {
 
 	async get<T>(key: string): Promise<T | null> {
 		try {
-			const cacheData = await redisClient.get(key);
+			const cacheData = await redis.get(key);
 			if (!cacheData) {
 				logger.info(`Cache miss for key: ${key}`);
 				return null;
@@ -26,7 +25,7 @@ export class CacheService {
 
 	async set<T>(key: string, value: T, ttlInSeconds: number): Promise<void> {
 		try {
-			await redisClient.set(key, JSON.stringify(value), { EX: ttlInSeconds });
+			await redis.set(key, JSON.stringify(value), { EX: ttlInSeconds });
 			logger.info(
 				`Cache set for key: ${key} with TTL: ${ttlInSeconds} seconds`
 			);
@@ -38,7 +37,7 @@ export class CacheService {
 
 	async delete(key: string): Promise<void> {
 		try {
-			await redisClient.del(key);
+			await redis.del(key);
 			logger.info(`Cache deleted for key: ${key}`);
 		} catch (error) {
 			this.logError('DELETE', key, error);

@@ -1,9 +1,8 @@
 import { productCategoryCreateUpdateSchema } from '@driver/schemas/productCategorySchema';
+import { InvalidProductCategoryException } from '@exceptions/invalidProductCategoryException';
 import { ProductCategory } from '@models/productCategory';
+import { DeleteProductCategoryParams, UpdateProductCategoryParams } from '@ports/input/productCategory';
 import { ProductCategoryRepository } from '@ports/repository/productCategoryRepository';
-
-import { InvalidProductCategoryException } from '../exceptions/invalidProductCategoryException';
-import { DeleteProductCategoryParams, UpdateProductCategoryParams } from '../ports/input/productCategory';
 
 export class ProductCategoryService {
 	private readonly productCategoryRepository;
