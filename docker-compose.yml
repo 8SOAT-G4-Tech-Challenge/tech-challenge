@@ -1,26 +1,6 @@
 version: '3.8'
 
 services:
-  postgres:
-    container_name: tech-challenger-pg
-    image: postgres
-    ports:
-      - '5432:5432'
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: docker
-      POSTGRES_DB: tech-challenger
-      PGDATA: '/var/lib/postgresql/data'
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - tech-challenger-network
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   app:
     container_name: tech-challenger-api
     build:
@@ -30,11 +10,8 @@ services:
       - '3333:3333'
       - '5555:5555'
     env_file: .env
-    depends_on:
-      postgres:
-        condition: service_healthy
     environment:
-      DATABASE_URL: 'postgresql://postgres:docker@postgres:5432/tech-challenger'
+      DATABASE_URL: 'postgres://postgres:tech-challenge@database-2.cbdvc6vooftr.us-east-1.rds.amazonaws.com/postgres'
       API_PORT: 3333
     networks:
       - tech-challenger-network

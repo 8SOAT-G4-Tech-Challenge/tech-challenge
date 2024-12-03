@@ -29,14 +29,10 @@ WORKDIR /app
 RUN apk add --no-cache openssl
 
 # Copia apenas os arquivos necessários da etapa de build
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/package-lock.json ./package-lock.json
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/ .
 
 # Define as variáveis de ambiente necessárias
-ENV DATABASE_URL=postgresql://postgres:docker@postgres:5432/tech-challenger
+ENV DATABASE_URL=postgres://postgres:tech-challenge@database-2.cbdvc6vooftr.us-east-1.rds.amazonaws.com/postgres
 
 # Exposição da porta para API
 EXPOSE 3333
@@ -45,4 +41,4 @@ EXPOSE 3333
 EXPOSE 5555
 
 # Comando para criar banco de dados, iniciar a aplicação e o Prisma Studio
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/adapter/driver/server.js & npx prisma studio"]
+CMD ["sh", "-c", "npx prisma migrate deploy &&  npx prisma db seed && node dist/adapter/driver/server.js"]
