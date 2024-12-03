@@ -200,3 +200,121 @@ export const SwaggerDeleteProductCategories = {
 		},
 	},
 };
+
+export const SwaggerUpdateProductCategories = {
+	schema: {
+		summary: 'Update product category',
+		description: 'Update an existing product category by ID',
+		tags: ['Product Category'],
+		params: {
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+					format: 'uuid',
+					description: 'The unique identifier of the product category to update',
+				},
+			},
+			required: ['id'],
+			additionalProperties: false,
+		},
+		body: {
+			type: 'object',
+			properties: {
+				name: {
+					type: 'string',
+					description: 'The updated name of the product category',
+					minLength: 3,
+				},
+			},
+			required: ['name'],
+			additionalProperties: false,
+		},
+		response: {
+			200: {
+				description: 'Successfully updated product category',
+				type: 'object',
+				properties: {
+					id: {
+						type: 'string',
+						format: 'uuid',
+					},
+					name: {
+						type: 'string',
+					},
+					createdAt: {
+						type: 'string',
+						format: 'datetime',
+					},
+					updatedAt: {
+						type: 'string',
+						format: 'datetime',
+					},
+				},
+			},
+			400: {
+				description: 'Invalid parameters to update product category',
+				type: 'object',
+				properties: {
+					path: {
+						type: 'string',
+					},
+					status: {
+						type: 'string',
+					},
+					message: {
+						type: 'string',
+					},
+					details: {
+						type: 'array',
+						items: {
+							type: 'string',
+						},
+					},
+				},
+			},
+			404: {
+				description: 'Product category not found',
+				type: 'object',
+				properties: {
+					path: {
+						type: 'string',
+					},
+					status: {
+						type: 'string',
+					},
+					message: {
+						type: 'string',
+					},
+					details: {
+						type: 'array',
+						items: {
+							type: 'string',
+						},
+					},
+				},
+			},
+			500: {
+				description: 'Unexpected error when updating product category',
+				type: 'object',
+				properties: {
+					path: {
+						type: 'string',
+					},
+					status: {
+						type: 'string',
+					},
+					message: {
+						type: 'string',
+					},
+					details: {
+						type: 'array',
+						items: {
+							type: 'string',
+						},
+					},
+				},
+			},
+		},
+	},
+};

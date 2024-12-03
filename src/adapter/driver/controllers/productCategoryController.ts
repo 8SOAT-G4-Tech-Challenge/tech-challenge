@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import logger from '@common/logger';
 import { handleError } from '@driver/errorHandler';
 import { ProductCategoryService } from '@services/productCategoryService';
-import { DeleteProductCategoryParams } from '@src/core/application/ports/input/productCategory';
+import { DeleteProductCategoryParams, UpdateProductCategoryParams } from '@src/core/application/ports/input/productCategory';
 
 export class ProductCategoryController {
 	private readonly productCategoryService;
@@ -35,6 +35,29 @@ export class ProductCategoryController {
 			reply.code(StatusCodes.CREATED).send(productCategory);
 		} catch (error) {
 			const errorMessage = 'Unexpected when creating for product category';
+			logger.error(`${errorMessage}: ${error}`);
+			handleError(req, reply, error);
+		}
+	}
+
+	async updateProductCategories(
+		req: FastifyRequest<{ Body: UpdateProductCategoryParams; Params: { id: string } }>,
+		reply: FastifyReply
+	): Promise<void> {
+		const { id } = req.params;
+		const productCategoryData = req.body;
+
+		try {
+			logger.info(`Updating product category with ID: ${id}`);
+
+			const updatedProductCategory = await this.productCategoryService.updateProductCategory(
+				id,
+				productCategoryData
+			);
+
+			reply.code(StatusCodes.OK).send(updatedProductCategory);
+		} catch (error) {
+			const errorMessage = 'Unexpected error when updating product category';
 			logger.error(`${errorMessage}: ${error}`);
 			handleError(req, reply, error);
 		}

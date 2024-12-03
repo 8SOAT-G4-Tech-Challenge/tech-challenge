@@ -1,7 +1,10 @@
 import { prisma } from '@driven/infra/lib/prisma';
 import { ProductCategory } from '@models/productCategory';
 import { ProductCategoryRepository } from '@ports/repository/productCategoryRepository';
-import { DeleteProductCategoryParams } from '@src/core/application/ports/input/productCategory';
+import {
+	DeleteProductCategoryParams,
+	UpdateProductCategoryParams,
+} from '@src/core/application/ports/input/productCategory';
 import { Product } from '@src/core/domain/models/product';
 
 export class ProductCategoryRepositoryImpl
@@ -18,15 +21,25 @@ implements ProductCategoryRepository {
 	}
 
 	async createProductCategory(
-		productCategory: ProductCategory,
+		productCategory: ProductCategory
 	): Promise<ProductCategory> {
 		return prisma.productCategory.create({
 			data: productCategory,
 		});
 	}
 
+	async updateProductCategory(
+		id: string,
+		productCategory: UpdateProductCategoryParams
+	): Promise<ProductCategory> {
+		return prisma.productCategory.update({
+			where: { id },
+			data: productCategory,
+		});
+	}
+
 	async getProductCategoryByName(
-		nameFilter: string,
+		nameFilter: string
 	): Promise<ProductCategory | null> {
 		return prisma.productCategory.findFirst({
 			where: {
@@ -73,7 +86,7 @@ implements ProductCategoryRepository {
 	}
 
 	async deleteProductCategories(
-		deleteProductCategoryParams: DeleteProductCategoryParams,
+		deleteProductCategoryParams: DeleteProductCategoryParams
 	): Promise<void> {
 		await prisma.productCategory.delete({
 			where: { id: deleteProductCategoryParams.id },

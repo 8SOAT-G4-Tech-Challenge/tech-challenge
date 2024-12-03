@@ -66,6 +66,7 @@ import {
 	SwaggerCreateProductCategories,
 	SwaggerDeleteProductCategories,
 	SwaggerGetProductCategories,
+	SwaggerUpdateProductCategories,
 } from './doc/productCategory';
 import { SwaggerGetUsers } from './doc/user';
 
@@ -181,6 +182,13 @@ export const routes = async (fastify: FastifyInstance) => {
 		'/product-categories',
 		SwaggerGetProductCategories,
 		productCategoryController.getProductCategories.bind(
+			productCategoryController
+		)
+	);
+	fastify.put(
+		'/product-categories/:id',
+		SwaggerUpdateProductCategories,
+		productCategoryController.updateProductCategories.bind(
 			productCategoryController
 		)
 	);
