@@ -127,135 +127,135 @@ const cartController = new CartController(cartService);
 // Usem esse site para gerar o swagger a partir do JSON -> https://roger13.github.io/SwagDefGen/
 export const routes = async (fastify: FastifyInstance) => {
 	fastify.get(
-		'/users',
+		'/admin/users',
 		SwaggerGetUsers,
 		userController.getUsers.bind(userController)
 	);
 	fastify.get(
-		'/customers',
+		'/admin/customers',
 		SwaggerGetCustomers,
 		customerController.getCustomers.bind(customerController)
 	);
 	fastify.get(
-		'/customers/property',
+		'/totem/customers/property',
 		SwaggerGetCustomersProperty,
 		customerController.getCustomerByProperty.bind(customerController)
 	);
 	fastify.post(
-		'/customers',
+		'/totem/customers',
 		SwaggerCreateCustomers,
 		customerController.createCustomer.bind(customerController)
 	);
 	fastify.delete(
-		'/customers/:id',
+		'/admin/customers/:id',
 		SwaggerDeleteCustomers,
 		customerController.deleteCustomer.bind(customerController)
 	);
 	fastify.get(
-		'/products',
+		'/totem/products',
 		SwaggerGetProducts,
 		productController.getProducts.bind(productController)
 	);
 	fastify.post(
-		'/products',
+		'/admin/products',
 		SwaggerCreateProducts,
 		productController.createProducts.bind(productController)
 	);
 	fastify.put(
-		'/products/:id',
+		'/admin/products/:id',
 		SwaggerUpdateProducts,
 		productController.updateProducts.bind(productController)
 	);
 	fastify.delete(
-		'/products/:id',
+		'/admin/products/:id',
 		SwaggerDeleteProducts,
 		productController.deleteProducts.bind(productController)
 	);
 	fastify.post(
-		'/product-categories',
+		'/admin/product-categories',
 		SwaggerCreateProductCategories,
 		productCategoryController.createProductCategory.bind(
 			productCategoryController
 		)
 	);
 	fastify.get(
-		'/product-categories',
+		'/totem/product-categories',
 		SwaggerGetProductCategories,
 		productCategoryController.getProductCategories.bind(
 			productCategoryController
 		)
 	);
 	fastify.put(
-		'/product-categories/:id',
+		'/admin/product-categories/:id',
 		SwaggerUpdateProductCategories,
 		productCategoryController.updateProductCategories.bind(
 			productCategoryController
 		)
 	);
 	fastify.delete(
-		'/product-categories/:id',
+		'/admin/product-categories/:id',
 		SwaggerDeleteProductCategories,
 		productCategoryController.deleteProductCategories.bind(
 			productCategoryController
 		)
 	);
 	fastify.get(
-		'/orders',
+		'/admin/orders',
 		SwaggerGetOrders,
 		orderController.getOrders.bind(orderController)
 	);
 	fastify.get(
-		'/orders/:id',
+		'/totem/orders/:id',
 		SwaggerGetOrdersById,
 		orderController.getOrderById.bind(orderController)
 	);
 	fastify.post(
-		'/orders',
+		'/totem/orders',
 		SwaggerCreateOrder,
 		orderController.createOrder.bind(orderController)
 	);
 	fastify.put(
-		'/orders/:id',
+		'/totem/orders/:id',
 		SwaggerUpdateOrder,
 		orderController.updateOrder.bind(orderController)
 	);
 	fastify.post(
-		'/order-items/:orderId',
+		'/totem/order-items/:orderId',
 		SwaggerAddItemToCart,
 		cartController.addItemToCart.bind(cartController)
 	);
 	fastify.put(
-		'/order-items/:id',
+		'/totem/order-items/:id',
 		SwaggerUpdateCartItem,
 		cartController.updateCartItem.bind(cartController)
 	);
 	fastify.delete(
-		'/order-items/:id',
+		'/totem/order-items/:id',
 		SwaggerDeleteOrderItem,
 		cartController.deleteCartItem.bind(cartController)
 	);
 	fastify.get(
-		'/payment-orders',
+		'/admin/payment-orders',
 		SwaggerGetPaymentOrders,
 		paymentOrderController.getPaymentOrders.bind(paymentOrderController)
 	);
 	fastify.get(
-		'/payment-orders/:id',
+		'/totem/payment-orders/:id',
 		SwaggerGetPaymentOrderById,
 		paymentOrderController.getPaymentOrderById.bind(paymentOrderController)
 	);
 	fastify.get(
-		'/orders/:orderId/payment-orders',
+		'/totem/orders/:orderId/payment-orders',
 		SwaggerGetPaymentOrderByOrderId,
 		paymentOrderController.getPaymentOrderByOrderId.bind(paymentOrderController)
 	);
 	fastify.post(
-		'/payment-orders/make-payment/:orderId',
+		'/totem/payment-orders/make-payment/:orderId',
 		SwaggerPaymentOrderMakePayment,
 		paymentOrderController.makePayment.bind(paymentOrderController)
 	);
 	fastify.post(
-		'/payment-orders/process-payment-notifications',
+		'/totem/payment-orders/process-payment-notifications',
 		SwaggerPaymentOrderProcessPaymentNotifications,
 		paymentOrderController.processPaymentNotification.bind(
 			paymentOrderController
