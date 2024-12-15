@@ -54,7 +54,7 @@ Os endpoints disponíveis, suas descrições e dados necessários para requisiç
 </details>
 
 <details>
-	<summary open>
+	<summary>
 		<i><b>FASE 02 - Kubernetes e Clean Architecture</b></i>
 	</summary>
 
@@ -73,6 +73,30 @@ Para executar o deploy da aplicação siga a seguinte [documentação](docs/DEPL
 ### Vídeo de apresentação do projeto
 
 - [Tech challenge - Grupo 4 - Fase 2](https://youtu.be/gasm0z2YOBg)
+
+</details>
+
+<details>
+	<summary>
+		<i><b>FASE 03 - AWS Cloud e Terraform</b></i>
+	</summary>
+
+### Requerimentos
+
+- Node versão 20;
+- KubeCTL
+- AWS CLI
+- Terraform
+
+### Desenho da infraestrutura Cloud
+
+[Desenho Arquitetura drawio](https://drive.google.com/file/d/1y7T1N6wRgpz-XEwMXWtzjVsCxz71yy1p/view?usp=sharing)
+
+![Desenho Arquitetura drawio](https://github.com/user-attachments/assets/0f953ddc-52e4-4467-b566-e5f984addd6f)
+
+### Execução
+
+Para executar a aplicação siga a seguinte [documentação](docs/FASE-3.md), que possui todos os passos para iniciar e executar a aplicação localmente.
 
 </details>
 
