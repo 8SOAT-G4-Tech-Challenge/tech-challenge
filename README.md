@@ -90,6 +90,8 @@ Para executar o deploy da aplicação siga a seguinte [documentação](docs/DEPL
 
 ### Desenho da infraestrutura Cloud
 
+[Desenho Arquitetura drawio](https://drive.google.com/file/d/1y7T1N6wRgpz-XEwMXWtzjVsCxz71yy1p/view?usp=sharing)
+
 ![Desenho Arquitetura drawio](https://github.com/user-attachments/assets/0f953ddc-52e4-4467-b566-e5f984addd6f)
 
 ### Execução
