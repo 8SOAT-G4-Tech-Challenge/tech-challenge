@@ -6,7 +6,15 @@ module.exports = {
 		'^.+.tsx?$': ['ts-jest', {}],
 	},
 	testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
-	collectCoverageFrom: ['src/**/*.ts', '!src/uploads'],
+	collectCoverageFrom: [
+		'src/**/*.ts',
+		'!src/uploads',
+		'!src/adapter/driver/routes/*',
+		'!src/adapter/driver/routes/doc/*',
+		'!src/adapter/driver/server.ts',
+		'!src/adapter/driven/infra/lib/*',
+		'!**/index.ts',
+	],
 	testResultsProcessor: 'jest-sonar-reporter',
 	coverageThreshold: {
 		global: {

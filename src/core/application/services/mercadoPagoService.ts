@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+import {
+	convertKeysToCamelCase,
+	convertKeysToSnakeCase,
+} from '@application/utils/caseConverterUtil';
 import { EnvironmentService } from '@common/environmentService';
 import logger from '@common/logger';
 import { InvalidMercadoPagoException } from '@exceptions/invalidMercadoPagoException';
@@ -9,10 +13,6 @@ import {
 	CreateQrResponse,
 } from '@models/mercadoPagoQr';
 import { OrderItem } from '@models/orderItem';
-import {
-	convertKeysToCamelCase,
-	convertKeysToSnakeCase,
-} from '@application/utils/caseConverterUtil';
 
 import { CartService } from './cartService';
 import { ProductService } from './productService';
@@ -122,7 +122,7 @@ export class MercadoPagoService {
 
 			return formattedResponse;
 		} catch (error) {
-			if (axios.isAxiosError(error) && error.response) {
+			if (axios?.isAxiosError(error) && error.response) {
 				const { data, status } = error.response;
 
 				const errorMessage = data.message || 'Unknown error occurred';

@@ -3,20 +3,13 @@ import { getProductImageByIdSchema } from '@driver/schemas/productImageSchema';
 import { InvalidProductImageException } from '@exceptions/invalidProductImageException';
 import { ProductImage } from '@models/productImage';
 import { GetProductImageByIdParams } from '@ports/input/productImage';
-import { FileSystemStorage } from '@ports/output/fileSystemStorage';
 import { ProductImageRepository } from '@ports/repository/productImageRepository';
 
 export class ProductImageService {
 	private readonly productImageRepository;
 
-	private readonly fileStorage;
-
-	constructor(
-		productImageRepository: ProductImageRepository,
-		fileStorage: FileSystemStorage,
-	) {
+	constructor(productImageRepository: ProductImageRepository) {
 		this.productImageRepository = productImageRepository;
-		this.fileStorage = fileStorage;
 	}
 
 	async getProductImageById({
@@ -25,7 +18,7 @@ export class ProductImageService {
 		const { success } = getProductImageByIdSchema.safeParse({ id });
 		if (!success) {
 			throw new InvalidProductImageException(
-				`Error listing product image by Id. Invalid Id: ${id}`,
+				`Error listing product image by Id. Invalid Id: ${id}`
 			);
 		}
 

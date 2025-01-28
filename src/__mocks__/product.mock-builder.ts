@@ -59,7 +59,7 @@ export class ProductMockBuilder {
 	}
 
 	withDefaultValues() {
-		this.id = '123e4567-e89b-12d3-a456-426614174000';
+		this.id = '451e2afc-75bd-4e68-a1a2-8ec2f038db9a';
 		this.name = 'Default Product Name';
 		this.description = 'Default product description.';
 		this.value = 99.99;
