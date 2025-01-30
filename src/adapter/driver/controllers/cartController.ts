@@ -34,7 +34,9 @@ export class CartController {
 			reply.code(StatusCodes.CREATED).send(orderItem);
 		} catch (error) {
 			logger.error(
-				`Unexpected error when trying to add product to cart: ${error}`
+				`Unexpected error when trying to add product to cart: ${JSON.stringify(
+					error
+				)}`
 			);
 			handleError(req, reply, error);
 		}
@@ -55,7 +57,9 @@ export class CartController {
 			});
 			reply.code(StatusCodes.OK).send(orderItem);
 		} catch (error) {
-			logger.error(`Unexpected error when trying to update cart: ${error}`);
+			logger.error(
+				`Unexpected error when trying to update cart: ${JSON.stringify(error)}`
+			);
 			handleError(req, reply, error);
 		}
 	}
@@ -67,13 +71,15 @@ export class CartController {
 		reply: FastifyReply
 	) {
 		try {
-			logger.info(`Updating cart item ${req?.params?.id}`);
+			logger.info(`Deleting cart item ${req?.params?.id}`);
 
-			reply
-				.code(StatusCodes.OK)
-				.send(await this.cartService.deleteCartItem(req?.params?.id));
+			await this.cartService.deleteCartItem(req?.params?.id);
+
+			reply.code(StatusCodes.OK).send();
 		} catch (error) {
-			logger.error(`Unexpected error when trying to delete cart: ${error}`);
+			logger.error(
+				`Unexpected error when trying to delete cart: ${JSON.stringify(error)}`
+			);
 			handleError(req, reply, error);
 		}
 	}

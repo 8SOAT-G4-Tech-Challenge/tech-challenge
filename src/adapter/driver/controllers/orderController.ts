@@ -29,7 +29,9 @@ export class OrderController {
 			const orders: Order[] = await this.orderService.getOrders(req.query);
 			reply.code(StatusCodes.OK).send(orders);
 		} catch (error) {
-			logger.error(`Unexpected error when trying to get orders: ${error}`);
+			logger.error(
+				`Unexpected error when trying to get orders: ${JSON.stringify(error)}`
+			);
 			handleError(req, reply, error);
 		}
 	}
@@ -43,9 +45,13 @@ export class OrderController {
 			const order: CreateOrderResponse = await this.orderService.getOrderById(
 				req?.params
 			);
-			reply.code(StatusCodes.CREATED).send(order);
+			reply.code(StatusCodes.OK).send(order);
 		} catch (error) {
-			logger.error(`Unexpected error when trying to create order: ${error}`);
+			logger.error(
+				`Unexpected error when trying to list order by id: ${JSON.stringify(
+					error
+				)}`
+			);
 			handleError(req, reply, error);
 		}
 	}
@@ -61,7 +67,9 @@ export class OrderController {
 			);
 			reply.code(StatusCodes.CREATED).send(order);
 		} catch (error) {
-			logger.error(`Unexpected error when trying to create order: ${error}`);
+			logger.error(
+				`Unexpected error when trying to create order: ${JSON.stringify(error)}`
+			);
 			handleError(req, reply, error);
 		}
 	}
@@ -71,14 +79,16 @@ export class OrderController {
 		reply: FastifyReply
 	) {
 		try {
-			logger.info('Updating order', req?.params?.id);
+			logger.info(`Updating order ${req?.params?.id}`);
 			const order: CreateOrderResponse = await this.orderService.updateOrder({
 				...req.body,
 				id: req?.params?.id,
 			});
 			reply.code(StatusCodes.OK).send(order);
 		} catch (error) {
-			logger.error(`Unexpected error when trying to create order: ${error}`);
+			logger.error(
+				`Unexpected error when trying to update order: ${JSON.stringify(error)}`
+			);
 			handleError(req, reply, error);
 		}
 	}
