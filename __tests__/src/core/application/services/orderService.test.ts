@@ -234,7 +234,7 @@ describe('OrderService -> Test', () => {
 
 			(mockOrderRepository.updateOrder as jest.Mock).mockResolvedValue(order);
 
-			const response = await service.updateOrder(order);
+			const response = await service.updateOrder(order as any);
 
 			expect(mockOrderRepository.updateOrder).toHaveBeenCalledWith(order);
 			expect(loggerSpy).toHaveBeenCalledWith(`Updating order: ${order.id}`);

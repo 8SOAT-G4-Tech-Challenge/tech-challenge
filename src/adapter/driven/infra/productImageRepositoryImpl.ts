@@ -16,7 +16,7 @@ export class ProductImageRepositoryImpl implements ProductImageRepository {
 			})
 			.catch(() => {
 				throw new DataNotFoundException(
-					`Product Image with id: ${id} not found`,
+					`Product Image with id: ${id} not found`
 				);
 			});
 	}
@@ -40,7 +40,7 @@ export class ProductImageRepositoryImpl implements ProductImageRepository {
 			})
 			.catch(() => {
 				throw new DataNotFoundException(
-					`Product Image with productId: ${productId} not found`,
+					`Product Image with productId: ${productId} not found`
 				);
 			});
 	}
