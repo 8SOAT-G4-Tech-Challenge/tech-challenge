@@ -1,7 +1,6 @@
 import { CustomerMockBuilder } from '@src/__mocks__/customer.mock-builder';
-
-import { InvalidCustomerException } from '../../exceptions/invalidCustomerException';
-import { CustomerService } from '../customerService';
+import { InvalidCustomerException } from '@src/core/application/exceptions/invalidCustomerException';
+import { CustomerService } from '@src/core/application/services/customerService';
 
 jest.mock('@src/adapter/driven/infra/lib/redis', () => ({
 	get: jest.fn(),

@@ -1,7 +1,6 @@
 import { ProductCategoryMockBuilder } from '@src/__mocks__/product-category.mock-builder';
-
-import { InvalidProductCategoryException } from '../../exceptions/invalidProductCategoryException';
-import { ProductCategoryService } from '../productCategoryService';
+import { InvalidProductCategoryException } from '@src/core/application/exceptions/invalidProductCategoryException';
+import { ProductCategoryService } from '@src/core/application/services/productCategoryService';
 
 describe('ProductCategoryService -> Test', () => {
 	let service: ProductCategoryService;

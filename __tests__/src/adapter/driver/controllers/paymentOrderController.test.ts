@@ -1,7 +1,6 @@
 import { PaymentOrderMockBuilder } from '@src/__mocks__/payment-order-service.mock-builder';
+import { PaymentOrderController } from '@src/adapter/driver/controllers/paymentOrderController';
 import logger from '@src/core/common/logger';
-
-import { PaymentOrderController } from '../paymentOrderController';
 
 describe('PaymentOrderController -> Test', () => {
 	let controller: PaymentOrderController;

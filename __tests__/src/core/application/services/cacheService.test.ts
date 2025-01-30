@@ -1,8 +1,7 @@
 import { ProductMockBuilder } from '@src/__mocks__/product.mock-builder';
 import redis from '@src/adapter/driven/infra/lib/redis';
+import { CacheService } from '@src/core/application/services/cacheService';
 import logger from '@src/core/common/logger';
-
-import { CacheService } from '../cacheService';
 
 jest.mock('@src/adapter/driven/infra/lib/redis', () => ({
 	get: jest.fn(),

@@ -1,6 +1,5 @@
 import { UserMockBuilder } from '@src/__mocks__/user.mock-builder';
-
-import { UserService } from '../userService';
+import { UserService } from '@src/core/application/services/userService';
 
 describe('UserService -> Test', () => {
 	let service: UserService;

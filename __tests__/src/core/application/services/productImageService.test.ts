@@ -1,7 +1,6 @@
 import { ProductImageMockBuilder } from '@src/__mocks__/product-image.mock-builder';
-
-import { InvalidProductImageException } from '../../exceptions/invalidProductImageException';
-import { ProductImageService } from '../productImageService';
+import { InvalidProductImageException } from '@src/core/application/exceptions/invalidProductImageException';
+import { ProductImageService } from '@src/core/application/services/productImageService';
 
 describe('ProductImageService -> Test', () => {
 	let service: ProductImageService;

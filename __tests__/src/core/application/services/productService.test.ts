@@ -1,11 +1,10 @@
 import { CreateProductMockBuilder } from '@src/__mocks__/create-product.mock-builder';
 import { ProductCategoryMockBuilder } from '@src/__mocks__/product-category.mock-builder';
 import { ProductMockBuilder } from '@src/__mocks__/product.mock-builder';
+import { DataNotFoundException } from '@src/core/application/exceptions/dataNotFound';
+import { InvalidProductException } from '@src/core/application/exceptions/invalidProductException';
+import { ProductService } from '@src/core/application/services/productService';
 import logger from '@src/core/common/logger';
-
-import { DataNotFoundException } from '../../exceptions/dataNotFound';
-import { InvalidProductException } from '../../exceptions/invalidProductException';
-import { ProductService } from '../productService';
 
 describe('ProductService -> Test', () => {
 	let service: ProductService;

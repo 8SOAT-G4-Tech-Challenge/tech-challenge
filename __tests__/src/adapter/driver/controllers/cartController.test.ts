@@ -1,7 +1,6 @@
 import { AddItemToCartMockBuilder } from '@src/__mocks__/add-item-to-cart.mock-builder';
+import { CartController } from '@src/adapter/driver/controllers/cartController';
 import logger from '@src/core/common/logger';
-
-import { CartController } from '../cartController';
 
 describe('CartController -> Test', () => {
 	let controller: CartController;

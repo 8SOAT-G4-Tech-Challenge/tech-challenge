@@ -1,7 +1,6 @@
 import { OrderMockBuilder } from '@src/__mocks__/order.mock-builder';
+import { OrderController } from '@src/adapter/driver/controllers/orderController';
 import logger from '@src/core/common/logger';
-
-import { OrderController } from '../orderController';
 
 describe('OrderController -> Test', () => {
 	let controller: OrderController;

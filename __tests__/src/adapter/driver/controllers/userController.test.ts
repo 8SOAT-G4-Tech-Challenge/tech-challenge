@@ -1,7 +1,6 @@
 import { UserMockBuilder } from '@src/__mocks__/user.mock-builder';
+import { UserController } from '@src/adapter/driver/controllers/userController';
 import logger from '@src/core/common/logger';
-
-import { UserController } from '../userController';
 
 describe('UserController -> Test', () => {
 	let controller: UserController;

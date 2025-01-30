@@ -1,7 +1,6 @@
 import { ProductMockBuilder } from '@src/__mocks__/product.mock-builder';
+import { ProductController } from '@src/adapter/driver/controllers/productController';
 import logger from '@src/core/common/logger';
-
-import { ProductController } from '../productController';
 
 describe('ProductController -> Test', () => {
 	let controller: ProductController;

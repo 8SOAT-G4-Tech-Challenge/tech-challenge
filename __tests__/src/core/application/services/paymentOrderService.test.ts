@@ -3,10 +3,10 @@ import { PaymentNotificationMockBuilder } from '@src/__mocks__/payment-notificat
 import { PaymentOrderMockBuilder } from '@src/__mocks__/payment-order-service.mock-builder';
 import logger from '@src/core/common/logger';
 
-import { PaymentNotificationStateEnum } from '../../enumerations/paymentNotificationStateEnum';
-import { InvalidPaymentOrderException } from '../../exceptions/invalidPaymentOrderException';
-import { PaymentNotificationException } from '../../exceptions/paymentNotificationException';
-import { PaymentOrderService } from '../paymentOrderService';
+import { PaymentNotificationStateEnum } from '@src/core/application/enumerations/paymentNotificationStateEnum';
+import { InvalidPaymentOrderException } from '@src/core/application/exceptions/invalidPaymentOrderException';
+import { PaymentNotificationException } from '@src/core/application/exceptions/paymentNotificationException';
+import { PaymentOrderService } from '@src/core/application/services/paymentOrderService';
 
 describe('PaymentOrderService -> Test', () => {
 	let service: PaymentOrderService;

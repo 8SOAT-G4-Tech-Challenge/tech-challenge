@@ -3,10 +3,9 @@ import { OrderItemMockBuilder } from '@src/__mocks__/order-item.mock-builder';
 import { OrderMockBuilder } from '@src/__mocks__/order.mock-builder';
 import { ProductMockBuilder } from '@src/__mocks__/product.mock-builder';
 import { UpdateCartItemMockBuilder } from '@src/__mocks__/update-cart-item.mock-builder';
+import { InvalidProductException } from '@src/core/application/exceptions/invalidProductException';
+import { CartService } from '@src/core/application/services/cartService';
 import logger from '@src/core/common/logger';
-
-import { InvalidProductException } from '../../exceptions/invalidProductException';
-import { CartService } from '../cartService';
 
 describe('CartService -> Test', () => {
 	let service: CartService;
