@@ -57,5 +57,10 @@
 		"tsup": "^8.1.0",
 		"tsx": "^4.16.2",
 		"typescript": "^5.5.3"
+	},
+	"jestSonar": {
+		"reportPath": "coverage",
+		"reportFile": "test-reporter.xml",
+		"indent": 4
 	}
 }
