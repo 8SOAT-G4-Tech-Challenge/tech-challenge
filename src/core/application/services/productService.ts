@@ -138,7 +138,9 @@ export class ProductService {
 		);
 
 		if (!productExists) {
-			throw new DataNotFoundException(`Product with id ${product.id} does not exist`);
+			throw new DataNotFoundException(
+				`Product with id ${product.id} does not exist`
+			);
 		}
 
 		const hasFilesToSave = product.images?.some(

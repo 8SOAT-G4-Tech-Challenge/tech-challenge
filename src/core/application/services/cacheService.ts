@@ -19,7 +19,7 @@ export class CacheService {
 			return JSON.parse(cacheData) as T;
 		} catch (error) {
 			this.logError('GET', key, error);
-			throw error;
+			throw new Error(`[CacheService] Error: ${error.message}`);
 		}
 	}
 
@@ -31,7 +31,7 @@ export class CacheService {
 			);
 		} catch (error) {
 			this.logError('SET', key, error);
-			throw error;
+			throw new Error(`[CacheService] Error: ${error.message}`);
 		}
 	}
 
@@ -41,7 +41,7 @@ export class CacheService {
 			logger.info(`Cache deleted for key: ${key}`);
 		} catch (error) {
 			this.logError('DELETE', key, error);
-			throw error;
+			throw new Error(`[CacheService] Error: ${error.message}`);
 		}
 	}
 }

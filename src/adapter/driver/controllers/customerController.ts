@@ -26,7 +26,7 @@ export class CustomerController {
 			reply.code(StatusCodes.OK).send(customers);
 		} catch (error) {
 			const errorMessage = 'Unexpected error when listing for customers';
-			logger.error(`${errorMessage}: ${error}`);
+			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
 			handleError(req, reply, error);
 		}
 	}
@@ -70,7 +70,7 @@ export class CustomerController {
 		} catch (error) {
 			const errorMessage =
 				'Unexpected error when listing for customer by property';
-			logger.error(`${errorMessage}: ${error}`);
+			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
 			handleError(req, reply, error);
 		}
 	}
@@ -86,7 +86,7 @@ export class CustomerController {
 			reply.code(StatusCodes.CREATED).send(createdCustomer);
 		} catch (error) {
 			const errorMessage = 'Unexpected when creating for customer';
-			logger.error(`${errorMessage}: ${error}`);
+			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
 			handleError(req, reply, error);
 		}
 	}
@@ -103,7 +103,7 @@ export class CustomerController {
 			reply.code(200).send({ message: 'Customer successfully deleted' });
 		} catch (error) {
 			const errorMessage = 'Unexpected when deleting for customer';
-			logger.error(`${errorMessage}: ${error}`);
+			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
 			handleError(req, reply, error);
 		}
 	}

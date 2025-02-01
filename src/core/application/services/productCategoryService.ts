@@ -1,7 +1,10 @@
 import { productCategoryCreateUpdateSchema } from '@driver/schemas/productCategorySchema';
 import { InvalidProductCategoryException } from '@exceptions/invalidProductCategoryException';
 import { ProductCategory } from '@models/productCategory';
-import { DeleteProductCategoryParams, UpdateProductCategoryParams } from '@ports/input/productCategory';
+import {
+	DeleteProductCategoryParams,
+	UpdateProductCategoryParams,
+} from '@ports/input/productCategory';
 import { ProductCategoryRepository } from '@ports/repository/productCategoryRepository';
 
 export class ProductCategoryService {
@@ -16,17 +19,17 @@ export class ProductCategoryService {
 	}
 
 	async getProductCategoryByName(
-		category: string,
+		category: string
 	): Promise<ProductCategory | null> {
 		return this.productCategoryRepository.getProductCategoryByName(category);
 	}
 
 	async createProductCategory(
-		productCategoryData: any,
+		productCategoryData: any
 	): Promise<ProductCategory> {
 		productCategoryCreateUpdateSchema.parse(productCategoryData);
 		return this.productCategoryRepository.createProductCategory(
-			productCategoryData,
+			productCategoryData
 		);
 	}
 
@@ -34,16 +37,14 @@ export class ProductCategoryService {
 		id: string,
 		productCategoryData: UpdateProductCategoryParams
 	): Promise<ProductCategory> {
-		productCategoryCreateUpdateSchema.parse(productCategoryData);
+		productCategoryCreateUpdateSchema.safeParse(productCategoryData);
 
 		const existingProductCategory =
-		await this.productCategoryRepository.getProductCategoryById(
-			id,
-		);
+			await this.productCategoryRepository.getProductCategoryById(id);
 
 		if (!existingProductCategory) {
 			throw new InvalidProductCategoryException(
-				`Category Product with ID ${id} not found.`,
+				`Category Product with ID ${id} not found.`
 			);
 		}
 
@@ -54,22 +55,22 @@ export class ProductCategoryService {
 	}
 
 	async deleteProductCategory(
-		deleteProductCategoryParams: DeleteProductCategoryParams,
+		deleteProductCategoryParams: DeleteProductCategoryParams
 	): Promise<void | ProductCategory> {
 		const existingProductCategory =
 			await this.productCategoryRepository.getProductCategoryById(
-				deleteProductCategoryParams.id,
+				deleteProductCategoryParams.id
 			);
 
 		if (!existingProductCategory) {
 			throw new InvalidProductCategoryException(
-				`Category Product with ID ${deleteProductCategoryParams.id} not found.`,
+				`Category Product with ID ${deleteProductCategoryParams.id} not found.`
 			);
 		}
 
 		const productInProductCategory =
 			await this.productCategoryRepository.getFirstProductByCategory(
-				deleteProductCategoryParams.id,
+				deleteProductCategoryParams.id
 			);
 
 		if (productInProductCategory) {
@@ -77,7 +78,7 @@ export class ProductCategoryService {
 		}
 
 		return this.productCategoryRepository.deleteProductCategories(
-			deleteProductCategoryParams,
+			deleteProductCategoryParams
 		);
 	}
 }
