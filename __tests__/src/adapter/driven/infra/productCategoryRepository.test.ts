@@ -1,5 +1,5 @@
-import { ProductCategoryMockBuilder } from '@src/__mocks__/product-category.mock-builder';
-import { ProductMockBuilder } from '@src/__mocks__/product.mock-builder';
+import { ProductCategoryMockBuilder } from '@tests/mocks/product-category.mock-builder';
+import { ProductMockBuilder } from '@tests/mocks/product.mock-builder';
 import { ProductCategoryRepositoryImpl } from '@src/adapter/driven/infra';
 import { prisma } from '@src/adapter/driven/infra/lib/prisma';
 

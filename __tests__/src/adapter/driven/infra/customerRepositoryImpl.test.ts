@@ -1,4 +1,4 @@
-import { CustomerMockBuilder } from '@src/__mocks__/customer.mock-builder';
+import { CustomerMockBuilder } from '@tests/mocks/customer.mock-builder';
 import { CustomerRepositoryImpl } from '@src/adapter/driven/infra';
 import { prisma } from '@src/adapter/driven/infra/lib/prisma';
 import { cacheService } from '@src/core/application/services/cacheService';

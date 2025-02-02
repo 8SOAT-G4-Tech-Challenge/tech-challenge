@@ -1,4 +1,4 @@
-import { UserMockBuilder } from '@src/__mocks__/user.mock-builder';
+import { UserMockBuilder } from '@tests/mocks/user.mock-builder';
 import { UserController } from '@src/adapter/driver/controllers/userController';
 import logger from '@src/core/common/logger';
 

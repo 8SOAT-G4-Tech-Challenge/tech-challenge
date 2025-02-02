@@ -1,4 +1,4 @@
-import { OrderMockBuilder } from '@src/__mocks__/order.mock-builder';
+import { OrderMockBuilder } from '@tests/mocks/order.mock-builder';
 import { OrderRepositoryImpl } from '@src/adapter/driven/infra';
 import { prisma } from '@src/adapter/driven/infra/lib/prisma';
 import { DataNotFoundException } from '@src/core/application/exceptions/dataNotFound';

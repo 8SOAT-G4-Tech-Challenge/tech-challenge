@@ -1,4 +1,4 @@
-import { UserMockBuilder } from '@src/__mocks__/user.mock-builder';
+import { UserMockBuilder } from '@tests/mocks/user.mock-builder';
 import { UserRepositoryImpl } from '@src/adapter/driven/infra';
 import { prisma } from '@src/adapter/driven/infra/lib/prisma';
 

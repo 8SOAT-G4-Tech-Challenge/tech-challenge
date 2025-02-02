@@ -1,4 +1,4 @@
-import { PaymentOrderMockBuilder } from '@src/__mocks__/payment-order-service.mock-builder';
+import { PaymentOrderMockBuilder } from '@tests/mocks/payment-order-service.mock-builder';
 import { prisma } from '@src/adapter/driven/infra/lib/prisma';
 import { PaymentOrderRepositoryImpl } from '@src/adapter/driven/infra/paymentOrderRepositoryImpl';
 

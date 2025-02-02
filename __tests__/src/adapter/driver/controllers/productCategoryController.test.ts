@@ -1,4 +1,4 @@
-import { ProductCategoryMockBuilder } from '@src/__mocks__/product-category.mock-builder';
+import { ProductCategoryMockBuilder } from '@tests/mocks/product-category.mock-builder';
 import { ProductCategoryController } from '@src/adapter/driver/controllers/productCategoryController';
 import logger from '@src/core/common/logger';
 

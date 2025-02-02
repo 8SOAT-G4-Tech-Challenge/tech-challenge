@@ -1,4 +1,4 @@
-import { OrderMockBuilder } from '@src/__mocks__/order.mock-builder';
+import { OrderMockBuilder } from '@tests/mocks/order.mock-builder';
 import { OrderController } from '@src/adapter/driver/controllers/orderController';
 import logger from '@src/core/common/logger';
 
