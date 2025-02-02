@@ -5,8 +5,9 @@ import logger from '@common/logger';
 import { handleError } from '@driver/errorHandler';
 import { Multipart } from '@fastify/multipart';
 import {
-	CreateProductParams, GetProducByIdParams,
-	UpdateProductParams
+	CreateProductParams,
+	GetProducByIdParams,
+	UpdateProductParams,
 } from '@ports/input/products';
 import { UpdateProductResponse } from '@ports/output/products';
 import { Product } from '@prisma/client';
@@ -31,24 +32,25 @@ export class ProductController {
 		try {
 			if (req.query && Object.keys(req.query).length > 0) {
 				logger.info(
-					`Listing products with parameters: ${JSON.stringify(req.query)}`,
+					`Listing products with parameters: ${JSON.stringify(req.query)}`
 				);
 			} else {
 				logger.info('Listing products');
 			}
-			reply
-				.code(StatusCodes.OK)
-				.send(await this.productService.getProducts(req.query));
+
+			const response = await this.productService.getProducts(req.query);
+
+			reply.code(StatusCodes.OK).send(response);
 		} catch (error) {
 			const errorMessage = 'Unexpected error when listing for products';
-			logger.error(`${errorMessage}: ${error}`);
+			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
 			handleError(req, reply, error);
 		}
 	}
 
 	async deleteProducts(
 		req: FastifyRequest<{ Params: GetProducByIdParams }>,
-		reply: FastifyReply,
+		reply: FastifyReply
 	): Promise<void> {
 		const { id } = req.params;
 		try {
@@ -59,14 +61,14 @@ export class ProductController {
 				.send({ message: 'Product successfully deleted' });
 		} catch (error) {
 			const errorMessage = 'Unexpected when deleting for product';
-			logger.error(`${errorMessage}: ${error}`);
+			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
 			handleError(req, reply, error);
 		}
 	}
 
 	async createProducts(
 		req: FastifyRequest<{ Body: CreateProductParams; Files: Multipart[] }>,
-		reply: FastifyReply,
+		reply: FastifyReply
 	) {
 		try {
 			const parts = req.parts();
@@ -87,7 +89,7 @@ export class ProductController {
 					data = setField(
 						data,
 						part.fieldname as keyof CreateProductParams,
-						part.value as any,
+						part.value as any
 					);
 				}
 			}
@@ -98,7 +100,7 @@ export class ProductController {
 			reply.code(StatusCodes.CREATED).send(createdProduct);
 		} catch (error) {
 			const errorMessage = 'Unexpected when creating for product';
-			logger.error(`${errorMessage}: ${error}`);
+			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
 			handleError(req, reply, error);
 		}
 	}
@@ -109,10 +111,10 @@ export class ProductController {
 			Body: UpdateProductParams[];
 			Files: Multipart[];
 		}>,
-		reply: FastifyReply,
+		reply: FastifyReply
 	) {
 		try {
-			logger.info('Updating product', req?.params?.id);
+			logger.info(`Updating product ${req?.params?.id}`);
 			const parts = req.parts();
 			let data: UpdateProductParams = {
 				id: req?.params?.id,
@@ -127,7 +129,7 @@ export class ProductController {
 					data = setField(
 						data,
 						part.fieldname as keyof CreateProductParams,
-						part.value as any,
+						part.value as any
 					);
 				}
 			}
@@ -136,7 +138,11 @@ export class ProductController {
 				await this.productService.updateProducts(data);
 			reply.code(StatusCodes.OK).send(product);
 		} catch (error) {
-			logger.error(`Unexpected error when trying to update product: ${error}`);
+			logger.error(
+				`Unexpected error when trying to update product: ${JSON.stringify(
+					error
+				)}`
+			);
 			handleError(req, reply, error);
 		}
 	}

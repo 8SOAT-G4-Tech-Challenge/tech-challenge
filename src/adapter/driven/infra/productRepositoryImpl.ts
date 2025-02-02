@@ -89,13 +89,12 @@ export class ProductRepositoryImpl implements ProductRepository {
 				if (error instanceof Prisma.PrismaClientKnownRequestError) {
 					if (error.code === 'P2002') {
 						throw new InvalidProductException(
-							`Product with name: ${product.name} already exists`,
+							`Product with name: ${product.name} already exists`
 						);
 					}
 				}
 				throw new InvalidProductException(
-					'Error creating product',
-					error.message,
+					`Error creating product: ${JSON.stringify(error)}`
 				);
 			});
 
@@ -106,18 +105,17 @@ export class ProductRepositoryImpl implements ProductRepository {
 	}
 
 	async updateProducts(product: UpdateProductParams): Promise<Product> {
-		const updatedProduct = await prisma.product
-			.update({
-				where: {
-					id: product.id,
-				},
-				data: {
-					name: product.name,
-					value: product.value,
-					description: product.description,
-					categoryId: product.categoryId,
-				},
-			});
+		const updatedProduct = await prisma.product.update({
+			where: {
+				id: product.id,
+			},
+			data: {
+				name: product.name,
+				value: product.value,
+				description: product.description,
+				categoryId: product.categoryId,
+			},
+		});
 
 		logger.info(`Product updated: ${JSON.stringify(updatedProduct)}`);
 

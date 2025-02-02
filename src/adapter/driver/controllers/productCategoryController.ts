@@ -4,7 +4,10 @@ import { StatusCodes } from 'http-status-codes';
 import logger from '@common/logger';
 import { handleError } from '@driver/errorHandler';
 import { ProductCategoryService } from '@services/productCategoryService';
-import { DeleteProductCategoryParams, UpdateProductCategoryParams } from '@src/core/application/ports/input/productCategory';
+import {
+	DeleteProductCategoryParams,
+	UpdateProductCategoryParams,
+} from '@src/core/application/ports/input/productCategory';
 
 export class ProductCategoryController {
 	private readonly productCategoryService;
@@ -16,13 +19,14 @@ export class ProductCategoryController {
 	async getProductCategories(req: FastifyRequest, reply: FastifyReply) {
 		try {
 			logger.info('Listing product categories');
-			reply
-				.code(StatusCodes.OK)
-				.send(await this.productCategoryService.getProductCategories());
+
+			const response = await this.productCategoryService.getProductCategories();
+
+			reply.code(StatusCodes.OK).send(response);
 		} catch (error) {
 			const errorMessage =
 				'Unexpected error when listing for product categories';
-			logger.error(`${errorMessage}: ${error}`);
+			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
 			handleError(req, reply, error);
 		}
 	}
@@ -35,13 +39,16 @@ export class ProductCategoryController {
 			reply.code(StatusCodes.CREATED).send(productCategory);
 		} catch (error) {
 			const errorMessage = 'Unexpected when creating for product category';
-			logger.error(`${errorMessage}: ${error}`);
+			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
 			handleError(req, reply, error);
 		}
 	}
 
 	async updateProductCategories(
-		req: FastifyRequest<{ Body: UpdateProductCategoryParams; Params: { id: string } }>,
+		req: FastifyRequest<{
+			Body: UpdateProductCategoryParams;
+			Params: { id: string };
+		}>,
 		reply: FastifyReply
 	): Promise<void> {
 		const { id } = req.params;
@@ -50,15 +57,16 @@ export class ProductCategoryController {
 		try {
 			logger.info(`Updating product category with ID: ${id}`);
 
-			const updatedProductCategory = await this.productCategoryService.updateProductCategory(
-				id,
-				productCategoryData
-			);
+			const updatedProductCategory =
+				await this.productCategoryService.updateProductCategory(
+					id,
+					productCategoryData
+				);
 
 			reply.code(StatusCodes.OK).send(updatedProductCategory);
 		} catch (error) {
 			const errorMessage = 'Unexpected error when updating product category';
-			logger.error(`${errorMessage}: ${error}`);
+			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
 			handleError(req, reply, error);
 		}
 	}
@@ -71,7 +79,9 @@ export class ProductCategoryController {
 
 		try {
 			logger.info('Deleting product category');
-			const response = await this.productCategoryService.deleteProductCategory({ id });
+			const response = await this.productCategoryService.deleteProductCategory({
+				id,
+			});
 			if (response) {
 				reply.code(StatusCodes.CONFLICT).send({
 					error: 'Conflict',
@@ -83,7 +93,7 @@ export class ProductCategoryController {
 				.send({ message: 'Product category successfully deleted' });
 		} catch (error) {
 			const errorMessage = 'Unexpected when deleting for product category';
-			logger.error(`${errorMessage}: ${error}`);
+			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
 			handleError(req, reply, error);
 		}
 	}
