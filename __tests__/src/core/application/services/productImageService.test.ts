@@ -1,4 +1,4 @@
-import { ProductImageMockBuilder } from '@src/__mocks__/product-image.mock-builder';
+import { ProductImageMockBuilder } from '@tests/mocks/product-image.mock-builder';
 import { InvalidProductImageException } from '@src/core/application/exceptions/invalidProductImageException';
 import { ProductImageService } from '@src/core/application/services/productImageService';
 

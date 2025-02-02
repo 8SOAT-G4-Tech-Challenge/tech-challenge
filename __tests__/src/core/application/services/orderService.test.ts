@@ -1,5 +1,5 @@
-import { OrderItemMockBuilder } from '@src/__mocks__/order-item.mock-builder';
-import { OrderMockBuilder } from '@src/__mocks__/order.mock-builder';
+import { OrderItemMockBuilder } from '@tests/mocks/order-item.mock-builder';
+import { OrderMockBuilder } from '@tests/mocks/order.mock-builder';
 import { OrderStatusEnum } from '@src/core/application/enumerations/orderStatusEnum';
 import { InvalidOrderException } from '@src/core/application/exceptions/invalidOrderException';
 import { InvalidOrderStatusException } from '@src/core/application/exceptions/invalidOrderStatusException';

@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { ProductMockBuilder } from '@src/__mocks__/product.mock-builder';
+import { ProductMockBuilder } from '@tests/mocks/product.mock-builder';
 import { ProductRepositoryImpl } from '@src/adapter/driven/infra';
 import { prisma } from '@src/adapter/driven/infra/lib/prisma';
 import { DataNotFoundException } from '@src/core/application/exceptions/dataNotFound';

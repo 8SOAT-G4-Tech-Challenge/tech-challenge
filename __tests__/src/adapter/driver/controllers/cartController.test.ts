@@ -1,4 +1,4 @@
-import { AddItemToCartMockBuilder } from '@src/__mocks__/add-item-to-cart.mock-builder';
+import { AddItemToCartMockBuilder } from '@tests/mocks/add-item-to-cart.mock-builder';
 import { CartController } from '@src/adapter/driver/controllers/cartController';
 import logger from '@src/core/common/logger';
 
