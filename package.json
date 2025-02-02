@@ -4,7 +4,8 @@
 	"description": "API Restaurante FIAP Tech Challenge",
 	"main": "index.js",
 	"scripts": {
-		"test": "jest --maxParallel=4 --coverage=true --forceExit --runInBand --detectOpenHandles",
+		"test-coverage": "jest --maxParallel=4 --coverage=true --forceExit --runInBand --detectOpenHandles",
+		"test": "jest --maxWorkers=1 --coverage=true",
 		"build": "tsup src",
 		"dev": "tsx watch --env-file .env -r tsconfig-paths/register src/adapter/driver/server.ts | pino-pretty -C",
 		"dev:no-env": "tsx watch -r tsconfig-paths/register src/adapter/driver/server.ts",
@@ -57,5 +58,10 @@
 		"tsup": "^8.1.0",
 		"tsx": "^4.16.2",
 		"typescript": "^5.5.3"
+	},
+	"jestSonar": {
+		"reportPath": "coverage",
+		"reportFile": "test-reporter.xml",
+		"indent": 4
 	}
 }
