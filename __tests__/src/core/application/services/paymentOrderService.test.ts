@@ -1,6 +1,6 @@
-import { OrderMockBuilder } from '@src/__mocks__/order.mock-builder';
-import { PaymentNotificationMockBuilder } from '@src/__mocks__/payment-notification.mock-builder';
-import { PaymentOrderMockBuilder } from '@src/__mocks__/payment-order-service.mock-builder';
+import { OrderMockBuilder } from '@tests/mocks/order.mock-builder';
+import { PaymentNotificationMockBuilder } from '@tests/mocks/payment-notification.mock-builder';
+import { PaymentOrderMockBuilder } from '@tests/mocks/payment-order-service.mock-builder';
 import logger from '@src/core/common/logger';
 
 import { PaymentNotificationStateEnum } from '@src/core/application/enumerations/paymentNotificationStateEnum';

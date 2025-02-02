@@ -1,4 +1,4 @@
-import { CustomerMockBuilder } from '@src/__mocks__/customer.mock-builder';
+import { CustomerMockBuilder } from '@tests/mocks/customer.mock-builder';
 import { CustomerController } from '@src/adapter/driver/controllers/customerController';
 import logger from '@src/core/common/logger';
 

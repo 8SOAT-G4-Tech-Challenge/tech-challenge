@@ -1,9 +1,9 @@
-import { AddItemToCartMockBuilder } from '@src/__mocks__/add-item-to-cart.mock-builder';
-import { OrderItemMockBuilder } from '@src/__mocks__/order-item.mock-builder';
 import { CartRepositoryImpl } from '@src/adapter/driven/infra';
 import { prisma } from '@src/adapter/driven/infra/lib/prisma';
 import { DataNotFoundException } from '@src/core/application/exceptions/dataNotFound';
 import logger from '@src/core/common/logger';
+import { AddItemToCartMockBuilder } from '@tests/mocks/add-item-to-cart.mock-builder';
+import { OrderItemMockBuilder } from '@tests/mocks/order-item.mock-builder';
 
 jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 

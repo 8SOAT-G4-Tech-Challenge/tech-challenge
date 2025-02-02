@@ -1,6 +1,6 @@
-import { CreateProductMockBuilder } from '@src/__mocks__/create-product.mock-builder';
-import { ProductCategoryMockBuilder } from '@src/__mocks__/product-category.mock-builder';
-import { ProductMockBuilder } from '@src/__mocks__/product.mock-builder';
+import { CreateProductMockBuilder } from '@tests/mocks/create-product.mock-builder';
+import { ProductCategoryMockBuilder } from '@tests/mocks/product-category.mock-builder';
+import { ProductMockBuilder } from '@tests/mocks/product.mock-builder';
 import { DataNotFoundException } from '@src/core/application/exceptions/dataNotFound';
 import { InvalidProductException } from '@src/core/application/exceptions/invalidProductException';
 import { ProductService } from '@src/core/application/services/productService';

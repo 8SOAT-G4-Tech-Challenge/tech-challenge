@@ -37,5 +37,6 @@ module.exports = {
 		'@application/(.*)': ['<rootDir>/src/core/application/$1'],
 		'@domain/(.*)': ['<rootDir>/src/core/domain/$1'],
 		'@common/(.*)': ['<rootDir>/src/core/common/$1'],
+		'@tests/(.*)': ['<rootDir>/__tests__/$1'],
 	},
 };
