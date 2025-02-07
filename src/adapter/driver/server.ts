@@ -70,7 +70,7 @@ async function run() {
 		host: '0.0.0.0',
 	});
 
-	logger.info('Documentation running at http://localhost:3000/docs');
+	logger.info('Microservice/Order running at http://localhost:3000');
 }
 
 run();
