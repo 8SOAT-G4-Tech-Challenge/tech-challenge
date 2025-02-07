@@ -7,14 +7,6 @@ import { OrderItemMockBuilder } from '@tests/mocks/order-item.mock-builder';
 
 jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 
-jest.mock('@src/core/application/services/cacheService', () => ({
-	cacheService: {
-		get: jest.fn(),
-		set: jest.fn(),
-		del: jest.fn(),
-	},
-}));
-
 describe('CartRepositoryImpl -> Test', () => {
 	let repository: CartRepositoryImpl;
 

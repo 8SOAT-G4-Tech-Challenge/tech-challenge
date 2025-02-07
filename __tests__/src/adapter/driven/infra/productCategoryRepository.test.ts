@@ -1,17 +1,9 @@
-import { ProductCategoryMockBuilder } from '@tests/mocks/product-category.mock-builder';
-import { ProductMockBuilder } from '@tests/mocks/product.mock-builder';
 import { ProductCategoryRepositoryImpl } from '@src/adapter/driven/infra';
 import { prisma } from '@src/adapter/driven/infra/lib/prisma';
+import { ProductCategoryMockBuilder } from '@tests/mocks/product-category.mock-builder';
+import { ProductMockBuilder } from '@tests/mocks/product.mock-builder';
 
 jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
-
-jest.mock('@src/core/application/services/cacheService', () => ({
-	cacheService: {
-		get: jest.fn(),
-		set: jest.fn(),
-		del: jest.fn(),
-	},
-}));
 
 describe('ProductCategoryRepositoryImpl -> Test', () => {
 	let repository: ProductCategoryRepositoryImpl;
