@@ -36,7 +36,7 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma ./prisma
 
 # Exposição da porta para API
-EXPOSE 3333
+EXPOSE 3000
 
 # Comando para iniciar apenas a aplicação
 CMD ["node", "dist/adapter/driver/server.js"]

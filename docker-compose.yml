@@ -27,7 +27,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3333:3333'
+      - '3000:3000'
       - '5555:5555'
     env_file: .env
     depends_on:
@@ -38,7 +38,7 @@ services:
     environment:
       DATABASE_URL: 'postgresql://postgres:docker@postgres:5432/tech-challenger'
       REDIS_URL: ${REDIS_URL}
-      API_PORT: 3333
+      API_PORT: 3000
     networks:
       - tech-challenger-network
 

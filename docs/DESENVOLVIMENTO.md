@@ -16,7 +16,7 @@ npm run dev
 
 ### Swagger
 
-- `http://localhost:3333/docs`
+- `http://localhost:3000/docs`
 
 ### ESLint
 

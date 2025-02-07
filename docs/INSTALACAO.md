@@ -25,7 +25,7 @@
 4.  A aplicação será iniciada e todos os serviços necessários serão configurados automaticamente.
 
 **IMPORTANTE:**
-Esta API está programada para ser acessada a partir de `http://localhost:3333` e o banco de dados utiliza a porta `5432`.
-Certifique-se de que não existam outros recursos ocupando as portas `3333` e `5432` antes de subir o projeto.
+Esta API está programada para ser acessada a partir de `http://localhost:3000` e o banco de dados utiliza a porta `5432`.
+Certifique-se de que não existam outros recursos ocupando as portas `3000` e `5432` antes de subir o projeto.
 
 Para derrubar o serviço, execute o comando `docker-compose down`.

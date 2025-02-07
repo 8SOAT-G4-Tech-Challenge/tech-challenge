@@ -39,7 +39,7 @@ COPY --from=build /app/prisma ./prisma
 ENV DATABASE_URL=postgresql://postgres:docker@postgres:5432/tech-challenger
 
 # Exposição da porta para API
-EXPOSE 3333
+EXPOSE 3000
 
 # Exposição da porta para o Prisma Studio
 EXPOSE 5555
