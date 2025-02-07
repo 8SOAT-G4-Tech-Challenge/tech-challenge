@@ -15,33 +15,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-	id				String @id @default(uuid())
-	name			String? @db.VarChar(255)
-	email			String @unique @db.VarChar(255)
-	password		String @db.VarChar(255)
-	sessionToken	String? @db.VarChar(255) @map("session_token")
-	isAdmin			Boolean @map("is_admin")
-	createdAt		DateTime @default(now()) @map("created_at")
-	updatedAt DateTime @updatedAt @map("updated_at")
-
-	@@map("user")
-}
-
-model Customer {
-	id			String @id @default(uuid())
-	name		String? @db.VarChar(255)
-	email		String? @db.VarChar(255)
-	cpf			String @unique @db.VarChar(11)
-  createdAt	DateTime @default(now()) @map("created_at")
-	updatedAt DateTime @updatedAt @map("updated_at")
-
-  orders    Order[]
-	// orders    Order[] // Um Customer pode ter muitos Orders
-
-	@@map("customer")
-}
-
 model ProductCategory {
   id        String   @id @default(uuid())
   name      String   @db.VarChar(255) @unique
@@ -117,37 +90,9 @@ model Order {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
-  customer   Customer? @relation(fields: [customerId], references: [id]) // Relacionamento opcional com Customer
   items      OrderItem[]
-  payment    PaymentOrder? // Um Order tem um PaymentOrder
 
   @@map("order")
 }
 
-// https://www.mercadopago.com.br/developers/pt/reference/payments/_payments_id/get
-enum PaymentOrderStatus {
-	pending
-  approved
-  authorized
-  in_process
-  in_mediation
-  rejected
-  cancelled
-  refunded
-  charged_back
-}
 
-model PaymentOrder {
-  id        String   @id @default(uuid())
-  orderId   String   @db.VarChar(255) @unique
-  status    PaymentOrderStatus @default(pending)
-  qrData    String?   @db.VarChar(255) @map("qr_data")
-  paidAt    DateTime? @map("paid_at")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  value     Decimal  @db.Money
-
-  order     Order    @relation(fields: [orderId], references: [id]) // Um PaymentOrder pertence a um Order
-	
-  @@map("payment_order")
-}
