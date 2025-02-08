@@ -13,6 +13,8 @@ import {
 import { CreateOrderResponse } from '@ports/output/orders';
 import { CartRepository } from '@ports/repository/cartRepository';
 import { OrderRepository } from '@ports/repository/orderRepository';
+import { CustomerHttpClient } from '@src/adapter/driven/http/contracts/customerHttpClientContract';
+import { PaymentOrderHttpClient } from '@src/adapter/driven/http/contracts/paymentOrderHttpClientContract';
 import { OrderStatusType } from '@src/core/domain/types/orderStatusType';
 
 export class OrderService {
@@ -20,19 +22,42 @@ export class OrderService {
 
 	private readonly cartRepository: CartRepository;
 
+	private readonly customerHttpClient: CustomerHttpClient;
+
+	private readonly paymentOrderHttpClient: PaymentOrderHttpClient;
+
 	constructor(
 		orderRepository: OrderRepository,
-		cartRepository: CartRepository
+		cartRepository: CartRepository,
+		customerHttpClient: CustomerHttpClient,
+		paymentOrderHttpClient: PaymentOrderHttpClient
 	) {
 		this.orderRepository = orderRepository;
 		this.cartRepository = cartRepository;
+		this.customerHttpClient = customerHttpClient;
+		this.paymentOrderHttpClient = paymentOrderHttpClient;
 	}
 
 	async getOrders({ status }: GetOrderQueryParams): Promise<Order[]> {
 		if (status && Object.values(OrderStatusEnum).includes(status)) {
 			logger.info(`Searching orders by status: ${status}`);
 			const orders = await this.orderRepository.getOrdersByStatus(status);
-			return orders;
+
+			const customers = await this.customerHttpClient.getCustomers();
+			const paymentOrders =
+				await this.paymentOrderHttpClient.getPaymentOrders();
+
+			const joinedData = orders.map((order) => ({
+				...order,
+				customer: customers.find(
+					(customer) => customer.id === order.customerId
+				),
+				payment: paymentOrders.find(
+					(paymentOrder) => paymentOrder.orderId === order.id
+				),
+			}));
+
+			return joinedData;
 		}
 
 		if (status && !Object.values(OrderStatusEnum).includes(status)) {
@@ -43,7 +68,19 @@ export class OrderService {
 
 		logger.info('Searching all orders');
 		const orders = await this.orderRepository.getOrders();
-		return this.sortOrdersByStatus(orders);
+
+		const customers = await this.customerHttpClient.getCustomers();
+		const paymentOrders = await this.paymentOrderHttpClient.getPaymentOrders();
+
+		const joinedData = orders.map((order) => ({
+			...order,
+			customer: customers.find((customer) => customer.id === order.customerId),
+			payment: paymentOrders.find(
+				(paymentOrder) => paymentOrder.orderId === order.id
+			),
+		}));
+
+		return this.sortOrdersByStatus(joinedData);
 	}
 
 	async getOrderById({ id }: GetOrderByIdParams): Promise<Order> {
@@ -57,6 +94,23 @@ export class OrderService {
 
 		logger.info(`Searching order by Id: ${id}`);
 		const orderFound = await this.orderRepository.getOrderById({ id });
+
+		if (orderFound.customerId) {
+			const customer = await this.customerHttpClient.getCustomerByProperty({
+				id: orderFound.customerId,
+			});
+
+			Object.assign(orderFound, { customer });
+		}
+
+		const paymentOrder =
+			await this.paymentOrderHttpClient.getPaymentOrderByOrderId({
+				orderId: orderFound.id,
+			});
+
+		if (paymentOrder) {
+			Object.assign(orderFound, { payment: paymentOrder });
+		}
 
 		return orderFound;
 	}
@@ -72,6 +126,23 @@ export class OrderService {
 
 		logger.info(`Searching order created by Id: ${id}`);
 		const orderFound = await this.orderRepository.getOrderCreatedById({ id });
+
+		if (orderFound.customerId) {
+			const customer = await this.customerHttpClient.getCustomerByProperty({
+				id: orderFound.customerId,
+			});
+
+			Object.assign(orderFound, { customer });
+		}
+
+		const paymentOrder =
+			await this.paymentOrderHttpClient.getPaymentOrderByOrderId({
+				orderId: orderFound.id,
+			});
+
+		if (paymentOrder) {
+			Object.assign(orderFound, { payment: paymentOrder });
+		}
 
 		return orderFound;
 	}

@@ -31,8 +31,6 @@ export class OrderRepositoryImpl implements OrderRepository {
 						},
 					},
 				},
-				customer: true,
-				payment: true,
 			},
 		});
 
@@ -55,8 +53,6 @@ export class OrderRepositoryImpl implements OrderRepository {
 							},
 						},
 					},
-					customer: true,
-					payment: true,
 				},
 				where: {
 					id,
@@ -85,8 +81,6 @@ export class OrderRepositoryImpl implements OrderRepository {
 							},
 						},
 					},
-					customer: true,
-					payment: true,
 				},
 				where: {
 					id,
@@ -120,8 +114,6 @@ export class OrderRepositoryImpl implements OrderRepository {
 						},
 					},
 				},
-				customer: true,
-				payment: true,
 			},
 		});
 
@@ -179,7 +171,7 @@ export class OrderRepositoryImpl implements OrderRepository {
 				},
 				readableId: {
 					not: null,
-				}
+				},
 			},
 		});
 

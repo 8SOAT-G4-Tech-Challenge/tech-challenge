@@ -1,8 +1,8 @@
-import { OrderMockBuilder } from '@tests/mocks/order.mock-builder';
 import { OrderRepositoryImpl } from '@src/adapter/driven/infra';
 import { prisma } from '@src/adapter/driven/infra/lib/prisma';
 import { DataNotFoundException } from '@src/core/application/exceptions/dataNotFound';
 import logger from '@src/core/common/logger';
+import { OrderMockBuilder } from '@tests/mocks/order.mock-builder';
 
 jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 
