@@ -4,6 +4,7 @@
 	"description": "API Restaurante FIAP Tech Challenge",
 	"main": "index.js",
 	"scripts": {
+		"compose-network": "docker network create tech-challenge-global",
 		"test-coverage": "jest --maxParallel=4 --coverage=true --forceExit --runInBand --detectOpenHandles",
 		"test": "jest --maxWorkers=1 --coverage=true",
 		"build": "tsup src",

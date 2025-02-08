@@ -1,15 +1,17 @@
-import { OrderItemMockBuilder } from '@tests/mocks/order-item.mock-builder';
-import { OrderMockBuilder } from '@tests/mocks/order.mock-builder';
 import { OrderStatusEnum } from '@src/core/application/enumerations/orderStatusEnum';
 import { InvalidOrderException } from '@src/core/application/exceptions/invalidOrderException';
 import { InvalidOrderStatusException } from '@src/core/application/exceptions/invalidOrderStatusException';
 import { OrderService } from '@src/core/application/services/orderService';
 import logger from '@src/core/common/logger';
+import { OrderItemMockBuilder } from '@tests/mocks/order-item.mock-builder';
+import { OrderMockBuilder } from '@tests/mocks/order.mock-builder';
 
 describe('OrderService -> Test', () => {
 	let service: OrderService;
 	let mockCartRepository: any;
 	let mockOrderRepository: any;
+	let customerHttpClient: any;
+	let paymentOrderHttpClient: any;
 
 	beforeEach(() => {
 		mockCartRepository = {
@@ -26,7 +28,23 @@ describe('OrderService -> Test', () => {
 			getNumberOfValidOrdersToday: jest.fn(),
 		};
 
-		service = new OrderService(mockOrderRepository, mockCartRepository);
+		customerHttpClient = {
+			getCustomers: jest.fn(),
+			getCustomerByProperty: jest.fn(),
+		};
+
+		paymentOrderHttpClient = {
+			getPaymentOrders: jest.fn(),
+			getPaymentOrderById: jest.fn(),
+			getPaymentOrderByOrderId: jest.fn(),
+		};
+
+		service = new OrderService(
+			mockOrderRepository,
+			mockCartRepository,
+			customerHttpClient,
+			paymentOrderHttpClient
+		);
 	});
 
 	afterEach(() => {

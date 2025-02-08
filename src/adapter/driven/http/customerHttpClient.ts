@@ -36,12 +36,11 @@ export class CustomerHttpClientImpl implements CustomerHttpClient {
 	}
 
 	async getCustomerByProperty({
-		cpf,
 		id,
 	}: GetCustomerByPropertyParams): Promise<Customer> {
 		try {
 			const response = await this.axiosInstance.get(
-				`${this.baseUrl}/totem/customers/property?cpf=${cpf}&id=${id}`
+				`${this.baseUrl}/totem/customers/property?id=${id}`
 			);
 			return response.data;
 		} catch (error) {

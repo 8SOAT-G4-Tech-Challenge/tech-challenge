@@ -38,10 +38,13 @@ services:
       API_PORT: 3000
     networks:
       - tech-challenger-network
+      - tech-challenge-global
 
 networks:
   tech-challenger-network:
     driver: bridge
+  tech-challenge-global:
+    external: true
 
 volumes:
   postgres-data:

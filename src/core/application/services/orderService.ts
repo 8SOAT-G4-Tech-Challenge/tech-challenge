@@ -47,12 +47,12 @@ export class OrderService {
 			const paymentOrders =
 				await this.paymentOrderHttpClient.getPaymentOrders();
 
-			const joinedData = orders.map((order) => ({
+			const joinedData = orders?.map((order) => ({
 				...order,
-				customer: customers.find(
+				customer: customers?.find(
 					(customer) => customer.id === order.customerId
 				),
-				payment: paymentOrders.find(
+				payment: paymentOrders?.find(
 					(paymentOrder) => paymentOrder.orderId === order.id
 				),
 			}));
@@ -72,10 +72,10 @@ export class OrderService {
 		const customers = await this.customerHttpClient.getCustomers();
 		const paymentOrders = await this.paymentOrderHttpClient.getPaymentOrders();
 
-		const joinedData = orders.map((order) => ({
+		const joinedData = orders?.map((order) => ({
 			...order,
-			customer: customers.find((customer) => customer.id === order.customerId),
-			payment: paymentOrders.find(
+			customer: customers?.find((customer) => customer.id === order.customerId),
+			payment: paymentOrders?.find(
 				(paymentOrder) => paymentOrder.orderId === order.id
 			),
 		}));
@@ -96,6 +96,7 @@ export class OrderService {
 		const orderFound = await this.orderRepository.getOrderById({ id });
 
 		if (orderFound.customerId) {
+			logger.info(`Searching customer in order: ${orderFound.customerId}`);
 			const customer = await this.customerHttpClient.getCustomerByProperty({
 				id: orderFound.customerId,
 			});
@@ -103,14 +104,15 @@ export class OrderService {
 			Object.assign(orderFound, { customer });
 		}
 
-		const paymentOrder =
-			await this.paymentOrderHttpClient.getPaymentOrderByOrderId({
-				orderId: orderFound.id,
-			});
+		logger.info(`Searching payment order in order: ${orderFound.id}`);
+		// const paymentOrder =
+		// 	await this.paymentOrderHttpClient.getPaymentOrderByOrderId({
+		// 		orderId: orderFound.id,
+		// 	});
 
-		if (paymentOrder) {
-			Object.assign(orderFound, { payment: paymentOrder });
-		}
+		// if (paymentOrder) {
+		// 	Object.assign(orderFound, { payment: paymentOrder });
+		// }
 
 		return orderFound;
 	}
