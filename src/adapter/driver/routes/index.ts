@@ -20,8 +20,8 @@ import {
 	ProductCategoryController,
 	ProductController,
 } from '@driver/controllers';
-import { CustomerHttpClientImpl } from '@src/adapter/driven/http/customerHttpClient';
-import { PaymentOrderHttpClientImpl } from '@src/adapter/driven/http/paymentHttpClient';
+import { CustomerApiImpl } from '@src/adapter/driven/http/customerApi';
+import { PaymentOrderApiImpl } from '@src/adapter/driven/http/paymentApi';
 
 const productRepository = new ProductRepositoryImpl();
 const orderRepository = new OrderRepositoryImpl();
@@ -29,10 +29,8 @@ const productCategoryRepository = new ProductCategoryRepositoryImpl();
 const productImageRepository = new ProductImageRepositoryImpl();
 const fileSystemStorage = new FileSystemStorageImpl();
 const cartRepository = new CartRepositoryImpl();
-const customerApi = new CustomerHttpClientImpl(
-	process.env.CUSTOMER_BASE_URL || ''
-);
-const paymentOrderApi = new PaymentOrderHttpClientImpl(
+const customerApi = new CustomerApiImpl(process.env.CUSTOMER_BASE_URL || '');
+const paymentOrderApi = new PaymentOrderApiImpl(
 	process.env.PAYMENT_ORDER_BASE_URL || ''
 );
 

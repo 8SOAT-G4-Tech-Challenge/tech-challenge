@@ -6,9 +6,9 @@ import {
 } from '@src/core/application/ports/input/paymentOrders';
 import { PaymentOrder } from '@src/core/domain/models/paymentOrder';
 
-import { PaymentOrderHttpClient } from './contracts/paymentOrderHttpClientContract';
+import { PaymentOrderApiRepository } from '../../../core/application/ports/repository/paymentOrderApiRepository';
 
-export class PaymentOrderHttpClientImpl implements PaymentOrderHttpClient {
+export class PaymentOrderApiImpl implements PaymentOrderApiRepository {
 	private readonly axiosInstance: AxiosInstance;
 
 	constructor(private readonly baseUrl: string) {

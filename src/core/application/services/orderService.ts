@@ -13,8 +13,8 @@ import {
 import { CreateOrderResponse } from '@ports/output/orders';
 import { CartRepository } from '@ports/repository/cartRepository';
 import { OrderRepository } from '@ports/repository/orderRepository';
-import { CustomerHttpClient } from '@src/adapter/driven/http/contracts/customerHttpClientContract';
-import { PaymentOrderHttpClient } from '@src/adapter/driven/http/contracts/paymentOrderHttpClientContract';
+import { CustomerApiRepository } from '@src/core/application/ports/repository/customerApiRepository';
+import { PaymentOrderApiRepository } from '@src/core/application/ports/repository/paymentOrderApiRepository';
 import { OrderStatusType } from '@src/core/domain/types/orderStatusType';
 
 export class OrderService {
@@ -22,20 +22,20 @@ export class OrderService {
 
 	private readonly cartRepository: CartRepository;
 
-	private readonly customerHttpClient: CustomerHttpClient;
+	private readonly customerApi: CustomerApiRepository;
 
-	private readonly paymentOrderHttpClient: PaymentOrderHttpClient;
+	private readonly paymentOrderApi: PaymentOrderApiRepository;
 
 	constructor(
 		orderRepository: OrderRepository,
 		cartRepository: CartRepository,
-		customerHttpClient: CustomerHttpClient,
-		paymentOrderHttpClient: PaymentOrderHttpClient
+		customerApi: CustomerApiRepository,
+		paymentOrderApi: PaymentOrderApiRepository
 	) {
 		this.orderRepository = orderRepository;
 		this.cartRepository = cartRepository;
-		this.customerHttpClient = customerHttpClient;
-		this.paymentOrderHttpClient = paymentOrderHttpClient;
+		this.customerApi = customerApi;
+		this.paymentOrderApi = paymentOrderApi;
 	}
 
 	async getOrders({ status }: GetOrderQueryParams): Promise<Order[]> {
@@ -43,9 +43,8 @@ export class OrderService {
 			logger.info(`Searching orders by status: ${status}`);
 			const orders = await this.orderRepository.getOrdersByStatus(status);
 
-			const customers = await this.customerHttpClient.getCustomers();
-			const paymentOrders =
-				await this.paymentOrderHttpClient.getPaymentOrders();
+			const customers = await this.customerApi.getCustomers();
+			const paymentOrders = await this.paymentOrderApi.getPaymentOrders();
 
 			const joinedData = orders?.map((order) => ({
 				...order,
@@ -69,8 +68,8 @@ export class OrderService {
 		logger.info('Searching all orders');
 		const orders = await this.orderRepository.getOrders();
 
-		const customers = await this.customerHttpClient.getCustomers();
-		const paymentOrders = await this.paymentOrderHttpClient.getPaymentOrders();
+		const customers = await this.customerApi.getCustomers();
+		const paymentOrders = await this.paymentOrderApi.getPaymentOrders();
 
 		const joinedData = orders?.map((order) => ({
 			...order,
@@ -97,7 +96,7 @@ export class OrderService {
 
 		if (orderFound.customerId) {
 			logger.info(`Searching customer in order: ${orderFound.customerId}`);
-			const customer = await this.customerHttpClient.getCustomerByProperty({
+			const customer = await this.customerApi.getCustomerByProperty({
 				id: orderFound.customerId,
 			});
 
@@ -106,7 +105,7 @@ export class OrderService {
 
 		logger.info(`Searching payment order in order: ${orderFound.id}`);
 		// const paymentOrder =
-		// 	await this.paymentOrderHttpClient.getPaymentOrderByOrderId({
+		// 	await this.paymentOrderApi.getPaymentOrderByOrderId({
 		// 		orderId: orderFound.id,
 		// 	});
 
@@ -130,17 +129,16 @@ export class OrderService {
 		const orderFound = await this.orderRepository.getOrderCreatedById({ id });
 
 		if (orderFound.customerId) {
-			const customer = await this.customerHttpClient.getCustomerByProperty({
+			const customer = await this.customerApi.getCustomerByProperty({
 				id: orderFound.customerId,
 			});
 
 			Object.assign(orderFound, { customer });
 		}
 
-		const paymentOrder =
-			await this.paymentOrderHttpClient.getPaymentOrderByOrderId({
-				orderId: orderFound.id,
-			});
+		const paymentOrder = await this.paymentOrderApi.getPaymentOrderByOrderId({
+			orderId: orderFound.id,
+		});
 
 		if (paymentOrder) {
 			Object.assign(orderFound, { payment: paymentOrder });
