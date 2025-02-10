@@ -10,8 +10,8 @@ describe('OrderService -> Test', () => {
 	let service: OrderService;
 	let mockCartRepository: any;
 	let mockOrderRepository: any;
-	let customerHttpClient: any;
-	let paymentOrderHttpClient: any;
+	let customerApi: any;
+	let paymentOrderApi: any;
 
 	beforeEach(() => {
 		mockCartRepository = {
@@ -28,12 +28,12 @@ describe('OrderService -> Test', () => {
 			getNumberOfValidOrdersToday: jest.fn(),
 		};
 
-		customerHttpClient = {
+		customerApi = {
 			getCustomers: jest.fn(),
 			getCustomerByProperty: jest.fn(),
 		};
 
-		paymentOrderHttpClient = {
+		paymentOrderApi = {
 			getPaymentOrders: jest.fn(),
 			getPaymentOrderById: jest.fn(),
 			getPaymentOrderByOrderId: jest.fn(),
@@ -42,8 +42,8 @@ describe('OrderService -> Test', () => {
 		service = new OrderService(
 			mockOrderRepository,
 			mockCartRepository,
-			customerHttpClient,
-			paymentOrderHttpClient
+			customerApi,
+			paymentOrderApi
 		);
 	});
 

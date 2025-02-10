@@ -6,9 +6,9 @@ import {
 } from '@src/core/application/ports/input/paymentOrders';
 import { PaymentOrder } from '@src/core/domain/models/paymentOrder';
 
-import { PaymentOrderApiRepository } from '../../../core/application/ports/repository/paymentOrderApiRepository';
+import { PaymentOrderApi } from '../../../core/application/ports/repository/paymentOrderApiRepository';
 
-export class PaymentOrderApiImpl implements PaymentOrderApiRepository {
+export class PaymentOrderApiImpl implements PaymentOrderApi {
 	private readonly axiosInstance: AxiosInstance;
 
 	constructor(private readonly baseUrl: string) {

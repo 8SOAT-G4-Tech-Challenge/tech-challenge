@@ -13,8 +13,8 @@ import {
 import { CreateOrderResponse } from '@ports/output/orders';
 import { CartRepository } from '@ports/repository/cartRepository';
 import { OrderRepository } from '@ports/repository/orderRepository';
-import { CustomerApiRepository } from '@src/core/application/ports/repository/customerApiRepository';
-import { PaymentOrderApiRepository } from '@src/core/application/ports/repository/paymentOrderApiRepository';
+import { CustomerApi } from '@src/core/application/ports/repository/customerApiRepository';
+import { PaymentOrderApi } from '@src/core/application/ports/repository/paymentOrderApiRepository';
 import { OrderStatusType } from '@src/core/domain/types/orderStatusType';
 
 export class OrderService {
@@ -22,15 +22,15 @@ export class OrderService {
 
 	private readonly cartRepository: CartRepository;
 
-	private readonly customerApi: CustomerApiRepository;
+	private readonly customerApi: CustomerApi;
 
-	private readonly paymentOrderApi: PaymentOrderApiRepository;
+	private readonly paymentOrderApi: PaymentOrderApi;
 
 	constructor(
 		orderRepository: OrderRepository,
 		cartRepository: CartRepository,
-		customerApi: CustomerApiRepository,
-		paymentOrderApi: PaymentOrderApiRepository
+		customerApi: CustomerApi,
+		paymentOrderApi: PaymentOrderApi
 	) {
 		this.orderRepository = orderRepository;
 		this.cartRepository = cartRepository;

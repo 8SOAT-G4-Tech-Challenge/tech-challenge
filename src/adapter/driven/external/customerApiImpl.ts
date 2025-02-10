@@ -3,9 +3,9 @@ import axios, { AxiosInstance } from 'axios';
 import { GetCustomerByPropertyParams } from '@src/core/application/ports/input/customer';
 import { Customer } from '@src/core/domain/models/customer';
 
-import { CustomerApiRepository } from '../../../core/application/ports/repository/customerApiRepository';
+import { CustomerApi } from '../../../core/application/ports/repository/customerApiRepository';
 
-export class CustomerApiImpl implements CustomerApiRepository {
+export class CustomerApiImpl implements CustomerApi {
 	private readonly axiosInstance: AxiosInstance;
 
 	constructor(private readonly baseUrl: string) {

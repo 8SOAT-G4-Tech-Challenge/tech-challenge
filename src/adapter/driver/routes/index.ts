@@ -20,8 +20,8 @@ import {
 	ProductCategoryController,
 	ProductController,
 } from '@driver/controllers';
-import { CustomerApiImpl } from '@src/adapter/driven/http/customerApi';
-import { PaymentOrderApiImpl } from '@src/adapter/driven/http/paymentApi';
+import { CustomerApiImpl } from '@src/adapter/driven/external/customerApiImpl';
+import { PaymentOrderApiImpl } from '@src/adapter/driven/external/paymentApiImpl';
 
 const productRepository = new ProductRepositoryImpl();
 const orderRepository = new OrderRepositoryImpl();

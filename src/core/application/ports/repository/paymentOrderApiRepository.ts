@@ -4,7 +4,7 @@ import {
 } from '@src/core/application/ports/input/paymentOrders';
 import { PaymentOrder } from '@src/core/domain/models/paymentOrder';
 
-export interface PaymentOrderApiRepository {
+export interface PaymentOrderApi {
 	getPaymentOrders(): Promise<PaymentOrder[]>;
 	getPaymentOrderById(
 		getPaymentOrderByIdParams: GetPaymentOrderByIdParams
