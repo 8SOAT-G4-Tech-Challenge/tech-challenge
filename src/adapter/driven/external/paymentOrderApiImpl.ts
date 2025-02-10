@@ -22,11 +22,11 @@ export class PaymentOrderApiImpl implements PaymentOrderApi {
 
 	async getPaymentOrders(): Promise<PaymentOrder[]> {
 		try {
-			const paymentOrders: PaymentOrder[] = await this.axiosInstance.get(
+			const paymentOrders = await this.axiosInstance.get(
 				`${this.baseUrl}/admin/payment-orders`
 			);
 
-			return paymentOrders;
+			return paymentOrders.data;
 		} catch (error) {
 			if (axios.isAxiosError(error) && error.response) {
 				throw new Error(
@@ -45,11 +45,11 @@ export class PaymentOrderApiImpl implements PaymentOrderApi {
 		id,
 	}: GetPaymentOrderByIdParams): Promise<PaymentOrder | null> {
 		try {
-			const paymentOrder: PaymentOrder | null = await this.axiosInstance.get(
+			const paymentOrder = await this.axiosInstance.get(
 				`${this.baseUrl}/totem/payment-orders/${id}`
 			);
 
-			return paymentOrder;
+			return paymentOrder.data;
 		} catch (error) {
 			if (axios.isAxiosError(error) && error.response) {
 				throw new Error(
@@ -68,11 +68,11 @@ export class PaymentOrderApiImpl implements PaymentOrderApi {
 		orderId,
 	}: GetPaymentOrderByOrderIdParams): Promise<PaymentOrder | null> {
 		try {
-			const paymentOrder: PaymentOrder | null = await this.axiosInstance.get(
+			const paymentOrder = await this.axiosInstance.get(
 				`${this.baseUrl}/totem/payment-orders/orders/${orderId}`
 			);
 
-			return paymentOrder;
+			return paymentOrder.data;
 		} catch (error) {
 			if (axios.isAxiosError(error) && error.response) {
 				throw new Error(

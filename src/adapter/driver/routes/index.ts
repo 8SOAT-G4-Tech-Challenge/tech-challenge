@@ -21,7 +21,7 @@ import {
 	ProductController,
 } from '@driver/controllers';
 import { CustomerApiImpl } from '@src/adapter/driven/external/customerApiImpl';
-import { PaymentOrderApiImpl } from '@src/adapter/driven/external/paymentApiImpl';
+import { PaymentOrderApiImpl } from '@src/adapter/driven/external/paymentOrderApiImpl';
 
 const productRepository = new ProductRepositoryImpl();
 const orderRepository = new OrderRepositoryImpl();

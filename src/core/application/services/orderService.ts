@@ -104,14 +104,13 @@ export class OrderService {
 		}
 
 		logger.info(`Searching payment order in order: ${orderFound.id}`);
-		// const paymentOrder =
-		// 	await this.paymentOrderApi.getPaymentOrderByOrderId({
-		// 		orderId: orderFound.id,
-		// 	});
+		const paymentOrder = await this.paymentOrderApi.getPaymentOrderByOrderId({
+			orderId: orderFound.id,
+		});
 
-		// if (paymentOrder) {
-		// 	Object.assign(orderFound, { payment: paymentOrder });
-		// }
+		if (paymentOrder) {
+			Object.assign(orderFound, { payment: paymentOrder });
+		}
 
 		return orderFound;
 	}
