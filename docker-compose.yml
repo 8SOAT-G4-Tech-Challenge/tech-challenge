@@ -27,37 +27,24 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3333:3333'
+      - '3000:3000'
       - '5555:5555'
     env_file: .env
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
-        condition: service_healthy
     environment:
       DATABASE_URL: 'postgresql://postgres:docker@postgres:5432/tech-challenger'
-      REDIS_URL: ${REDIS_URL}
-      API_PORT: 3333
+      API_PORT: 3000
     networks:
       - tech-challenger-network
-
-  redis:
-    container_name: tech-challenger-redis
-    image: redis:latest
-    ports:
-      - '6379:6379'
-    networks:
-      - tech-challenger-network
-    healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - tech-challenge-global
 
 networks:
   tech-challenger-network:
     driver: bridge
+  tech-challenge-global:
+    external: true
 
 volumes:
   postgres-data:

@@ -5,14 +5,6 @@ import { DataNotFoundException } from '@src/core/application/exceptions/dataNotF
 
 jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 
-jest.mock('@src/core/application/services/cacheService', () => ({
-	cacheService: {
-		get: jest.fn(),
-		set: jest.fn(),
-		del: jest.fn(),
-	},
-}));
-
 describe('ProductImageRepositoryImpl -> Test', () => {
 	let repository: ProductImageRepositoryImpl;
 

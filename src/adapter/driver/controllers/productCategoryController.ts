@@ -26,7 +26,9 @@ export class ProductCategoryController {
 		} catch (error) {
 			const errorMessage =
 				'Unexpected error when listing for product categories';
-			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
+			logger.error(
+				`${errorMessage}: ${JSON.stringify(error?.response?.message)}`
+			);
 			handleError(req, reply, error);
 		}
 	}
@@ -39,7 +41,9 @@ export class ProductCategoryController {
 			reply.code(StatusCodes.CREATED).send(productCategory);
 		} catch (error) {
 			const errorMessage = 'Unexpected when creating for product category';
-			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
+			logger.error(
+				`${errorMessage}: ${JSON.stringify(error?.response?.message)}`
+			);
 			handleError(req, reply, error);
 		}
 	}
@@ -66,7 +70,9 @@ export class ProductCategoryController {
 			reply.code(StatusCodes.OK).send(updatedProductCategory);
 		} catch (error) {
 			const errorMessage = 'Unexpected error when updating product category';
-			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
+			logger.error(
+				`${errorMessage}: ${JSON.stringify(error?.response?.message)}`
+			);
 			handleError(req, reply, error);
 		}
 	}
@@ -93,7 +99,9 @@ export class ProductCategoryController {
 				.send({ message: 'Product category successfully deleted' });
 		} catch (error) {
 			const errorMessage = 'Unexpected when deleting for product category';
-			logger.error(`${errorMessage}: ${JSON.stringify(error)}`);
+			logger.error(
+				`${errorMessage}: ${JSON.stringify(error?.response?.message)}`
+			);
 			handleError(req, reply, error);
 		}
 	}

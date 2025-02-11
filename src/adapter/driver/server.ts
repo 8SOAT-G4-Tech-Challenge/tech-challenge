@@ -66,11 +66,11 @@ async function run() {
 	await app.ready();
 
 	await app.listen({
-		port: Number(process.env.API_PORT) || 3333,
+		port: Number(process.env.API_PORT) || 3000,
 		host: '0.0.0.0',
 	});
 
-	logger.info('Documentation running at http://localhost:3333/docs');
+	logger.info('Microservice/Order running at http://localhost:3000');
 }
 
 run();

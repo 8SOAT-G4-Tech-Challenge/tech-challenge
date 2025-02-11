@@ -4,13 +4,10 @@ const prisma = new PrismaClient();
 
 async function main() {
 	await prisma.orderItem.deleteMany({});
-	await prisma.paymentOrder.deleteMany({});
 	await prisma.order.deleteMany({});
 	await prisma.productImage.deleteMany({});
 	await prisma.product.deleteMany({});
 	await prisma.productCategory.deleteMany({});
-	await prisma.customer.deleteMany({});
-	await prisma.user.deleteMany({});
 
 	console.log('Database cleaned successfully!');
 }

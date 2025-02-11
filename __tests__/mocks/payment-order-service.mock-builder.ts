@@ -1,4 +1,4 @@
-import { PaymentOrderStatusType } from '@src/core/domain/types/paymentOrderType';
+import { PaymentOrderStatusType } from '@src/core/domain/types/paymentOrderStatusType';
 
 export class PaymentOrderMockBuilder {
 	id: string;

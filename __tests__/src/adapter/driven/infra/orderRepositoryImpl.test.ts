@@ -1,18 +1,10 @@
-import { OrderMockBuilder } from '@tests/mocks/order.mock-builder';
 import { OrderRepositoryImpl } from '@src/adapter/driven/infra';
 import { prisma } from '@src/adapter/driven/infra/lib/prisma';
 import { DataNotFoundException } from '@src/core/application/exceptions/dataNotFound';
 import logger from '@src/core/common/logger';
+import { OrderMockBuilder } from '@tests/mocks/order.mock-builder';
 
 jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
-
-jest.mock('@src/core/application/services/cacheService', () => ({
-	cacheService: {
-		get: jest.fn(),
-		set: jest.fn(),
-		del: jest.fn(),
-	},
-}));
 
 describe('OrderRepositoryImpl -> Test', () => {
 	let repository: OrderRepositoryImpl;

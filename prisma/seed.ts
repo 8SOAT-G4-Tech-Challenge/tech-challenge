@@ -1,57 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 
 import { OrderStatusEnum } from '../src/core/application/enumerations/orderStatusEnum';
-import { PaymentOrderStatusEnum } from '../src/core/application/enumerations/paymentOrderEnum';
 
 const prisma = new PrismaClient();
 
+const customer1 = { id: 'a9b4fa2f-5690-4b19-bf9c-01c6d3e76f10' };
+const customer2 = { id: '72b46abf-47a6-47f5-b145-8fec46684871' };
+
 async function main() {
-	// Criar usuários
-	await Promise.all([
-		prisma.user.upsert({
-			where: { email: 'admin@example.com' },
-			update: {},
-			create: {
-				name: 'Admin User',
-				email: 'admin@example.com',
-				password: 'password123',
-				isAdmin: true,
-			},
-		}),
-		prisma.user.upsert({
-			where: { email: 'user@example.com' },
-			update: {},
-			create: {
-				name: 'Regular User',
-				email: 'user@example.com',
-				password: 'password123',
-				isAdmin: false,
-			},
-		}),
-	]);
-
-	// Criar clientes
-	const [customer1, customer2] = await Promise.all([
-		prisma.customer.upsert({
-			where: { cpf: '12345678901' },
-			update: {},
-			create: {
-				name: 'John Doe',
-				email: 'john.doe@example.com',
-				cpf: '12345678901',
-			},
-		}),
-		prisma.customer.upsert({
-			where: { cpf: '10987654321' },
-			update: {},
-			create: {
-				name: 'Jane Doe',
-				email: 'jane.doe@example.com',
-				cpf: '10987654321',
-			},
-		}),
-	]);
-
 	// Criar categorias de produtos
 	const [category1, category2] = await Promise.all([
 		prisma.productCategory.upsert({
@@ -99,7 +55,10 @@ async function main() {
 			},
 		}),
 		prisma.product.upsert({
-			where: { name: 'Cheeseburger', id: '6badf399-fd7b-4364-a916-d92e7f57a30e' },
+			where: {
+				name: 'Cheeseburger',
+				id: '6badf399-fd7b-4364-a916-d92e7f57a30e',
+			},
 			update: {},
 			create: {
 				name: 'Cheeseburger',
@@ -179,9 +138,7 @@ async function main() {
 	const [order1, order2, order3] = await Promise.all([
 		prisma.order.create({
 			data: {
-				customer: {
-					connect: { id: customer1.id },
-				},
+				customerId: customer1.id,
 				status: OrderStatusEnum.received,
 				readableId: '1',
 			},
@@ -193,9 +150,7 @@ async function main() {
 		}),
 		prisma.order.create({
 			data: {
-				customer: {
-					connect: { id: customer2.id },
-				},
+				customerId: customer2.id,
 				status: OrderStatusEnum.received,
 				readableId: '2',
 			},
@@ -236,41 +191,6 @@ async function main() {
 				},
 			})
 		),
-	]);
-
-	// Criar pagamentos dos pedidos
-	await Promise.all([
-		prisma.paymentOrder.create({
-			data: {
-				order: {
-					connect: { id: order1.id },
-				},
-				status: PaymentOrderStatusEnum.approved,
-				paidAt: new Date(),
-				value: 30,
-				qrData: null,
-			},
-		}),
-		prisma.paymentOrder.create({
-			data: {
-				order: {
-					connect: { id: order2.id },
-				},
-				status: PaymentOrderStatusEnum.pending,
-				value: 20,
-				qrData: null,
-			},
-		}),
-		prisma.paymentOrder.create({
-			data: {
-				order: {
-					connect: { id: order3.id },
-				},
-				status: PaymentOrderStatusEnum.pending,
-				value: 20,
-				qrData: null,
-			},
-		}),
 	]);
 
 	console.log('Seed data created successfully!');

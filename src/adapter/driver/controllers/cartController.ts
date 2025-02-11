@@ -58,7 +58,9 @@ export class CartController {
 			reply.code(StatusCodes.OK).send(orderItem);
 		} catch (error) {
 			logger.error(
-				`Unexpected error when trying to update cart: ${JSON.stringify(error)}`
+				`Unexpected error when trying to update cart: ${JSON.stringify(
+					error?.response?.message
+				)}`
 			);
 			handleError(req, reply, error);
 		}
@@ -78,7 +80,9 @@ export class CartController {
 			reply.code(StatusCodes.OK).send();
 		} catch (error) {
 			logger.error(
-				`Unexpected error when trying to delete cart: ${JSON.stringify(error)}`
+				`Unexpected error when trying to delete cart: ${JSON.stringify(
+					error?.response?.message
+				)}`
 			);
 			handleError(req, reply, error);
 		}
