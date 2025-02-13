@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { ZodError } from 'zod';
 
 import { BaseException } from '@exceptions/baseException';
+import logger from '@src/core/common/logger';
 
 type FastifyErrorHandler = FastifyInstance['errorHandler'];
 
@@ -49,6 +50,8 @@ export function handleError(
 		responseError.message = error.message;
 		responseError.status = error.statusCode;
 	}
+
+	logger.error(`[ERROR HANDLER] Unexpected error: ${JSON.stringify(error)}`);
 
 	reply.status(responseError.status).send(responseError);
 }
