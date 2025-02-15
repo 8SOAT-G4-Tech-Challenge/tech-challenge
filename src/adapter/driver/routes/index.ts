@@ -64,6 +64,9 @@ const orderController = new OrderController(orderService);
 const cartController = new CartController(cartService);
 
 export const routes = async (fastify: FastifyInstance) => {
+	fastify.get('/health', async (_request, reply) => {
+		reply.status(200).send({ message: 'Health Check Order - Ok' });
+	});
 	fastify.get(
 		'/totem/products',
 		productController.getProducts.bind(productController)
