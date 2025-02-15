@@ -58,7 +58,7 @@ app.register(helmet, {
 	noSniff: true,
 });
 
-app.register(routes);
+app.register(routes, { prefix: '/orders' });
 
 app.setErrorHandler(errorHandler);
 
