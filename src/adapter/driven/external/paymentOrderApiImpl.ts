@@ -35,6 +35,7 @@ export class PaymentOrderApiImpl implements PaymentOrderApi {
 					)}`
 				);
 			}
+
 			throw new Error(
 				'Unexpected error while trying to get all payment orders'
 			);
