@@ -8,6 +8,7 @@ import { Order } from '@models/order';
 import {
 	CreateOrderParams,
 	GetOrderByIdParams,
+	GetOrderByIdQueryParams,
 	GetOrderQueryParams,
 	UpdateOrderParams,
 } from '@ports/input/orders';
@@ -30,21 +31,28 @@ export class OrderController {
 			reply.code(StatusCodes.OK).send(orders);
 		} catch (error) {
 			logger.error(
-				`Unexpected error when trying to get orders: ${JSON.stringify(error)}`
+				`Unexpected error when trying to get orders: ${JSON.stringify(
+					error?.response?.message
+				)}`
 			);
 			handleError(req, reply, error);
 		}
 	}
 
 	async getOrderById(
-		req: FastifyRequest<{ Params: GetOrderByIdParams }>,
+		req: FastifyRequest<{
+			Params: GetOrderByIdParams;
+			Query: GetOrderByIdQueryParams;
+		}>,
 		reply: FastifyReply
 	) {
 		try {
 			logger.info('Listing order by id');
-			const order: CreateOrderResponse = await this.orderService.getOrderById(
-				req?.params
-			);
+			const order: CreateOrderResponse = await this.orderService.getOrderById({
+				...req?.params,
+				// @ts-expect-error typescript
+				...req?.query,
+			});
 			reply.code(StatusCodes.OK).send(order);
 		} catch (error) {
 			logger.error(
@@ -68,7 +76,9 @@ export class OrderController {
 			reply.code(StatusCodes.CREATED).send(order);
 		} catch (error) {
 			logger.error(
-				`Unexpected error when trying to create order: ${JSON.stringify(error)}`
+				`Unexpected error when trying to create order: ${JSON.stringify(
+					error?.response?.message
+				)}`
 			);
 			handleError(req, reply, error);
 		}
@@ -87,8 +97,21 @@ export class OrderController {
 			reply.code(StatusCodes.OK).send(order);
 		} catch (error) {
 			logger.error(
-				`Unexpected error when trying to update order: ${JSON.stringify(error)}`
+				`Unexpected error when trying to update order: ${JSON.stringify(
+					error?.response?.message
+				)}`
 			);
+			handleError(req, reply, error);
+		}
+	}
+
+	async getNumberOfValidOrdersToday(req: FastifyRequest, reply: FastifyReply) {
+		try {
+			logger.info('[ORDER CONTROLLER] Getting number of valid orders today');
+			const numberValidOrders: number =
+				await this.orderService.getNumberOfValidOrdersToday();
+			reply.code(StatusCodes.OK).send(numberValidOrders);
+		} catch (error) {
 			handleError(req, reply, error);
 		}
 	}

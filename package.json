@@ -4,6 +4,7 @@
 	"description": "API Restaurante FIAP Tech Challenge",
 	"main": "index.js",
 	"scripts": {
+		"compose-network": "docker network create tech-challenge-global",
 		"test-coverage": "jest --maxParallel=4 --coverage=true --forceExit --runInBand --detectOpenHandles",
 		"test": "jest --maxWorkers=1 --coverage=true",
 		"build": "tsup src",
@@ -36,7 +37,6 @@
 		"fastify-type-provider-zod": "^2.0.0",
 		"http-status-codes": "^2.3.0",
 		"pino": "^9.3.2",
-		"redis": "^4.7.0",
 		"tsconfig-paths": "^4.2.0",
 		"zod": "^3.23.8"
 	},

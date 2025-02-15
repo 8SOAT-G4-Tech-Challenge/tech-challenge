@@ -9,10 +9,13 @@ import {
 	CreateOrderParams,
 	GetOrderByIdParams,
 	UpdateOrderParams,
+	GetOrderByIdQueryParams,
 } from '@ports/input/orders';
 import { CreateOrderResponse } from '@ports/output/orders';
 import { CartRepository } from '@ports/repository/cartRepository';
 import { OrderRepository } from '@ports/repository/orderRepository';
+import { CustomerApi } from '@src/core/application/ports/repository/customerApiRepository';
+import { PaymentOrderApi } from '@src/core/application/ports/repository/paymentOrderApiRepository';
 import { OrderStatusType } from '@src/core/domain/types/orderStatusType';
 
 export class OrderService {
@@ -20,19 +23,41 @@ export class OrderService {
 
 	private readonly cartRepository: CartRepository;
 
+	private readonly customerApi: CustomerApi;
+
+	private readonly paymentOrderApi: PaymentOrderApi;
+
 	constructor(
 		orderRepository: OrderRepository,
-		cartRepository: CartRepository
+		cartRepository: CartRepository,
+		customerApi: CustomerApi,
+		paymentOrderApi: PaymentOrderApi
 	) {
 		this.orderRepository = orderRepository;
 		this.cartRepository = cartRepository;
+		this.customerApi = customerApi;
+		this.paymentOrderApi = paymentOrderApi;
 	}
 
 	async getOrders({ status }: GetOrderQueryParams): Promise<Order[]> {
 		if (status && Object.values(OrderStatusEnum).includes(status)) {
 			logger.info(`Searching orders by status: ${status}`);
 			const orders = await this.orderRepository.getOrdersByStatus(status);
-			return orders;
+
+			const customers = await this.customerApi.getCustomers();
+			const paymentOrders = await this.paymentOrderApi.getPaymentOrders();
+
+			const joinedData = orders?.map((order) => ({
+				...order,
+				customer: customers?.find(
+					(customer) => customer.id === order.customerId
+				),
+				payment: paymentOrders?.find(
+					(paymentOrder) => paymentOrder.orderId === order.id
+				),
+			}));
+
+			return joinedData;
 		}
 
 		if (status && !Object.values(OrderStatusEnum).includes(status)) {
@@ -43,10 +68,26 @@ export class OrderService {
 
 		logger.info('Searching all orders');
 		const orders = await this.orderRepository.getOrders();
-		return this.sortOrdersByStatus(orders);
+
+		const customers = await this.customerApi.getCustomers();
+		const paymentOrders = await this.paymentOrderApi.getPaymentOrders();
+
+		const joinedData = orders?.map((order) => ({
+			...order,
+			customer: customers?.find((customer) => customer.id === order.customerId),
+			payment: paymentOrders?.find(
+				(paymentOrder) => paymentOrder.orderId === order.id
+			),
+		}));
+
+		return this.sortOrdersByStatus(joinedData);
 	}
 
-	async getOrderById({ id }: GetOrderByIdParams): Promise<Order> {
+	async getOrderById({
+		id,
+		withCustomer,
+		withPayment,
+	}: GetOrderByIdParams & GetOrderByIdQueryParams): Promise<Order> {
 		const { success } = getOrderByIdSchema.safeParse({ id });
 
 		if (!success) {
@@ -57,6 +98,26 @@ export class OrderService {
 
 		logger.info(`Searching order by Id: ${id}`);
 		const orderFound = await this.orderRepository.getOrderById({ id });
+
+		if (withCustomer && orderFound.customerId) {
+			logger.info(`Searching customer in order: ${orderFound.customerId}`);
+			const customer = await this.customerApi.getCustomerByProperty({
+				id: orderFound.customerId,
+			});
+
+			Object.assign(orderFound, { customer });
+		}
+
+		if (withPayment) {
+			logger.info(`Searching payment order in order: ${orderFound.id}`);
+			const paymentOrder = await this.paymentOrderApi.getPaymentOrderByOrderId({
+				orderId: orderFound.id,
+			});
+
+			if (paymentOrder && Object.values(paymentOrder).length) {
+				Object.assign(orderFound, { payment: paymentOrder });
+			}
+		}
 
 		return orderFound;
 	}
@@ -72,6 +133,22 @@ export class OrderService {
 
 		logger.info(`Searching order created by Id: ${id}`);
 		const orderFound = await this.orderRepository.getOrderCreatedById({ id });
+
+		if (orderFound.customerId) {
+			const customer = await this.customerApi.getCustomerByProperty({
+				id: orderFound.customerId,
+			});
+
+			Object.assign(orderFound, { customer });
+		}
+
+		const paymentOrder = await this.paymentOrderApi.getPaymentOrderByOrderId({
+			orderId: orderFound.id,
+		});
+
+		if (paymentOrder) {
+			Object.assign(orderFound, { payment: paymentOrder });
+		}
 
 		return orderFound;
 	}
@@ -148,5 +225,15 @@ export class OrderService {
 				priorityMap.get(b.status as OrderStatusType) ?? Infinity;
 			return priorityA - priorityB;
 		});
+	}
+
+	async getNumberOfValidOrdersToday(): Promise<number> {
+		logger.info('[ORDER SERVICE] Getting number of valid orders today');
+		const numberOrdersToday =
+			await this.orderRepository.getNumberOfValidOrdersToday();
+
+		logger.info(`[ORDER SERVICE] Valid orders today: ${numberOrdersToday}`);
+
+		return numberOrdersToday;
 	}
 }

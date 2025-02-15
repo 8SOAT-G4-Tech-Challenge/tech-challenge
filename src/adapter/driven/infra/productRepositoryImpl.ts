@@ -94,7 +94,7 @@ export class ProductRepositoryImpl implements ProductRepository {
 					}
 				}
 				throw new InvalidProductException(
-					`Error creating product: ${JSON.stringify(error)}`
+					`Error creating product: ${JSON.stringify(error?.response?.message)}`
 				);
 			});
 

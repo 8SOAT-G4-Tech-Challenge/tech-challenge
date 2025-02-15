@@ -6,7 +6,7 @@ metadata:
   labels:
     name: env-config
 data:
-  API_PORT: '3333'
+  API_PORT: '3000'
   POSTGRES_DB: tech-challenger
   POSTGRES_USER: postgres
   MERCADO_PAGO_TOKEN: APP_USR-8947872587675457-092119-5efc606bd65ca741c729cd17c29ea83a-1999874453
