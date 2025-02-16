@@ -22,6 +22,15 @@ A partir dos dados fornecidos, este microsserviço:
 
 - Gerencia os itens de pedido: os itens de pedido são os produtos adicionados a um pedido específico. Este serviço controla a inclusão, remoção e edição desses itens, garantindo a integridade do pedido.
 
+### Endpoints
+
+Esta API fornece documentação no padrão OpenAPI através do Swagger.
+Os endpoints disponíveis, suas descrições e dados necessários para requisição podem ser consultados e testados em `/docs`.
+
+### Desenvolvimento
+
+Para realizar o desenvolvimento de novas features, é importante realizar as configurações descritas na [Documentação de desenvolvimento](https://github.com/8SOAT-G4-Tech-Challenge/tech-challenge-fiap-documentation/blob/master/docs/DESENVOLVIMENTO.md).
+
 ### Participantes
 
 - Amanda Maschio - RM 357734
